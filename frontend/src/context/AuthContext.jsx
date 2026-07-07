@@ -124,7 +124,7 @@ export const AuthProvider = ({ children }) => {
     } catch (err) {
       console.warn('Backend offline, verifying credentials against local mock...');
       if (authToken === 'mock_jwt_token_2026') {
-        setUser({ id: 'admin_mock', name: 'Super Admin', email: 'admin@carehome.com', role: 'admin' });
+        setUser({ id: 'admin_mock', name: 'Super Admin', email: 'rohith@nestcares.in', role: 'admin' });
       } else {
         logout();
       }
@@ -154,11 +154,11 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (err) {
       // Offline fallback login validation
-      if (email === 'admin@carehome.com' && password === 'admin123') {
+      if (email === 'rohith@nestcares.in' && password === 'Roya@1522') {
         const mockToken = 'mock_jwt_token_2026';
         localStorage.setItem('token', mockToken);
         setToken(mockToken);
-        setUser({ id: 'admin_mock', name: 'Super Admin', email: 'admin@carehome.com', role: 'admin' });
+        setUser({ id: 'admin_mock', name: 'Super Admin', email: 'rohith@nestcares.in', role: 'admin' });
         return { success: true };
       }
       return {

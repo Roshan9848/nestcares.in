@@ -262,17 +262,19 @@ const seedData = async () => {
     console.log('✅ Default upgraded service specifications seeded successfully.');
 
     // Seed Admin User
-    const existingAdmin = await User.findOne({ email: 'admin@company.com' });
-    if (!existingAdmin) {
-      const admin = new User({
-        name: 'Super Admin',
-        email: 'admin@company.com',
-        password: 'admin123',
-        role: 'admin'
-      });
-      await admin.save();
-      console.log('✅ Admin user created (Email: admin@company.com, Password: admin123)');
-    }
+    const adminEmail = 'rohith@nestcares.in';
+    const adminPassword = 'Roya@1522';
+    
+    await User.deleteMany({ role: 'admin' });
+    
+    const admin = new User({
+      name: 'Super Admin',
+      email: adminEmail,
+      password: adminPassword,
+      role: 'admin'
+    });
+    await admin.save();
+    console.log(`✅ Admin user created (Email: ${adminEmail}, Password: ${adminPassword})`);
 
     // Seed Settings (only if missing)
     const settingsList = [
