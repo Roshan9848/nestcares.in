@@ -1,0 +1,30 @@
+[
+  {
+    "_id": "faq_1",
+    "question": "How do I book a home healthcare service?",
+    "answer": "You can book by filling out the form on our \"Book a Service\" page, calling our emergency number, or sending a message on WhatsApp. Our coordinator will call you back within 15 minutes to confirm details.",
+    "order": 0,
+    "createdAt": "2026-06-29T08:46:29.544Z"
+  },
+  {
+    "_id": "faq_2",
+    "question": "Are your medical staff qualified and verified?",
+    "answer": "Yes. All our doctors, nurses, physiotherapists, and care attendants undergo rigorous background checks, credential validation, and clinical evaluations before they are deployed to patients.",
+    "order": 1,
+    "createdAt": "2026-06-29T08:46:29.544Z"
+  },
+  {
+    "_id": "faq_3",
+    "question": "What happens in case of a medical emergency at home?",
+    "answer": "We provide 24/7 emergency support. If a patient under our care experiences an acute emergency, our standby nursing staff coordinates immediate transport via our dedicated BLS/ALS ambulances.",
+    "order": 2,
+    "createdAt": "2026-06-29T08:46:29.544Z"
+  },
+  {
+    "_id": "faq_4",
+    "question": "How does the ICU Setup at Home work?",
+    "answer": "We deliver and install all required hospital-grade critical care equipment (ventilator, monitor, infusion pump, etc.) and deploy ICU-trained nurses. A consulting intensivist doctor oversees the patient via daily visits and remote telemetry.",
+    "order": 3,
+    "createdAt": "2026-06-29T08:46:29.544Z"
+  }
+]

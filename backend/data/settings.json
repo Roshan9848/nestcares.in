@@ -1,0 +1,104 @@
+[
+  {
+    "_id": "set_home",
+    "key": "homepage",
+    "value": {
+      "heroHeading": "Hospital-Quality Medical Care, at the Comfort of Your Home",
+      "heroDescription": "Avoid stressful travel and hospital waiting rooms. We bring certified doctors, critical ICU setups, skilled nurses, and emergency support directly to your bedside.",
+      "heroBgImage": "/uploads/hero_banner.jpg",
+      "ctaText": "Book a Service",
+      "whyChooseUs": [
+        {
+          "title": "Experienced Clinicians",
+          "desc": "All care is delivered by licensed medical professionals with intensive hospital backgrounds."
+        },
+        {
+          "title": "Hospital-Grade Equipment",
+          "desc": "We install high-quality ventilators, monitors, and specialized medical beds directly at home."
+        },
+        {
+          "title": "24/7 Quick Response",
+          "desc": "Dedicated round-the-clock ambulance dispatch and medical helpline at your disposal."
+        },
+        {
+          "title": "Affordable Recovery",
+          "desc": "Save up to 60% compared to extended hospital ICU or clinical boarding charges."
+        }
+      ],
+      "howItWorks": [
+        {
+          "step": "1",
+          "title": "Request Service",
+          "desc": "Fill out our simple form or contact us via call/WhatsApp to describe your clinical needs."
+        },
+        {
+          "step": "2",
+          "title": "Medical Assessment",
+          "desc": "Our head coordinator reviews and aligns with doctors to design a custom care plan."
+        },
+        {
+          "step": "3",
+          "title": "Expert Deployment",
+          "desc": "We deliver medical machinery, dispatch professionals, and coordinate immediate setup."
+        },
+        {
+          "step": "4",
+          "title": "Continuous Monitoring",
+          "desc": "Get ongoing clinical audits, physician visits, and emergency support backup."
+        }
+      ]
+    }
+  },
+  {
+    "_id": "set_contact",
+    "key": "contact",
+    "value": {
+      "phoneNumbers": [
+        "+91 92488 49388",
+        "+91 63035 91409"
+      ],
+      "emailAddress": "contact@carehome.com",
+      "whatsappNumber": "+91 92488 49388",
+      "officeAddress": "Chandra Shekar Colony, Nizamabad, Telangana - 503002",
+      "workingHours": "Mon - Sun: 24/7 Available for Emergencies",
+      "emergencyContact": "+91 92488 49388",
+      "googleMapsLink": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d60320.09117621495!2d78.06456073100346!3d18.672462371908477!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcddb435ff51ca1%3A0x67dbb8a0717e1329!2sNizamabad%2C%20Telangana!5e0!3m2!1sen!2sin!4v1655000000000!5m2!1sen!2sin",
+      "socials": {
+        "facebook": "https://facebook.com",
+        "twitter": "https://twitter.com",
+        "instagram": "https://instagram.com",
+        "linkedin": "https://linkedin.com"
+      }
+    }
+  },
+  {
+    "_id": "set_email",
+    "key": "email",
+    "value": {
+      "smtpHost": "smtp.mailtrap.io",
+      "smtpPort": 2525,
+      "smtpUser": "",
+      "smtpPass": "",
+      "businessEmail": "bookings@carehome.com",
+      "senderName": "CareHome Services Support",
+      "templates": {
+        "patientConfirmation": "Dear {{patientName}},\n\nThank you for choosing CareHome Services. We have received your booking request for {{serviceName}} on {{date}} at {{time}}.\n\nOur medical coordinator will call you shortly at {{mobile}} to confirm your appointment and assign your care team.\n\nAddress Details:\n{{address}}\n\nWarm regards,\nCareHome Team",
+        "adminNotification": "Hello Admin,\n\nA new booking request has been submitted:\n\nPatient Name: {{patientName}}\nPhone: {{mobile}}\nEmail: {{email}}\nService: {{serviceName}}\nDate: {{date}}\nTime: {{time}}\nAddress: {{address}}\nNotes: {{notes}}\n\nPlease review and approve this booking in your Dashboard."
+      }
+    }
+  },
+  {
+    "_id": "set_web",
+    "key": "web",
+    "value": {
+      "companyName": "Nest Cares.in",
+      "logoUrl": "/uploads/logo.png",
+      "faviconUrl": "",
+      "footerContent": "Providing hospital-level medical services at the comfort of your home. Trusted by over 10,000+ families.",
+      "copyright": "© 2026 Nest Cares.in Healthcare Services. All rights reserved.",
+      "seoTitle": "Nest Cares.in - Premium Home Healthcare Services",
+      "seoDescription": "Hospital-level ICU setups, experienced home doctors, specialized nurses, and 24/7 ambulance services at your bedside.",
+      "googleAnalyticsCode": "UA-XXXXX-X"
+    }
+  }
+]
