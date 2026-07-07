@@ -320,12 +320,12 @@ const seedData = async () => {
       {
         key: 'email',
         value: {
-          smtpHost: 'smtp.gmail.com',
-          smtpPort: 465,
-          smtpUser: 'nestcares.in@gmail.com',
-          smtpPass: 'ewbmmqreoaahyfqm',
-          businessEmail: 'nestcares.in@gmail.com',
-          senderName: 'Nest Cares Support',
+          smtpHost: process.env.SMTP_HOST || 'smtp.gmail.com',
+          smtpPort: parseInt(process.env.SMTP_PORT) || 465,
+          smtpUser: process.env.SMTP_USER || 'nestcares.in@gmail.com',
+          smtpPass: process.env.SMTP_PASS || '',
+          businessEmail: process.env.BUSINESS_EMAIL || 'nestcares.in@gmail.com',
+          senderName: process.env.SENDER_NAME || 'Nest Cares Support',
           templates: {
             patientConfirmation: 'Dear {{patientName}},\n\nThank you for choosing Nest Cares. We have received your booking request for {{serviceName}} on {{date}} at {{time}}.\n\nOur medical coordinator will call you shortly at {{mobile}} to confirm your appointment.\n\nAddress Details:\n{{address}}\n\nWarm regards,\nNest Cares Coordination Team',
             adminNotification: 'Hello Admin,\n\nA new booking request has been submitted:\n\nPatient Name: {{patientName}}\nPhone: {{mobile}}\nEmail: {{email}}\nService: {{serviceName}}\nDate: {{date}}\nTime: {{time}}\nAddress: {{address}}\nNotes: {{notes}}'
