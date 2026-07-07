@@ -101,8 +101,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token') || null);
   const [loading, setLoading] = useState(true);
 
-  // Set base backend URL (assuming relative or port 5000 in dev)
-  const API_URL = 'http://localhost:5000/api';
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
   axios.defaults.baseURL = API_URL;
 
   // Set initial token header if present
