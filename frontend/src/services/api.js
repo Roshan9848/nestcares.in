@@ -21,11 +21,11 @@ apiClient.interceptors.request.use((config) => {
 // 1. SETTINGS SERVICES
 export const settingsAPI = {
   getSettings: async () => {
-    const res = await axios.get('/settings');
+    const res = await apiClient.get('/settings');
     return res.data;
   },
   updateSettings: async (key, value) => {
-    const res = await axios.put(`/settings/${key}`, { value });
+    const res = await apiClient.put(`/settings/${key}`, { value });
     return res.data;
   }
 };
@@ -33,25 +33,25 @@ export const settingsAPI = {
 // 2. HEALTHCARE SERVICES SERVICES
 export const servicesAPI = {
   getServices: async (includeHidden = false) => {
-    const res = await axios.get('/services', {
+    const res = await apiClient.get('/services', {
       params: { includeHidden: includeHidden ? 'true' : 'false' }
     });
     return res.data;
   },
   createService: async (data) => {
-    const res = await axios.post('/services', data);
+    const res = await apiClient.post('/services', data);
     return res.data;
   },
   updateService: async (id, data) => {
-    const res = await axios.put(`/services/${id}`, data);
+    const res = await apiClient.put(`/services/${id}`, data);
     return res.data;
   },
   deleteService: async (id) => {
-    const res = await axios.delete(`/services/${id}`);
+    const res = await apiClient.delete(`/services/${id}`);
     return res.data;
   },
   reorderServices: async (orderedIds) => {
-    const res = await axios.put('/services/reorder/list', { orderedIds });
+    const res = await apiClient.put('/services/reorder/list', { orderedIds });
     return res.data;
   }
 };
@@ -59,23 +59,23 @@ export const servicesAPI = {
 // 3. BOOKINGS & TRIAGE SERVICES
 export const bookingsAPI = {
   createBooking: async (formData) => {
-    const res = await axios.post('/bookings', formData);
+    const res = await apiClient.post('/bookings', formData);
     return res.data;
   },
   getBookings: async (params = {}) => {
-    const res = await axios.get('/bookings', { params });
+    const res = await apiClient.get('/bookings', { params });
     return res.data;
   },
   getBookingStats: async () => {
-    const res = await axios.get('/bookings/stats');
+    const res = await apiClient.get('/bookings/stats');
     return res.data;
   },
   updateBookingStatus: async (id, status) => {
-    const res = await axios.put(`/bookings/${id}/status`, { status });
+    const res = await apiClient.put(`/bookings/${id}/status`, { status });
     return res.data;
   },
   submitCallback: async (payload) => {
-    const res = await axios.post('/bookings/callback', payload);
+    const res = await apiClient.post('/bookings/callback', payload);
     return res.data;
   }
 };
@@ -83,19 +83,19 @@ export const bookingsAPI = {
 // 4. TESTIMONIALS SERVICES
 export const testimonialsAPI = {
   getTestimonials: async () => {
-    const res = await axios.get('/testimonials');
+    const res = await apiClient.get('/testimonials');
     return res.data;
   },
   createTestimonial: async (data) => {
-    const res = await axios.post('/testimonials', data);
+    const res = await apiClient.post('/testimonials', data);
     return res.data;
   },
   updateTestimonial: async (id, data) => {
-    const res = await axios.put(`/testimonials/${id}`, data);
+    const res = await apiClient.put(`/testimonials/${id}`, data);
     return res.data;
   },
   deleteTestimonial: async (id) => {
-    const res = await axios.delete(`/testimonials/${id}`);
+    const res = await apiClient.delete(`/testimonials/${id}`);
     return res.data;
   }
 };
@@ -103,19 +103,19 @@ export const testimonialsAPI = {
 // 5. FAQ SERVICES
 export const faqsAPI = {
   getFaqs: async () => {
-    const res = await axios.get('/faqs');
+    const res = await apiClient.get('/faqs');
     return res.data;
   },
   createFaq: async (data) => {
-    const res = await axios.post('/faqs', data);
+    const res = await apiClient.post('/faqs', data);
     return res.data;
   },
   updateFaq: async (id, data) => {
-    const res = await axios.put(`/faqs/${id}`, data);
+    const res = await apiClient.put(`/faqs/${id}`, data);
     return res.data;
   },
   deleteFaq: async (id) => {
-    const res = await axios.delete(`/faqs/${id}`);
+    const res = await apiClient.delete(`/faqs/${id}`);
     return res.data;
   }
 };
