@@ -149,10 +149,33 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
                 className="text-3xl sm:text-4xl lg:text-5xl font-serif-editorial font-bold text-slate-900 leading-[1.1] tracking-tight"
               >
                 Hospital-Grade Care.
-                <span className="text-teal-805 italic block mt-1 font-normal font-serif-editorial">
+                <span className="text-teal-855 italic block mt-1 font-normal font-serif-editorial">
                   At Home in Nizamabad.
                 </span>
               </motion.h1>
+
+              {/* Mobile Hero Image Card (Instant visual context on mobile, hidden on desktop) */}
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.25 }}
+                className="block lg:hidden w-full max-w-[340px] mx-auto my-2 bg-white p-2 rounded-[28px] border border-slate-200/50 shadow-md shadow-slate-100"
+              >
+                <div className="h-44 rounded-[20px] overflow-hidden relative">
+                  <img 
+                    src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&q=80&w=600" 
+                    alt="Clinician patient care Nizamabad" 
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/30 via-transparent to-transparent"></div>
+                  
+                  {/* Clinical Excellence Badge Overlay */}
+                  <div className="absolute bottom-3 left-3 bg-slate-900/90 backdrop-blur-md text-white px-3 py-1 rounded-full border border-white/5 text-[9px] font-extrabold uppercase tracking-widest flex items-center gap-1">
+                    <ShieldCheck className="w-3.5 h-3.5 text-teal-400" />
+                    <span>{isTe ? "క్లినికల్ ఎక్సలెన్స్" : "Clinical Excellence"}</span>
+                  </div>
+                </div>
+              </motion.div>
 
               <motion.p 
                 initial={{ opacity: 0, y: 15 }}
@@ -201,12 +224,12 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
               </motion.div>
             </div>
 
-            {/* Right Column: Layered Bento Collage (Light theme, welcoming & elegant) */}
+            {/* Right Column: Layered Bento Collage (Light theme, welcoming & elegant - Desktop Only) */}
             <motion.div 
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="lg:col-span-6 relative flex items-center justify-center min-h-[400px] lg:min-h-[450px] px-4 w-full"
+              className="lg:col-span-6 relative lg:flex hidden items-center justify-center min-h-[450px] px-4 w-full"
             >
               {/* Organic background shapes */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] sm:w-[380px] h-[280px] sm:h-[380px] bg-gradient-to-tr from-teal-500/10 to-amber-500/5 rounded-full blur-[80px] -z-10 animate-pulse duration-[8000ms]"></div>

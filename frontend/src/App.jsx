@@ -38,34 +38,34 @@ const AppContent = () => {
 
   const fetchData = async () => {
     try {
-      // Try to load from API service layer
-      const resSettings = await settingsAPI.getSettings();
-      if (resSettings.success) {
-        setSettings(resSettings.data);
+      // Parallelize all initial fetches to resolve concurrently
+      const [resSettings, resServices, resTestimonials, resFaqs, resDocs] = await Promise.allSettled([
+        settingsAPI.getSettings(),
+        servicesAPI.getServices(!!token),
+        testimonialsAPI.getTestimonials(),
+        faqsAPI.getFaqs(),
+        axios.get('/doctors').catch(() => null)
+      ]);
+
+      if (resSettings.status === 'fulfilled' && resSettings.value?.success) {
+        setSettings(resSettings.value.data);
       }
 
-      const resServices = await servicesAPI.getServices(!!token);
-      if (resServices.success) {
-        setServices(resServices.data);
+      if (resServices.status === 'fulfilled' && resServices.value?.success) {
+        setServices(resServices.value.data);
       }
 
-      const resTestimonials = await testimonialsAPI.getTestimonials();
-      if (resTestimonials.success) {
-        setTestimonials(resTestimonials.data);
+      if (resTestimonials.status === 'fulfilled' && resTestimonials.value?.success) {
+        setTestimonials(resTestimonials.value.data);
       }
 
-      const resFaqs = await faqsAPI.getFaqs();
-      if (resFaqs.success) {
-        setFaqs(resFaqs.data);
+      if (resFaqs.status === 'fulfilled' && resFaqs.value?.success) {
+        setFaqs(resFaqs.value.data);
       }
 
-      // Fetch Doctors list
-      let mockDocs;
-      try {
-        const resDocs = await axios.get('/doctors');
-        mockDocs = resDocs.data.success ? resDocs.data.data : mockDb.getDoctors();
-      } catch {
-        mockDocs = mockDb.getDoctors();
+      let mockDocs = mockDb.getDoctors();
+      if (resDocs.status === 'fulfilled' && resDocs.value?.data?.success) {
+        mockDocs = resDocs.value.data.data;
       }
       setDoctors(mockDocs);
     } catch (err) {
