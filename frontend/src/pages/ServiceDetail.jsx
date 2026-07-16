@@ -203,8 +203,8 @@ const ServiceDetail = ({ services, contactSettings }) => {
               <Clock className="w-4 h-4" />
             </div>
             <div className="flex flex-col text-left">
-              <span className="text-[8px] lg:text-[9px] text-slate-400 font-bold uppercase tracking-wider">Response Time</span>
-              <span className="text-[10px] lg:text-xs font-black text-slate-900 leading-tight">Prompt Callback</span>
+              <span className="text-[10px] lg:text-xs text-slate-400 font-bold uppercase tracking-wider">Response Time</span>
+              <span className="text-xs lg:text-sm font-black text-slate-900 leading-tight">Prompt Callback</span>
             </div>
           </div>
 
@@ -213,8 +213,8 @@ const ServiceDetail = ({ services, contactSettings }) => {
               <MapPin className="w-4 h-4" />
             </div>
             <div className="flex flex-col text-left">
-              <span className="text-[8px] lg:text-[9px] text-slate-400 font-bold uppercase tracking-wider">Coverage Area</span>
-              <span className="text-[10px] lg:text-xs font-black text-slate-900 leading-tight">Nizamabad Only</span>
+              <span className="text-[10px] lg:text-xs text-slate-400 font-bold uppercase tracking-wider">Coverage Area</span>
+              <span className="text-xs lg:text-sm font-black text-slate-900 leading-tight">Nizamabad Only</span>
             </div>
           </div>
 
@@ -223,8 +223,8 @@ const ServiceDetail = ({ services, contactSettings }) => {
               <HeartPulse className="w-4 h-4" />
             </div>
             <div className="flex flex-col text-left">
-              <span className="text-[8px] lg:text-[9px] text-slate-400 font-bold uppercase tracking-wider">Category</span>
-              <span className="text-[10px] lg:text-xs font-black text-slate-900 leading-tight">Specialized Care</span>
+              <span className="text-[10px] lg:text-xs text-slate-400 font-bold uppercase tracking-wider">Category</span>
+              <span className="text-xs lg:text-sm font-black text-slate-900 leading-tight">Specialized Care</span>
             </div>
           </div>
 
@@ -233,8 +233,8 @@ const ServiceDetail = ({ services, contactSettings }) => {
               <Phone className="w-4 h-4 animate-pulse" />
             </div>
             <div className="flex flex-col text-left">
-              <span className="text-[8px] lg:text-[9px] text-rose-500 font-bold uppercase tracking-wider">Emergency Hotline</span>
-              <a href={`tel:${cleanPhone}`} className="text-[10px] lg:text-xs font-black text-rose-800 leading-tight hover:underline">
+              <span className="text-[10px] lg:text-xs text-rose-500 font-bold uppercase tracking-wider">Emergency Hotline</span>
+              <a href={`tel:${cleanPhone}`} className="text-xs lg:text-sm font-black text-rose-800 leading-tight hover:underline">
                 {phone}
               </a>
             </div>
@@ -251,7 +251,7 @@ const ServiceDetail = ({ services, contactSettings }) => {
               <button
                 key={tab.id}
                 onClick={() => setActiveMobileTab(tab.id)}
-                className={`relative flex-1 py-2 px-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-1 cursor-pointer select-none outline-none shrink-0 ${
+                className={`relative flex-1 py-2 px-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-1 cursor-pointer select-none outline-none shrink-0 ${
                   isActive ? 'text-teal-800 font-extrabold' : 'text-slate-500 hover:text-slate-700'
                 }`}
               >
@@ -281,11 +281,11 @@ const ServiceDetail = ({ services, contactSettings }) => {
             
             {/* About Service Description */}
             <Card className="space-y-4">
-              <h3 className="text-xs font-bold text-teal-800 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-3">
+              <h3 className="text-sm font-bold text-teal-800 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-3">
                 <FileText className="w-4 h-4 text-teal-700" />
                 <span>About Service Speciality</span>
               </h3>
-              <p className="text-slate-500 text-xs leading-relaxed font-semibold">
+              <p className="text-slate-500 text-sm leading-relaxed font-semibold">
                 {service.description || 'Professional home healthcare services, designed to deliver high-quality clinical setups directly at bedside. Our verified nursing staff works with visiting specialists to monitor vital signs, administer drugs, and manage post-surgery recovery coordinates.'}
               </p>
             </Card>
@@ -299,12 +299,12 @@ const ServiceDetail = ({ services, contactSettings }) => {
               />
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {workflowSteps.map((ws, idx) => (
-                  <Card key={idx} className="flex flex-col gap-2.5 text-left relative">
-                    <div className="w-7 h-7 bg-teal-50 border border-teal-200/50 text-teal-800 rounded-full flex items-center justify-center text-[10px] font-bold">
+                  <Card key={idx} className="flex flex-col gap-2.5 text-left relative rounded-2xl border border-slate-150">
+                    <div className="w-7 h-7 bg-teal-50 border border-teal-200/50 text-teal-800 rounded-full flex items-center justify-center text-xs font-bold">
                       {ws.step}
                     </div>
-                    <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mt-1">{ws.title}</h4>
-                    <p className="text-[10px] text-slate-500 leading-relaxed font-semibold">{ws.desc}</p>
+                    <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wider mt-1">{ws.title}</h4>
+                    <p className="text-xs text-slate-500 leading-relaxed font-semibold">{ws.desc}</p>
                   </Card>
                 ))}
               </div>
@@ -324,8 +324,8 @@ const ServiceDetail = ({ services, contactSettings }) => {
                       onClick={() => toggleFaq(index)}
                       className="w-full px-5 py-4 flex items-center justify-between font-bold text-slate-800 hover:text-teal-800 transition-colors text-left"
                     >
-                      <span className="text-xs uppercase tracking-wider flex items-center gap-2.5">
-                        <span className="text-[9px] text-teal-600 font-bold">0{index + 1}</span>
+                      <span className="text-sm uppercase tracking-wider flex items-center gap-2.5">
+                        <span className="text-xs text-teal-600 font-bold">0{index + 1}</span>
                         <span>{faq.question}</span>
                       </span>
                       <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 transition-transform ${activeFaq === index ? 'rotate-180' : ''}`} />
@@ -340,7 +340,7 @@ const ServiceDetail = ({ services, contactSettings }) => {
                           transition={{ duration: 0.25, ease: 'easeInOut' }}
                           className="px-5 overflow-hidden"
                         >
-                          <p className="text-xs text-slate-400 leading-relaxed border-t border-slate-50 pt-2.5 pb-4 font-semibold">{faq.answer}</p>
+                          <p className="text-sm text-slate-500 leading-relaxed border-t border-slate-50 pt-2.5 pb-4 font-semibold">{faq.answer}</p>
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -364,10 +364,10 @@ const ServiceDetail = ({ services, contactSettings }) => {
                         <Star key={i} className="w-3.5 h-3.5 fill-current" />
                       ))}
                     </div>
-                    <p className="text-xs text-slate-500 italic font-semibold leading-relaxed">
+                    <p className="text-sm text-slate-500 italic font-semibold leading-relaxed">
                       "{rev.text}"
                     </p>
-                    <div className="text-[10px] font-bold text-slate-450 uppercase tracking-wider">
+                    <div className="text-xs font-bold text-slate-450 uppercase tracking-wider">
                       — {rev.author} ({rev.relation})
                     </div>
                   </Card>
@@ -383,11 +383,11 @@ const ServiceDetail = ({ services, contactSettings }) => {
             {/* Sticky Booking Selector Card */}
             <Card className="space-y-5">
               <div>
-                <span className="text-[9px] font-bold text-teal-800 uppercase tracking-widest block">Deployment Status</span>
+                <span className="text-xs font-bold text-teal-800 uppercase tracking-widest block">Deployment Status</span>
                 <div className="text-2xl font-black text-slate-900 mt-1">
                   Active Booking
                 </div>
-                <p className="text-[8px] text-slate-450 font-bold uppercase tracking-widest border-b border-slate-100 pb-3 mt-1">Vitals Log Setup Included</p>
+                <p className="text-xs text-slate-450 font-bold uppercase tracking-widest border-b border-slate-100 pb-3 mt-1.5">Vitals Log Setup Included</p>
               </div>
 
               <div className="flex flex-col gap-2.5">
@@ -423,7 +423,7 @@ const ServiceDetail = ({ services, contactSettings }) => {
               <hr className="border-slate-100" />
 
               <div className="space-y-3 text-xs text-slate-500">
-                <h5 className="font-bold text-slate-800 uppercase text-[9px] tracking-wider mb-1">Service Specifications</h5>
+                <h5 className="font-bold text-slate-800 uppercase text-xs tracking-wider mb-1">Service Specifications</h5>
                 <div className="flex justify-between">
                   <span>Shift Coverages:</span>
                   <span className="font-semibold text-slate-700">12h / 24h bed shifts</span>

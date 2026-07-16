@@ -71,8 +71,8 @@ const Contact = ({ contactSettings }) => {
                 <MapPin className="w-5 h-5" />
               </div>
               <div className="space-y-1">
-                <h4 className="text-xs font-bold text-slate-950 uppercase tracking-wide">Corporate Office</h4>
-                <p className="text-[11px] text-slate-500 leading-relaxed font-semibold">{address}</p>
+                <h4 className="text-sm font-bold text-slate-955 uppercase tracking-wide">Corporate Office</h4>
+                <p className="text-xs sm:text-sm text-slate-500 leading-relaxed font-semibold">{address}</p>
               </div>
             </div>
 
@@ -82,8 +82,8 @@ const Contact = ({ contactSettings }) => {
                 <Phone className="w-5 h-5" />
               </div>
               <div className="space-y-1">
-                <h4 className="text-xs font-bold text-slate-955 uppercase tracking-wide">Telephone Hotline</h4>
-                <div className="flex flex-col gap-1.5 text-[11px] text-slate-500 font-semibold">
+                <h4 className="text-sm font-bold text-slate-955 uppercase tracking-wide">Telephone Hotline</h4>
+                <div className="flex flex-col gap-1.5 text-xs sm:text-sm text-slate-500 font-semibold">
                   {phoneNumbers.map((ph, idx) => (
                     <a key={idx} href={`tel:${ph.replace(/[^+\d]/g, '')}`} className="hover:text-teal-800 hover:underline w-fit">
                       {ph}
@@ -99,8 +99,8 @@ const Contact = ({ contactSettings }) => {
                 <Mail className="w-5 h-5" />
               </div>
               <div className="space-y-1">
-                <h4 className="text-xs font-bold text-slate-950 uppercase tracking-wide">Email Queries</h4>
-                <a href={`mailto:${email}`} className="text-[11px] text-slate-505 font-semibold hover:text-teal-800 hover:underline block">
+                <h4 className="text-sm font-bold text-slate-955 uppercase tracking-wide">Email Queries</h4>
+                <a href={`mailto:${email}`} className="text-xs sm:text-sm text-slate-505 font-semibold hover:text-teal-800 hover:underline block">
                   {email}
                 </a>
               </div>
@@ -112,8 +112,8 @@ const Contact = ({ contactSettings }) => {
                 <Clock className="w-5 h-5" />
               </div>
               <div className="space-y-1">
-                <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wide">Operating Hours</h4>
-                <p className="text-[11px] text-slate-500 leading-relaxed font-semibold">{workingHours}</p>
+                <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide">Operating Hours</h4>
+                <p className="text-xs sm:text-sm text-slate-500 leading-relaxed font-semibold">{workingHours}</p>
               </div>
             </div>
 
@@ -121,17 +121,17 @@ const Contact = ({ contactSettings }) => {
 
           {/* Emergency Alert Banner */}
           <div className="bg-gradient-to-br from-slate-900 to-teal-950 text-white p-6 rounded-3xl border border-slate-800 space-y-4">
-            <div className="flex items-center gap-2 text-rose-450">
+            <div className="flex items-center gap-2 text-rose-455">
               <ShieldAlert className="w-5 h-5 shrink-0" />
-              <h4 className="text-xs font-extrabold uppercase tracking-wider">Emergency Dispatch Desk</h4>
+              <h4 className="text-sm font-extrabold uppercase tracking-wider">Emergency Dispatch Desk</h4>
             </div>
-            <p className="text-[11px] text-slate-300 leading-relaxed font-medium">
+            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium">
               For rapid ambulance response, ventilator ICU installations, or immediate practitioner assignment:
             </p>
             <div className="flex flex-col sm:flex-row gap-3 pt-1">
               <a 
                 href={`tel:${cleanEmergency}`} 
-                className="w-full sm:w-auto px-5 py-2.5 bg-red-650 hover:bg-red-750 text-white rounded-xl text-[10px] font-extrabold uppercase tracking-wider text-center"
+                className="w-full sm:w-auto px-5 py-2.5 bg-red-650 hover:bg-red-750 text-white rounded-xl text-xs font-extrabold uppercase tracking-wider text-center"
               >
                 Call Support: {emergency}
               </a>
@@ -139,7 +139,7 @@ const Contact = ({ contactSettings }) => {
                 href={`https://wa.me/${cleanWhatsapp}`} 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="w-full sm:w-auto px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-[10px] font-extrabold uppercase tracking-wider text-center"
+                className="w-full sm:w-auto px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-extrabold uppercase tracking-wider text-center"
               >
                 WhatsApp Chat
               </a>
@@ -150,8 +150,8 @@ const Contact = ({ contactSettings }) => {
         {/* RIGHT COLUMN: CONTACT INQUIRY FORM */}
         <div className="lg:col-span-7">
           <Card className="p-6">
-            <h3 className="text-sm font-bold text-slate-950 mb-1 font-serif-editorial">Send an Inquiry</h3>
-            <p className="text-slate-400 text-[11px] leading-relaxed mb-6 font-semibold">
+            <h3 className="text-base font-bold text-slate-955 mb-1.5 font-serif-editorial">Send an Inquiry</h3>
+            <p className="text-slate-400 text-xs sm:text-sm leading-relaxed mb-6 font-semibold">
               Have questions regarding charges, package details, or nursing shifts? Drop us a note below and our coordinator will write back within 12 hours.
             </p>
 
@@ -167,8 +167,8 @@ const Contact = ({ contactSettings }) => {
                     <CheckCircle2 className="w-6 h-6" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">Message Received!</h4>
-                    <p className="text-[10px] text-slate-500 font-semibold leading-relaxed mt-1">
+                    <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wider">Message Received!</h4>
+                    <p className="text-xs text-slate-500 font-semibold leading-relaxed mt-1">
                       Our coordinator has received your coordinates and will email/call you back shortly.
                     </p>
                   </div>
@@ -215,14 +215,14 @@ const Contact = ({ contactSettings }) => {
                   />
 
                   <div className="flex flex-col gap-1.5 text-left font-sans">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Message *</label>
+                    <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Message *</label>
                     <textarea
                       required
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
                       placeholder="Type details of required support..."
                       rows="4"
-                      className="w-full bg-white text-slate-800 text-xs border border-slate-200 rounded-xl px-4 py-2.5 placeholder-slate-400 outline-none focus:border-teal-700 focus:ring-2 focus:ring-teal-700/10 transition-all font-semibold resize-none"
+                      className="w-full bg-white text-slate-800 text-sm border border-slate-200 rounded-xl px-4 py-2.5 placeholder-slate-400 outline-none focus:border-teal-700 focus:ring-2 focus:ring-teal-700/10 transition-all font-semibold resize-none"
                     />
                   </div>
 

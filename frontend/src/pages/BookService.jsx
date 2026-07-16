@@ -179,17 +179,17 @@ const BookService = ({ services }) => {
             </div>
 
             <div>
-              <h1 className="text-lg font-bold text-slate-900">Appointment Request Sent!</h1>
-              <p className="text-slate-500 text-xs mt-1 leading-relaxed font-semibold">
+              <h1 className="text-xl font-bold text-slate-900">Appointment Request Sent!</h1>
+              <p className="text-slate-500 text-sm mt-1 leading-relaxed font-semibold">
                 Thank you for choosing bedside care. Triage ticket: <strong className="text-teal-800 font-bold">{createdBooking.bookingId}</strong> has been registered.
               </p>
             </div>
 
             {/* Booking Details Card summary */}
-            <div className="bg-slate-50 w-full p-4.5 rounded-xl border border-slate-200 text-left text-[11px] space-y-2.5 font-semibold text-slate-700">
+            <div className="bg-slate-50 w-full p-4.5 rounded-xl border border-slate-200 text-left text-xs sm:text-sm space-y-2.5 font-semibold text-slate-700">
               <div className="flex justify-between items-center pb-2 border-b border-slate-200">
-                <span className="font-bold text-slate-500 uppercase text-[9px] tracking-wider">Triage Summary</span>
-                <span className="px-2 py-0.5 bg-teal-100 text-teal-900 text-[8px] font-extrabold rounded-full uppercase">Pending Coordination</span>
+                <span className="font-bold text-slate-550 uppercase text-xs tracking-wider">Triage Summary</span>
+                <span className="px-2.5 py-1 bg-teal-100 text-teal-900 text-[10px] font-extrabold rounded-full uppercase">Pending Coordination</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-400">Booking ID:</span>
@@ -221,7 +221,7 @@ const BookService = ({ services }) => {
               </div>
             </div>
 
-            <div className="text-[10px] text-slate-450 leading-relaxed border-t border-slate-100 pt-3.5 w-full font-semibold">
+            <div className="text-xs text-slate-500 leading-relaxed border-t border-slate-100 pt-3.5 w-full font-semibold">
               💡 A medical dispatch coordinator will call you at <strong>{createdBooking.mobile}</strong> within 15 minutes to match clinical specialists.
             </div>
 
@@ -272,7 +272,7 @@ const BookService = ({ services }) => {
             
             {/* 1. Care Selection */}
             <div className="space-y-4">
-              <h3 className="text-xs font-bold text-teal-850 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-2">
+              <h3 className="text-sm font-bold text-teal-850 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-2">
                 <HeartPulse className="w-4.5 h-4.5 text-teal-700" />
                 <span>1. Care Selection</span>
               </h3>
@@ -290,7 +290,7 @@ const BookService = ({ services }) => {
 
               {formData.serviceName && (
                 <div className="space-y-2.5 pt-1">
-                  <label className="text-[10px] font-bold text-slate-450 uppercase tracking-wider block">
+                  <label className="text-xs font-bold text-slate-450 uppercase tracking-wider block">
                     Select the Sub-Service (Treatment) <span className="text-rose-500">*</span>
                   </label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -317,7 +317,7 @@ const BookService = ({ services }) => {
                               : 'border-slate-200 bg-white hover:bg-slate-50/50 text-slate-700 hover:border-slate-350'
                           } ${(preSelectedSubService !== '' && preSelectedSubService !== subName) ? 'opacity-40 cursor-not-allowed' : ''}`}
                         >
-                          <span className="text-xs pr-2">{subName}</span>
+                          <span className="text-sm pr-2">{subName}</span>
                           <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 transition-all ${
                             isSelected 
                               ? 'border-teal-850 bg-teal-800 text-white' 
@@ -339,7 +339,7 @@ const BookService = ({ services }) => {
 
             {/* 2. Patient Information */}
             <div className="space-y-4 pt-2">
-              <h3 className="text-xs font-bold text-teal-855 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-2">
+              <h3 className="text-sm font-bold text-teal-855 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-2">
                 <User className="w-4.5 h-4.5 text-teal-700" />
                 <span>2. Patient Information</span>
               </h3>
@@ -380,7 +380,7 @@ const BookService = ({ services }) => {
 
             {/* 3. Delivery & Schedule */}
             <div className="space-y-4 pt-2">
-              <h3 className="text-xs font-bold text-teal-855 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-2">
+              <h3 className="text-sm font-bold text-teal-855 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-2">
                 <Calendar className="w-4.5 h-4.5 text-teal-700" />
                 <span>3. Schedule & Address</span>
               </h3>
@@ -408,7 +408,7 @@ const BookService = ({ services }) => {
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label className="text-[10px] font-bold text-slate-700 uppercase tracking-wider block">Service Delivery Address</label>
+                <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block">Service Delivery Address</label>
                 <div className="relative rounded-xl overflow-hidden border border-slate-200 focus-within:border-teal-800/80 transition-all flex items-start p-3 gap-2.5 bg-white">
                   <MapPin className="w-4 h-4 text-slate-400 shrink-0 mt-1" />
                   <textarea
@@ -417,14 +417,14 @@ const BookService = ({ services }) => {
                     onChange={handleChange}
                     placeholder="Enter your street address, colony, and landmark in Nizamabad"
                     rows={3}
-                    className="w-full text-xs font-semibold text-slate-900 border-none outline-none resize-none placeholder-slate-400"
+                    className="w-full text-sm font-semibold text-slate-900 border-none outline-none resize-none placeholder-slate-400"
                     required
                   />
                 </div>
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label className="text-[10px] font-bold text-slate-700 uppercase tracking-wider block">Additional Patient Notes (Optional)</label>
+                <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block">Additional Patient Notes (Optional)</label>
                 <div className="relative rounded-xl overflow-hidden border border-slate-200 focus-within:border-teal-800/80 transition-all flex items-start p-3 gap-2.5 bg-white">
                   <FileText className="w-4 h-4 text-slate-400 shrink-0 mt-1" />
                   <textarea
@@ -433,7 +433,7 @@ const BookService = ({ services }) => {
                     onChange={handleChange}
                     placeholder="Describe patient history, diagnostics, special requirements, or coordinator comments"
                     rows={3.5}
-                    className="w-full text-xs font-semibold text-slate-900 border-none outline-none resize-none placeholder-slate-400"
+                    className="w-full text-sm font-semibold text-slate-900 border-none outline-none resize-none placeholder-slate-400"
                   />
                 </div>
               </div>
@@ -446,12 +446,12 @@ const BookService = ({ services }) => {
                 size="lg"
                 type="submit"
                 loading={loading}
-                className="w-full py-4 text-xs font-extrabold uppercase tracking-wider bg-teal-800 hover:bg-teal-900"
+                className="w-full py-4 text-sm font-extrabold uppercase tracking-wider bg-teal-800 hover:bg-teal-900"
               >
                 <span>Confirm Appointment</span>
                 <ArrowRight className="w-4 h-4" />
               </Button>
-              <p className="text-[9px] text-center text-slate-500 leading-relaxed font-semibold">
+              <p className="text-xs text-center text-slate-500 leading-relaxed font-semibold">
                 By clicking confirm, your triage request will be registered instantly. A coordinator will phone you back in 15 minutes to verify setup details. No advanced payment is required.
               </p>
             </div>

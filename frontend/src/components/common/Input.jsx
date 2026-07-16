@@ -13,7 +13,7 @@ const Input = React.forwardRef(({
   return (
     <div className="flex flex-col gap-1.5 w-full text-left font-sans">
       {label && (
-        <label htmlFor={id} className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+        <label htmlFor={id} className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
           <span>{label}</span>
           {required && <span className="text-rose-500">*</span>}
         </label>
@@ -31,7 +31,7 @@ const Input = React.forwardRef(({
           id={id}
           type={type}
           className={`
-            w-full bg-white text-slate-800 text-xs border rounded-xl placeholder-slate-400 outline-none transition-all duration-300 font-semibold
+            w-full bg-white text-slate-800 text-sm border rounded-xl placeholder-slate-400 outline-none transition-all duration-300 font-semibold
             ${Icon ? 'pl-10' : 'px-4'} 
             py-2.5
             ${error 
@@ -45,7 +45,7 @@ const Input = React.forwardRef(({
       </div>
 
       {error && (
-        <span className="text-[10px] font-bold text-rose-500 flex items-center gap-1 animate-fade-in">
+        <span className="text-xs font-bold text-rose-500 flex items-center gap-1 animate-fade-in">
           <span>{error}</span>
         </span>
       )}

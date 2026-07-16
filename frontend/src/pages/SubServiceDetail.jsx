@@ -211,10 +211,10 @@ const SubServiceDetail = ({ services, contactSettings }) => {
                       <Star key={i} className="w-3.5 h-3.5 fill-current" />
                     ))}
                   </div>
-                  <p className="text-xs text-slate-500 italic font-semibold leading-relaxed">
+                  <p className="text-sm text-slate-500 italic font-semibold leading-relaxed">
                     "{test.text}"
                   </p>
-                  <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                  <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                     — {test.author}
                   </div>
                 </Card>
@@ -241,8 +241,8 @@ const SubServiceDetail = ({ services, contactSettings }) => {
                       {rs.icon}
                     </div>
                     <div>
-                      <h4 className="text-xs font-bold text-slate-905 group-hover:text-teal-800 transition-colors uppercase tracking-wide">{rs.title}</h4>
-                      <p className="text-[9px] text-slate-400 font-semibold line-clamp-1 mt-0.5">{rs.desc}</p>
+                      <h4 className="text-sm font-bold text-slate-905 group-hover:text-teal-800 transition-colors uppercase tracking-wide">{rs.title}</h4>
+                      <p className="text-xs text-slate-400 font-semibold line-clamp-1 mt-0.5">{rs.desc}</p>
                     </div>
                   </div>
                   <ChevronRight className="w-4 h-4 text-slate-350 group-hover:translate-x-0.5 transition-transform" />
@@ -271,11 +271,11 @@ const SubServiceDetail = ({ services, contactSettings }) => {
           {/* Sticky Booking Card */}
           <Card className="space-y-5">
             <div>
-              <span className="text-[9px] font-bold text-teal-800 uppercase tracking-widest block">Service Deployment</span>
+              <span className="text-xs font-bold text-teal-800 uppercase tracking-widest block">Service Deployment</span>
               <div className="text-2xl font-black text-slate-900 mt-1">
                 Home Diagnostics
               </div>
-              <p className="text-[8px] text-slate-450 font-bold uppercase tracking-widest border-b border-slate-100 pb-3 mt-1.5">Includes Telemetry Audit</p>
+              <p className="text-xs text-slate-450 font-bold uppercase tracking-widest border-b border-slate-100 pb-3 mt-1.5">Includes Telemetry Audit</p>
             </div>
 
             <div className="flex flex-col gap-2.5">
@@ -316,25 +316,25 @@ const SubServiceDetail = ({ services, contactSettings }) => {
             <hr className="border-slate-100" />
 
             <div className="space-y-3 text-xs text-slate-500">
-              <h5 className="font-bold text-slate-805 uppercase text-[9px] tracking-wider mb-1">Triage Details</h5>
-              <div className="flex justify-between">
+              <h5 className="font-bold text-slate-855 uppercase text-xs tracking-wider mb-1">Triage Details</h5>
+              <div className="flex justify-between text-sm">
                 <span>Availability:</span>
                 <span className="font-bold text-teal-800">24/7 Availability</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between text-sm">
                 <span>Response Time:</span>
                 <span className="font-bold text-teal-800">Prompt Coordination</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between text-sm">
                 <span>Clinical Priority:</span>
-                <span className="font-bold text-rose-500 uppercase text-[9px]">Emergency Linkage</span>
+                <span className="font-bold text-rose-500 uppercase text-xs">Emergency Linkage</span>
               </div>
             </div>
           </Card>
 
           {/* Quick Notice */}
-          <div className="bg-teal-50/20 p-5 rounded-2xl border border-teal-100 text-[10px] text-slate-500 space-y-1.5">
-            <div className="font-bold text-teal-800 uppercase text-[8px] tracking-wider">Bedside Setup Information</div>
+          <div className="bg-teal-50/20 p-5 rounded-2xl border border-teal-100 text-xs text-slate-500 space-y-1.5">
+            <div className="font-bold text-teal-800 uppercase text-xs tracking-wider">Bedside Setup Information</div>
             <p className="leading-relaxed font-semibold">
               Selecting this treatment pre-populates coordinates in the booking wizard, skipping basic details validation for speed.
             </p>

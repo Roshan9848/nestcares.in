@@ -199,8 +199,8 @@ const About = ({ doctors, founders }) => {
                 {cert.icon}
               </div>
               <div className="text-left space-y-1">
-                <h4 className="text-xs font-bold text-slate-950 uppercase tracking-wide">{cert.name}</h4>
-                <p className="text-[10px] text-slate-500 font-semibold leading-relaxed">{cert.desc}</p>
+                <h4 className="text-sm font-bold text-slate-950 uppercase tracking-wide">{cert.name}</h4>
+                <p className="text-xs text-slate-500 font-semibold leading-relaxed">{cert.desc}</p>
               </div>
             </Card>
           ))}
@@ -221,11 +221,11 @@ const About = ({ doctors, founders }) => {
               <div className="absolute top-4 right-4 text-teal-800/10 font-bold text-2xl select-none font-sans">
                 {step.number}
               </div>
-              <div className="w-8 h-8 rounded-full bg-teal-50 border border-teal-200/50 flex items-center justify-center font-bold text-teal-800 text-[10px]">
+              <div className="w-8 h-8 rounded-full bg-teal-50 border border-teal-200/50 flex items-center justify-center font-bold text-teal-800 text-xs">
                 {step.number}
               </div>
-              <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wide pt-1">{step.title}</h4>
-              <p className="text-[10px] text-slate-500 leading-relaxed font-semibold">{step.desc}</p>
+              <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide pt-1">{step.title}</h4>
+              <p className="text-xs text-slate-500 leading-relaxed font-semibold">{step.desc}</p>
             </Card>
           ))}
         </div>
@@ -244,8 +244,8 @@ const About = ({ doctors, founders }) => {
               <div className="p-2.5 bg-slate-50 rounded-xl w-fit">
                 {val.icon}
               </div>
-              <h4 className="text-xs font-bold text-slate-950 uppercase tracking-wide">{val.title}</h4>
-              <p className="text-[10px] text-slate-500 leading-relaxed font-semibold">{val.desc}</p>
+              <h4 className="text-sm font-bold text-slate-950 uppercase tracking-wide">{val.title}</h4>
+              <p className="text-xs text-slate-500 leading-relaxed font-semibold">{val.desc}</p>
             </Card>
           ))}
         </div>
@@ -253,7 +253,7 @@ const About = ({ doctors, founders }) => {
 
       {/* 6. PARTNER HOSPITALS */}
       <div className="mb-12 bg-slate-50/50 border border-slate-100 rounded-3xl p-8 text-center">
-        <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest block mb-6">Linked Referral Hospital Networks</span>
+        <span className="text-[10px] sm:text-xs font-bold text-slate-450 uppercase tracking-widest block mb-6">Linked Referral Hospital Networks</span>
         <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
           {partnerHospitals.map((hosp, idx) => (
             <span key={idx} className="text-xs font-black text-slate-400 tracking-wider uppercase opacity-80 hover:opacity-100 hover:text-teal-800 transition-all cursor-default">

@@ -164,10 +164,10 @@ const Services = ({ services }) => {
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer whitespace-nowrap ${
+                className={`px-3.5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer whitespace-nowrap ${
                   isActive
                     ? 'bg-teal-800 text-white shadow-sm'
-                    : 'text-slate-500 hover:text-slate-800 hover:bg-white/50'
+                    : 'text-slate-655 hover:text-slate-900 hover:bg-white/50'
                 }`}
               >
                 {getCatLabel(cat)}
@@ -214,7 +214,7 @@ const Services = ({ services }) => {
                     
                     {/* Featured Ribbon Badge */}
                     {isPopular && (
-                      <span className="absolute top-3 left-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[8px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm z-20">
+                      <span className="absolute top-3 left-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm z-20">
                         {isTe ? "పాపులర్" : "Popular Choice"}
                       </span>
                     )}
@@ -240,12 +240,12 @@ const Services = ({ services }) => {
                       <div className="space-y-2 mb-4">
                         <div className="flex items-center gap-1.5 font-sans">
                           <Activity className="w-3 h-3 text-teal-700 animate-pulse" />
-                          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{isTe ? getCatLabel(service.category) : (service.category || 'Speciality')}</span>
+                          <span className="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-widest">{isTe ? getCatLabel(service.category) : (service.category || 'Speciality')}</span>
                         </div>
                         <h3 className="text-base font-bold text-slate-950 group-hover:text-teal-800 transition-colors">
                           {service.title}
                         </h3>
-                        <p className="text-slate-500 text-xs leading-relaxed font-semibold line-clamp-3">
+                        <p className="text-slate-500 text-sm leading-relaxed font-semibold line-clamp-3">
                           {service.shortDescription}
                         </p>
                         
@@ -258,7 +258,7 @@ const Services = ({ services }) => {
                               </Badge>
                             ))}
                             {service.subServices.length > 2 && (
-                              <span className="text-[9px] text-slate-400 font-bold self-center ml-1">
+                              <span className="text-[10px] sm:text-xs text-slate-400 font-bold self-center ml-1">
                                 +{service.subServices.length - 2} {isTe ? "ఇతరాలు" : "more"}
                               </span>
                             )}
@@ -270,7 +270,7 @@ const Services = ({ services }) => {
                       <div className="flex items-center justify-between pt-4 border-t border-slate-100 mt-auto gap-2">
                         <Link
                           to={`/services/${service.slug}`}
-                          className="text-[10px] font-bold uppercase tracking-wider text-teal-800 hover:text-teal-950 transition-colors inline-flex items-center gap-1 py-1.5"
+                          className="text-xs sm:text-sm font-bold uppercase tracking-wider text-teal-800 hover:text-teal-950 transition-colors inline-flex items-center gap-1 py-1.5"
                         >
                           <span>{isTe ? "వివరాలు" : "Explore Details"}</span>
                           <ChevronRight className="w-3.5 h-3.5" />
@@ -280,14 +280,14 @@ const Services = ({ services }) => {
                           {service.bookable && (
                             <button 
                               onClick={() => openQuickBook(service)}
-                              className="bg-teal-800 hover:bg-teal-900 text-white text-[10px] font-extrabold uppercase py-1.5 px-4 rounded-full transition-all duration-300 shadow-sm hover:shadow active:scale-98"
+                              className="bg-teal-800 hover:bg-teal-900 text-white text-xs font-extrabold uppercase py-2 px-4 rounded-full transition-all duration-300 shadow-sm hover:shadow active:scale-98"
                             >
                               {isTe ? "త్వరిత బుక్" : "Quick Book"}
                             </button>
                           )}
                           <Link
                             to={`/services/${service.slug}`}
-                            className="bg-slate-50 hover:bg-slate-100 text-slate-700 text-[10px] font-black uppercase py-1.5 px-3 rounded-lg border border-slate-200/50 transition-all"
+                            className="bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-black uppercase py-2 px-3.5 rounded-lg border border-slate-200/50 transition-all"
                           >
                             {isTe ? "గైడ్" : "Setup Guide"}
                           </Link>

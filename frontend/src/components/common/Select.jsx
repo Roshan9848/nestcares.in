@@ -14,7 +14,7 @@ const Select = React.forwardRef(({
   return (
     <div className="flex flex-col gap-1.5 w-full text-left font-sans">
       {label && (
-        <label htmlFor={id} className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+        <label htmlFor={id} className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
           <span>{label}</span>
           {required && <span className="text-rose-500">*</span>}
         </label>
@@ -25,7 +25,7 @@ const Select = React.forwardRef(({
           ref={ref}
           id={id}
           className={`
-            w-full bg-white text-slate-800 text-xs border rounded-xl outline-none transition-all duration-300 font-semibold appearance-none pr-10 pl-4 py-2.5 cursor-pointer
+            w-full bg-white text-slate-800 text-sm border rounded-xl outline-none transition-all duration-300 font-semibold appearance-none pr-10 pl-4 py-2.5 cursor-pointer
             ${error 
               ? 'border-rose-350 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/10' 
               : 'border-slate-200 focus:border-teal-700 focus:ring-2 focus:ring-teal-700/10'
@@ -52,7 +52,7 @@ const Select = React.forwardRef(({
       </div>
 
       {error && (
-        <span className="text-[10px] font-bold text-rose-500 flex items-center gap-1 animate-fade-in">
+        <span className="text-xs font-bold text-rose-500 flex items-center gap-1 animate-fade-in">
           <span>{error}</span>
         </span>
       )}

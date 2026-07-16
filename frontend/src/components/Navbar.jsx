@@ -62,7 +62,7 @@ const Navbar = ({ webSettings }) => {
   return (
     <>
       {/* Top Tagline & Language Selector Utility Bar */}
-      <div className="fixed top-0 left-0 right-0 h-8 bg-slate-950 text-slate-350 flex items-center justify-between px-6 z-50 no-print border-b border-white/5 text-[9px] font-black uppercase tracking-widest font-sans select-none">
+      <div className="fixed top-0 left-0 right-0 h-8 bg-slate-950 text-slate-350 md:flex hidden items-center justify-between px-6 z-50 no-print border-b border-white/5 text-[9px] font-black uppercase tracking-widest font-sans select-none">
         <span>{tagline}</span>
         
         {/* Language switch button */}
@@ -108,20 +108,29 @@ const Navbar = ({ webSettings }) => {
       </div>
 
       {/* Mobile Top Bar */}
-      <div className="fixed top-8 left-0 right-0 h-12 bg-white/95 backdrop-blur-md border-b border-slate-200/50 flex items-center justify-between px-4 z-40 md:hidden no-print shadow-[0_2px_15px_rgba(0,0,0,0.03)]">
+      <div className="fixed top-0 left-0 right-0 h-14 bg-white/95 backdrop-blur-md border-b border-slate-200/50 flex items-center justify-between px-4 z-40 md:hidden no-print shadow-sm">
         <Link to="/" className="h-8 flex items-center">
           {logoSrc ? (
-            <img src={logoSrc} alt={webSettings?.companyName || "Logo"} className="h-7 w-auto object-contain" />
+            <img src={logoSrc} alt={webSettings?.companyName || "Logo"} className="h-8 w-auto object-contain" />
           ) : (
-            <span className="text-[10px] font-black tracking-widest text-slate-800">{webSettings?.companyName || 'NEST CARES'}</span>
+            <span className="text-xs font-black tracking-widest text-slate-800">{webSettings?.companyName || 'NEST CARES'}</span>
           )}
         </Link>
-        <Link 
-          to="/services" 
-          className="bg-black hover:bg-slate-900 text-white text-[9px] font-black uppercase tracking-wider px-3.5 py-1.5 rounded-full flex items-center gap-1 shadow-md shadow-black/10 transition-all active:scale-95"
-        >
-          <span>{currentLang === 'english' ? 'Book' : 'బుకింగ్'}</span>
-        </Link>
+        <div className="flex items-center gap-2">
+          {/* Language Switch Button */}
+          <button 
+            onClick={toggleLang}
+            className="flex items-center gap-1 bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1.5 rounded-lg border border-slate-200/65 active:scale-95 transition-all cursor-pointer font-bold uppercase text-[9px] tracking-wider"
+          >
+            <span>{currentLang === 'english' ? 'తెలుగు' : 'EN'}</span>
+          </button>
+          <Link 
+            to="/services" 
+            className="bg-black hover:bg-slate-900 text-white text-[10px] font-black uppercase tracking-wider px-3.5 py-1.5 rounded-full flex items-center gap-1 shadow-sm transition-all active:scale-95"
+          >
+            <span>{currentLang === 'english' ? 'Book' : 'బుకింగ్'}</span>
+          </Link>
+        </div>
       </div>
 
       {/* Floating Center Capsule Navbar (Desktop Only) */}

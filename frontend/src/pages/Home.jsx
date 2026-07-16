@@ -158,7 +158,7 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
-                className="text-slate-500 text-xs sm:text-sm leading-relaxed max-w-xl mx-auto lg:mx-0 font-semibold"
+                className="text-slate-500 text-sm sm:text-base leading-relaxed max-w-xl mx-auto lg:mx-0 font-semibold"
               >
                 Avoid stressful commutes to Hyderabad or waiting lists. We arrange state-of-the-art ICU setups, registered nurse shifts, and physician visits directly to your bedside—available exclusively in Nizamabad.
               </motion.p>
@@ -193,7 +193,7 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.5 }}
-                className="flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-2.5 text-[10px] text-slate-450 uppercase font-extrabold tracking-wider border-t border-slate-100 pt-5 mt-2"
+                className="flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-2.5 text-[11px] sm:text-xs text-slate-450 uppercase font-extrabold tracking-wider border-t border-slate-100 pt-5 mt-2"
               >
                 <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-teal-800" /> ICU Grade Equipment</span>
                 <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-teal-800" /> Certified Care Nurses</span>
@@ -206,12 +206,12 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="lg:col-span-6 relative flex items-center justify-center min-h-[400px] lg:min-h-[450px]"
+              className="lg:col-span-6 relative flex items-center justify-center min-h-[400px] lg:min-h-[450px] px-4 w-full"
             >
               {/* Organic background shapes */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[380px] h-[380px] bg-gradient-to-tr from-teal-500/10 to-amber-500/5 rounded-full blur-[80px] -z-10 animate-pulse duration-[8000ms]"></div>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] sm:w-[380px] h-[280px] sm:h-[380px] bg-gradient-to-tr from-teal-500/10 to-amber-500/5 rounded-full blur-[80px] -z-10 animate-pulse duration-[8000ms]"></div>
               
-              <div className="relative w-full max-w-[400px] h-[340px] md:h-[380px] z-10">
+              <div className="relative w-full max-w-[340px] sm:max-w-[400px] h-[300px] sm:h-[380px] z-10">
                 
                 {/* 1. Main Base Card - Premium lifestyle/clinical photo with shadow */}
                 <div className="absolute inset-0 bg-white p-3 rounded-[32px] border border-slate-200/60 shadow-[0_20px_50px_rgba(15,23,42,0.06)] transform -rotate-2 hover:rotate-0 transition-transform duration-500">
@@ -230,15 +230,15 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
                   initial={{ y: -10, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.5, delay: 0.5 }}
-                  className="absolute -top-6 -right-4 bg-white/95 backdrop-blur-md p-3.5 rounded-2xl border border-slate-150 shadow-[0_15px_30px_rgba(0,0,0,0.05)] flex items-center gap-3 z-20 text-left"
+                  className="absolute top-2 right-2 md:-top-6 md:-right-4 bg-white/95 backdrop-blur-md p-3.5 rounded-2xl border border-slate-150 shadow-[0_15px_30px_rgba(0,0,0,0.05)] flex items-center gap-3 z-20 text-left"
                 >
-                  <div className="p-2.5 bg-teal-50 text-teal-800 rounded-xl">
-                    <Clock className="w-5 h-5" />
+                  <div className="p-2 bg-teal-50 text-teal-800 rounded-xl shrink-0">
+                    <Clock className="w-4 h-4" />
                   </div>
                   <div>
-                    <span className="text-[8px] text-slate-400 font-bold uppercase tracking-wider block">{isTe ? "సమన్వయం" : "Coordination"}</span>
-                    <span className="text-xs font-extrabold text-slate-900 block mt-0.5">{isTe ? "15-నిమిషాల స్పందన" : "15-Min Response"}</span>
-                    <span className="text-[9px] text-teal-700 font-semibold block mt-0.5">{isTe ? "యాక్టివ్ డాక్టర్ డిస్పాచ్" : "Active Doctor Dispatch"}</span>
+                    <span className="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-wider block">{isTe ? "సమన్వయం" : "Coordination"}</span>
+                    <span className="text-xs sm:text-sm font-extrabold text-slate-900 block mt-0.5">{isTe ? "15-నిమిషాల స్పందన" : "15-Min Response"}</span>
+                    <span className="text-[10px] sm:text-xs text-teal-700 font-semibold block mt-0.5">{isTe ? "యాక్టివ్ డాక్టర్ డిస్పాచ్" : "Active Doctor Dispatch"}</span>
                   </div>
                 </motion.div>
 
@@ -247,23 +247,23 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
                   initial={{ x: -10, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ duration: 0.5, delay: 0.6 }}
-                  className="absolute -bottom-6 -left-6 bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-slate-150 shadow-[0_15px_35px_rgba(0,0,0,0.06)] flex items-center gap-3.5 z-20 text-left"
+                  className="absolute bottom-2 left-2 md:-bottom-6 md:-left-6 bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-slate-150 shadow-[0_15px_35px_rgba(0,0,0,0.06)] flex items-center gap-3.5 z-20 text-left"
                 >
-                  <div className="p-2.5 bg-amber-50 text-amber-800 rounded-xl">
-                    <Award className="w-5 h-5" />
+                  <div className="p-2 bg-amber-50 text-amber-800 rounded-xl shrink-0">
+                    <Award className="w-4 h-4" />
                   </div>
                   <div>
-                    <span className="text-[8px] text-slate-400 font-bold uppercase tracking-wider block">{isTe ? "ధృవీకరించబడిన నాణ్యత" : "Vetted Quality"}</span>
-                    <span className="text-xs font-extrabold text-slate-900 block mt-0.5">{isTe ? "ఐసీయూ గ్రేడ్ ప్రమాణం" : "ICU Grade Standard"}</span>
+                    <span className="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-wider block">{isTe ? "ధృవీకరించబడిన నాణ్యత" : "Vetted Quality"}</span>
+                    <span className="text-xs sm:text-sm font-extrabold text-slate-900 block mt-0.5">{isTe ? "ఐసీయూ గ్రేడ్ ప్రమాణం" : "ICU Grade Standard"}</span>
                     <div className="flex items-center gap-1 mt-0.5">
-                      <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span>
-                      <span className="text-[9px] text-slate-500 font-bold">{isTe ? "100% నేపథ్య ధృవీకరణ" : "100% Background Verified"}</span>
+                      <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping shrink-0"></span>
+                      <span className="text-[10px] sm:text-xs text-slate-500 font-bold">{isTe ? "100% నేపథ్య ధృవీకరణ" : "100% Background Verified"}</span>
                     </div>
                   </div>
                 </motion.div>
 
                 {/* 4. Floating Badge: Verified seal (Bottom-Right, overlapping card border) */}
-                <div className="absolute bottom-6 -right-6 bg-slate-900 text-white px-3.5 py-1.5 rounded-full border border-slate-800 shadow-md text-[9px] font-bold uppercase tracking-wider z-20 flex items-center gap-1.5">
+                <div className="absolute bottom-2 right-2 md:bottom-6 md:-right-6 bg-slate-900 text-white px-3.5 py-1.5 rounded-full border border-slate-800 shadow-md text-[10px] sm:text-xs font-bold uppercase tracking-wider z-20 flex items-center gap-1.5">
                   <ShieldCheck className="w-3.5 h-3.5 text-teal-400" />
                   <span>{isTe ? "క్లినికల్ ఎక్సలెన్స్" : "Clinical Excellence"}</span>
                 </div>
@@ -282,7 +282,7 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
           <div className="text-center max-w-3xl mx-auto mb-10 flex flex-col gap-3">
             <span className="text-xs font-bold text-teal-800 uppercase tracking-widest">Medical Catalog</span>
             <h2 className="text-xl sm:text-2xl font-serif-editorial font-bold text-slate-900">Hospital Services at Bedside</h2>
-            <p className="text-slate-500 text-xs max-w-xl mx-auto leading-relaxed">
+            <p className="text-slate-500 text-sm max-w-xl mx-auto leading-relaxed">
               We coordinate and deliver complex ICU setups, physician consults, registered nurses, and diagnostics tests straight to your bedroom.
             </p>
           </div>
@@ -295,10 +295,10 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                  className={`px-3.5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
                     activeCategory === cat
                       ? 'bg-teal-850 text-white shadow-sm'
-                      : 'bg-white hover:bg-slate-100 text-slate-650 border border-slate-200'
+                      : 'bg-white hover:bg-slate-100 text-slate-655 border border-slate-200'
                   }`}
                 >
                   {cat}
@@ -316,7 +316,7 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
                 placeholder="Search treatments..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 bg-white text-slate-800 text-xs border border-slate-200 rounded-xl focus:ring-1 focus:ring-teal-700 focus:border-teal-700 placeholder-slate-400"
+                className="w-full pl-9 pr-4 py-2 bg-white text-slate-800 text-sm border border-slate-200 rounded-xl focus:ring-1 focus:ring-teal-700 focus:border-teal-700 placeholder-slate-400"
               />
               {searchQuery && (
                 <button 
@@ -354,7 +354,7 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 to-transparent"></div>
                       
                       {/* Index header */}
-                      <div className="absolute top-2.5 left-2.5 bg-white/95 backdrop-blur-sm border border-slate-200 py-1 px-2 rounded-lg text-slate-500 text-[10px] font-bold">
+                      <div className="absolute top-2.5 left-2.5 bg-white/95 backdrop-blur-sm border border-slate-200 py-1 px-2.5 rounded-lg text-slate-600 text-xs font-bold">
                         0{index + 1}
                       </div>
 
@@ -365,14 +365,14 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
                     
                     <div className="p-5 flex flex-col grow justify-between">
                       <div>
-                        <h4 className="text-sm font-bold text-slate-900 mb-1.5 group-hover:text-teal-800 transition-colors">{service.title}</h4>
-                        <p className="text-xs text-slate-500 leading-relaxed font-semibold line-clamp-3">{service.shortDescription}</p>
+                        <h4 className="text-base font-bold text-slate-900 mb-1.5 group-hover:text-teal-800 transition-colors">{service.title}</h4>
+                        <p className="text-sm text-slate-500 leading-relaxed font-semibold line-clamp-3">{service.shortDescription}</p>
                       </div>
 
                       <div className="pt-4 border-t border-slate-100 mt-5 flex items-center justify-between gap-2">
                         <Link 
                           to={`/services/${service.slug}`} 
-                          className="text-[10px] font-bold uppercase tracking-wider text-teal-800 hover:text-teal-950 transition-colors inline-flex items-center gap-1 py-1.5"
+                          className="text-xs font-bold uppercase tracking-wider text-teal-800 hover:text-teal-950 transition-colors inline-flex items-center gap-1 py-1.5"
                         >
                           <span>Explore Details</span>
                           <ChevronRight className="w-3.5 h-3.5" />
@@ -380,7 +380,7 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
                         <Link 
                           to="/book"
                           state={{ selectService: service.title }}
-                          className="bg-teal-800 hover:bg-teal-900 text-white text-[10px] font-extrabold uppercase py-1.5 px-4 rounded-full transition-all duration-300 shadow-sm hover:shadow active:scale-98"
+                          className="bg-teal-800 hover:bg-teal-900 text-white text-xs font-extrabold uppercase py-2 px-4 rounded-full transition-all duration-300 shadow-sm hover:shadow active:scale-98"
                         >
                           Book Care
                         </Link>
@@ -390,7 +390,7 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
                 );
               })
             ) : (
-              <div className="col-span-full py-12 text-center text-slate-405 font-semibold text-xs bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
+              <div className="col-span-full py-12 text-center text-slate-405 font-semibold text-sm bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
                 No matching clinical specialities found.
               </div>
             )}
@@ -399,7 +399,7 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
           <div className="text-center mt-10">
             <Link 
               to="/services" 
-              className="btn-secondary inline-flex px-6 py-2.5 rounded-xl text-slate-800 hover:text-teal-800"
+              className="btn-secondary inline-flex px-6 py-2.5 rounded-xl text-slate-800 hover:text-teal-800 text-xs"
             >
               <span>View All Specialities</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -415,22 +415,22 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
           <div className="text-center max-w-2xl mx-auto mb-10 flex flex-col gap-2">
             <span className="text-xs font-bold text-teal-800 uppercase tracking-widest">How It Works</span>
             <h3 className="text-2xl font-serif-editorial font-bold text-slate-900 leading-tight">Simple Setup Sequence</h3>
-            <p className="text-slate-500 text-xs font-semibold">Getting started with premium home care takes four simple coordinates.</p>
+            <p className="text-slate-500 text-sm font-semibold">Getting started with premium home care takes four simple coordinates.</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {howItWorks.map((item, index) => (
               <div 
                 key={index}
-                className="flex flex-col text-left justify-between h-full bg-white relative p-5 hover:shadow-sm"
+                className="flex flex-col text-left justify-between h-full bg-white relative p-5 hover:shadow-sm rounded-2xl border border-slate-100"
               >
                 <div className="space-y-4">
-                  <div className="w-9 h-9 bg-teal-50 border border-teal-200/50 text-teal-800 text-[11px] font-bold rounded-xl flex items-center justify-center shadow-sm">
+                  <div className="w-9 h-9 bg-teal-50 border border-teal-200/50 text-teal-800 text-xs font-bold rounded-xl flex items-center justify-center shadow-sm">
                     0{index + 1}
                   </div>
                   <div>
-                    <h4 className="text-xs font-bold text-slate-950 uppercase tracking-wider">{item.title}</h4>
-                    <p className="text-[10px] text-slate-500 leading-relaxed font-semibold mt-1.5">{item.desc}</p>
+                    <h4 className="text-sm font-bold text-slate-950 uppercase tracking-wider">{item.title}</h4>
+                    <p className="text-xs text-slate-500 leading-relaxed font-semibold mt-1.5">{item.desc}</p>
                   </div>
                 </div>
               </div>
@@ -444,13 +444,13 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,_transparent_1px),_linear-gradient(90deg,_rgba(255,255,255,0.015)_1px,_transparent_1px)] bg-[size:20px_20px] pointer-events-none opacity-10"></div>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 flex flex-col gap-4">
           <h3 className="text-xl sm:text-2xl font-serif-editorial font-bold tracking-tight text-white">Ready to Set Up Your Specialized Home Care?</h3>
-          <p className="text-slate-200 text-xs max-w-xl mx-auto leading-relaxed font-semibold">
+          <p className="text-slate-200 text-sm max-w-xl mx-auto leading-relaxed font-semibold">
             Contact us today to receive a customized patient recovery plan. We arrange medical equipment delivery, nurse schedules, and physician visits within 24 hours.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-4 w-full">
             <button 
               onClick={() => navigate('/services')}
-              className="w-full sm:w-auto px-6 py-3 bg-teal-400 hover:bg-teal-350 text-slate-955 text-xs font-extrabold rounded-xl text-center transition-all duration-300 shadow-[0_4px_15px_rgba(45,212,191,0.25)] hover:shadow-[0_6px_20px_rgba(45,212,191,0.35)] active:scale-98 cursor-pointer"
+              className="w-full sm:w-auto px-6 py-3 bg-teal-400 hover:bg-teal-350 text-slate-955 text-sm font-extrabold rounded-xl text-center transition-all duration-300 shadow-[0_4px_15px_rgba(45,212,191,0.25)] hover:shadow-[0_6px_20px_rgba(45,212,191,0.35)] active:scale-98 cursor-pointer"
             >
               Explore Services
             </button>
@@ -458,7 +458,7 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
               href={`https://wa.me/${cleanWhatsapp}`} 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="w-full sm:w-auto px-6 py-3 bg-white text-slate-900 hover:bg-slate-50 text-xs font-extrabold rounded-xl text-center transition-all duration-300 shadow-md active:scale-98 cursor-pointer"
+              className="w-full sm:w-auto px-6 py-3 bg-white text-slate-900 hover:bg-slate-50 text-sm font-extrabold rounded-xl text-center transition-all duration-300 shadow-md active:scale-98 cursor-pointer"
             >
               <span>Chat on WhatsApp</span>
             </a>
