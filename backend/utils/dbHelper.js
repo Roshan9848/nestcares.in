@@ -47,18 +47,26 @@ const checkAndSeedJSON = () => {
   const usersPath = getFilePath('User');
   if (!fs.existsSync(usersPath)) {
     const salt = bcrypt.genSaltSync(10);
-    const hashedPassword = bcrypt.hashSync('admin123', salt);
+    const hashedPassword = bcrypt.hashSync('Roya@1522', salt);
     writeJSONFile('User', [
       {
         _id: 'admin_seed_id_1',
-        name: 'Super Admin',
-        email: 'admin@carehome.com',
+        name: 'Super Admin Rohith',
+        email: 'rohith@nestcares.in',
+        password: hashedPassword,
+        role: 'admin',
+        createdAt: new Date().toISOString()
+      },
+      {
+        _id: 'admin_seed_id_2',
+        name: 'Nest Cares Admin',
+        email: 'nestcares.in@gmail.com',
         password: hashedPassword,
         role: 'admin',
         createdAt: new Date().toISOString()
       }
     ]);
-    console.log('✅ Local JSON User seeded (admin@carehome.com / admin123)');
+    console.log('✅ Local JSON Users seeded (rohith@nestcares.in & nestcares.in@gmail.com)');
   }
 
   const settingsPath = getFilePath('Settings');
