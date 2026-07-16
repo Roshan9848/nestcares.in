@@ -771,7 +771,7 @@ const FloatingButtons = ({ contactSettings }) => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-4 no-print items-end select-none">
+    <div className="fixed bottom-[80px] md:bottom-6 right-4 md:right-6 z-50 flex flex-col gap-3.5 no-print items-end select-none">
       
       {/* Interactive Voice-Enabled Chatbot Window */}
       {isChatOpen && (
@@ -901,24 +901,24 @@ const FloatingButtons = ({ contactSettings }) => {
           title="Chat with Assistant"
         >
           {isChatOpen ? (
-            <div className="w-14 h-14 bg-white border-2 border-teal-805 rounded-full flex items-center justify-center shadow-lg">
-              <X className="w-6 h-6 text-teal-850" />
+            <div className="w-14 h-14 bg-white border-2 border-teal-800 rounded-full flex items-center justify-center shadow-lg">
+              <X className="w-6 h-6 text-teal-800" />
             </div>
           ) : (
-            <div className="relative w-14 h-14 flex items-center justify-center overflow-visible">
-              {/* Circular Background Base */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-teal-900 to-teal-700 rounded-full border-2 border-white shadow-lg z-10"></div>
-              
-              {/* Doctor Portrait popping out above the circle */}
-              <img 
-                src="/bot-avatar.png" 
-                alt="Nest Cares Assistant" 
-                className="absolute bottom-0 w-14 h-[62px] object-contain z-20 translate-y-[-10%] scale-[1.28] origin-bottom hover:scale-[1.34] transition-transform duration-300"
-              />
-              
+            <div className="relative w-14 h-14 flex items-center justify-center bg-teal-800 rounded-full border-2 border-white shadow-xl hover:bg-teal-900 transition-colors">
+              <div className="w-10 h-10 rounded-full overflow-hidden border border-white/20 bg-slate-100 flex items-center justify-center">
+                <img 
+                  src="/bot-avatar.png" 
+                  alt="Assistant" 
+                  className="w-full h-full object-cover scale-110"
+                  onError={(e) => {
+                    e.target.src = "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=120";
+                  }}
+                />
+              </div>
               {/* Overlapping Chat Bubble Badge */}
-              <div className="absolute -bottom-1.5 -right-1.5 w-6.5 h-6.5 bg-emerald-600 text-white rounded-full flex items-center justify-center border-2 border-white shadow-md z-35">
-                <MessageSquare className="w-3.5 h-3.5 fill-current" />
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-emerald-500 text-white rounded-full flex items-center justify-center border-2 border-white shadow-md z-30">
+                <MessageSquare className="w-3 h-3 fill-current" />
               </div>
             </div>
           )}

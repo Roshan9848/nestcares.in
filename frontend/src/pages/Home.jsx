@@ -18,6 +18,34 @@ const DynamicIcon = ({ name, className }) => {
 
 import { translations } from '../utils/translations';
 
+const translateServiceTitle = (title, isTe) => {
+  if (!isTe) return title;
+  const map = {
+    'Doctor Consultation': 'వైద్య సంప్రదింపులు',
+    'Ambulance Services': 'అంబులెన్స్ సేవలు',
+    'Nursing Services': 'నర్సింగ్ సేవలు',
+    'ICU Setup at Home': 'ఇంటి వద్ద ఐసీయూ (ICU) ఏర్పాటు',
+    'Laboratory Services': 'ల్యాబ్ పరీక్షలు',
+    'Physiotherapy': 'ఫిజియోథెరపీ',
+    'Dietician Advisory': 'డైటీషియన్ సలహాలు'
+  };
+  return map[title] || title;
+};
+
+const translateServiceDesc = (title, desc, isTe) => {
+  if (!isTe) return desc;
+  const map = {
+    'Doctor Consultation': 'అనుభవజ్ఞులైన క్లినికల్ వైద్యులు మీ ఇంటి వద్ద సంప్రదింపులు మరియు బెడ్‌సైడ్ సంరక్షణ తనిఖీలను సమన్వయం చేస్తారు.',
+    'Ambulance Services': '24/7 అధునాతన మరియు ప్రాథమిక రక్షణ సేవలతో కూడిన వైద్య రవాణా సేవలు.',
+    'Nursing Services': 'స్వల్పకాలిక మరియు దీర్ఘకాలిక కోలుకోవడం కోసం సహాయక, వృత్తిపరమైన నర్సింగ్ సంరక్షణ.',
+    'ICU Setup at Home': 'వెంటిలేటర్లు, మానిటర్లు మరియు 24/7 నర్సింగ్‌తో కూడిన సమగ్ర అత్యవసర సంరక్షణ ఏర్పాటు.',
+    'Laboratory Services': 'ఇంటి వద్దే డయాగ్నస్టిక్ పరీక్షలు, రక్త నమూనాల సేకరణ మరియు వేగవంతమైన నివేదికలు.',
+    'Physiotherapy': 'ఇంటి వద్దే పునరావాస ప్రణాళికలు, చలనశీలత పునరుద్ధరణ మరియు కండరాల భౌతిక చికిత్సలు.',
+    'Dietician Advisory': 'దీర్ఘకాలిక రికవరీ కోసం క్లినికల్ న్యూట్రిషన్ ప్లానర్లు మరియు అనుకూల ఆహార పట్టికలు.'
+  };
+  return map[title] || desc;
+};
+
 const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs }) => {
   const navigate = useNavigate();
   const [activeFaq, setActiveFaq] = useState(null);
@@ -135,10 +163,10 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
                 className="w-fit self-center lg:self-start flex flex-wrap gap-2 justify-center lg:justify-start"
               >
                 <Badge variant="teal" pulse={true}>
-                  📍 Serving Exclusively in Nizamabad
+                  {isTe ? "📍 నిజామాబాద్‌లో మాత్రమే సేవలు" : "📍 Serving Exclusively in Nizamabad"}
                 </Badge>
                 <Badge variant="orange">
-                  Now Active
+                  {isTe ? "ప్రస్తుతం అందుబాటులో ఉంది" : "Now Active"}
                 </Badge>
               </motion.div>
 
@@ -146,12 +174,9 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="text-3xl sm:text-4xl lg:text-5xl font-serif-editorial font-bold text-slate-900 leading-[1.1] tracking-tight"
+                className="text-3xl sm:text-4xl lg:text-5xl font-serif-editorial font-bold text-slate-900 leading-[1.2] tracking-tight"
               >
-                Hospital-Grade Care.
-                <span className="text-teal-855 italic block mt-1 font-normal font-serif-editorial">
-                  At Home in Nizamabad.
-                </span>
+                {heroHeading}
               </motion.h1>
 
               {/* Mobile Hero Image Card (Instant visual context on mobile, hidden on desktop) */}
@@ -183,7 +208,7 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
                 transition={{ duration: 0.5, delay: 0.3 }}
                 className="text-slate-500 text-sm sm:text-base leading-relaxed max-w-xl mx-auto lg:mx-0 font-semibold"
               >
-                Avoid stressful commutes to Hyderabad or waiting lists. We arrange state-of-the-art ICU setups, registered nurse shifts, and physician visits directly to your bedside—available exclusively in Nizamabad.
+                {heroDescription}
               </motion.p>
 
               {/* CTAs */}
@@ -199,7 +224,7 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
                   onClick={() => navigate('/services')}
                   icon={<ArrowRight className="w-4 h-4" />}
                 >
-                  Explore Medical Catalog
+                  {isTe ? "వైద్య సేవల జాబితా" : "Explore Medical Catalog"}
                 </Button>
                 <Button 
                   variant="secondary" 
@@ -207,7 +232,7 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
                   onClick={() => window.location.href = `tel:${cleanPhone}`}
                   icon={<Phone className="w-4 h-4 text-slate-500" />}
                 >
-                  Emergency Coordinates
+                  {isTe ? "అత్యవసర సమాచారం" : "Emergency Coordinates"}
                 </Button>
               </motion.div>
 
@@ -218,9 +243,9 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
                 transition={{ duration: 0.5, delay: 0.5 }}
                 className="flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-2.5 text-[11px] sm:text-xs text-slate-450 uppercase font-extrabold tracking-wider border-t border-slate-100 pt-5 mt-2"
               >
-                <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-teal-800" /> ICU Grade Equipment</span>
-                <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-teal-800" /> Certified Care Nurses</span>
-                <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-teal-800" /> Nizamabad Only Coverage</span>
+                <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-teal-800" /> {isTe ? "ఐసీయూ గ్రేడ్ పరికరాలు" : "ICU Grade Equipment"}</span>
+                <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-teal-800" /> {isTe ? "ధృవీకరించబడిన నర్సులు" : "Certified Care Nurses"}</span>
+                <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-teal-800" /> {isTe ? "నిజామాబాద్ కవరేజ్ మాత్రమే" : "Nizamabad Only Coverage"}</span>
               </motion.div>
             </div>
 
@@ -303,10 +328,16 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-3xl mx-auto mb-10 flex flex-col gap-3">
-            <span className="text-xs font-bold text-teal-800 uppercase tracking-widest">Medical Catalog</span>
-            <h2 className="text-xl sm:text-2xl font-serif-editorial font-bold text-slate-900">Hospital Services at Bedside</h2>
+            <span className="text-xs font-bold text-teal-800 uppercase tracking-widest">
+              {isTe ? "వైద్య సేవల జాబితా" : "Medical Catalog"}
+            </span>
+            <h2 className="text-xl sm:text-2xl font-serif-editorial font-bold text-slate-900">
+              {isTe ? "మీ ఇంటి వద్దే ఆసుపత్రి సేవలు" : "Hospital Services at Bedside"}
+            </h2>
             <p className="text-slate-500 text-sm max-w-xl mx-auto leading-relaxed">
-              We coordinate and deliver complex ICU setups, physician consults, registered nurses, and diagnostics tests straight to your bedroom.
+              {isTe 
+                ? "మేము మీ బెడ్‌రూమ్‌కే క్లిష్టమైన ఐసీయూ సెటప్‌లు, వైద్యుల సంప్రదింపులు, నర్సింగ్ సేవలు మరియు డయాగ్నస్టిక్స్ సేవలను సమన్వయం చేసి అందిస్తాము."
+                : "We coordinate and deliver complex ICU setups, physician consults, registered nurses, and diagnostics tests straight to your bedroom."}
             </p>
           </div>
 
@@ -324,7 +355,11 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
                       : 'bg-white hover:bg-slate-100 text-slate-655 border border-slate-200'
                   }`}
                 >
-                  {cat}
+                  {cat === 'All' ? (isTe ? 'అన్నీ' : 'All') :
+                   cat === 'Critical Care' ? (isTe ? 'అత్యవసర చికిత్స' : 'Critical Care') :
+                   cat === 'Home Nursing' ? (isTe ? 'హోమ్ నర్సింగ్' : 'Home Nursing') :
+                   cat === 'Physiotherapy' ? (isTe ? 'ఫిజియోథెరపీ' : 'Physiotherapy') :
+                   cat === 'Diagnostics' ? (isTe ? 'ల్యాబ్ టెస్టులు' : 'Diagnostics') : cat}
                 </button>
               ))}
             </div>
@@ -336,7 +371,7 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
               </span>
               <input
                 type="text"
-                placeholder="Search treatments..."
+                placeholder={isTe ? "చికిత్సల కోసం వెతకండి..." : "Search treatments..."}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-9 pr-4 py-2 bg-white text-slate-800 text-sm border border-slate-200 rounded-xl focus:ring-1 focus:ring-teal-700 focus:border-teal-700 placeholder-slate-400"
@@ -388,8 +423,8 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
                     
                     <div className="p-5 flex flex-col grow justify-between">
                       <div>
-                        <h4 className="text-base font-bold text-slate-900 mb-1.5 group-hover:text-teal-800 transition-colors">{service.title}</h4>
-                        <p className="text-sm text-slate-500 leading-relaxed font-semibold line-clamp-3">{service.shortDescription}</p>
+                        <h4 className="text-base font-bold text-slate-900 mb-1.5 group-hover:text-teal-800 transition-colors">{translateServiceTitle(service.title, isTe)}</h4>
+                        <p className="text-sm text-slate-500 leading-relaxed font-semibold line-clamp-3">{translateServiceDesc(service.title, service.shortDescription, isTe)}</p>
                       </div>
 
                       <div className="pt-4 border-t border-slate-100 mt-5 flex items-center justify-between gap-2">
@@ -397,7 +432,7 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
                           to={`/services/${service.slug}`} 
                           className="text-xs font-bold uppercase tracking-wider text-teal-800 hover:text-teal-950 transition-colors inline-flex items-center gap-1 py-1.5"
                         >
-                          <span>Explore Details</span>
+                          <span>{isTe ? "వివరాలు చూడండి" : "Explore Details"}</span>
                           <ChevronRight className="w-3.5 h-3.5" />
                         </Link>
                         <Link 
@@ -405,7 +440,7 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
                           state={{ selectService: service.title }}
                           className="bg-teal-800 hover:bg-teal-900 text-white text-xs font-extrabold uppercase py-2 px-4 rounded-full transition-all duration-300 shadow-sm hover:shadow active:scale-98"
                         >
-                          Book Care
+                          {isTe ? "బుకింగ్" : "Book Care"}
                         </Link>
                       </div>
                     </div>
@@ -414,7 +449,7 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
               })
             ) : (
               <div className="col-span-full py-12 text-center text-slate-405 font-semibold text-sm bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
-                No matching clinical specialities found.
+                {isTe ? "సరిపోలే వైద్య సేవలు ఏవీ కనుగొనబడలేదు." : "No matching clinical specialities found."}
               </div>
             )}
           </div>
@@ -424,7 +459,7 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
               to="/services" 
               className="btn-secondary inline-flex px-6 py-2.5 rounded-xl text-slate-800 hover:text-teal-800 text-xs"
             >
-              <span>View All Specialities</span>
+              <span>{isTe ? "అన్ని సేవలను చూడండి" : "View All Specialities"}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
@@ -436,9 +471,9 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-2xl mx-auto mb-10 flex flex-col gap-2">
-            <span className="text-xs font-bold text-teal-800 uppercase tracking-widest">How It Works</span>
-            <h3 className="text-2xl font-serif-editorial font-bold text-slate-900 leading-tight">Simple Setup Sequence</h3>
-            <p className="text-slate-500 text-sm font-semibold">Getting started with premium home care takes four simple coordinates.</p>
+            <span className="text-xs font-bold text-teal-800 uppercase tracking-widest">{isTe ? "పనిచేసే విధానం" : "How It Works"}</span>
+            <h3 className="text-2xl font-serif-editorial font-bold text-slate-900 leading-tight">{isTe ? "సరళమైన ఏర్పాటు విధానం" : "Simple Setup Sequence"}</h3>
+            <p className="text-slate-500 text-sm font-semibold">{isTe ? "అత్యుత్తమ గృహ సంరక్షణను ప్రారంభించడం నాలుగు సులభమైన దశల్లో పూర్తవుతుంది." : "Getting started with premium home care takes four simple coordinates."}</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -466,16 +501,18 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
       <section className="py-16 bg-gradient-to-br from-teal-900 to-slate-900 text-white relative">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,_transparent_1px),_linear-gradient(90deg,_rgba(255,255,255,0.015)_1px,_transparent_1px)] bg-[size:20px_20px] pointer-events-none opacity-10"></div>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 flex flex-col gap-4">
-          <h3 className="text-xl sm:text-2xl font-serif-editorial font-bold tracking-tight text-white">Ready to Set Up Your Specialized Home Care?</h3>
+          <h3 className="text-xl sm:text-2xl font-serif-editorial font-bold tracking-tight text-white">{isTe ? "మీ ఇంటి వద్దే ప్రత్యేక గృహ సంరక్షణ ఏర్పాటుకు సిద్ధంగా ఉన్నారా?" : "Ready to Set Up Your Specialized Home Care?"}</h3>
           <p className="text-slate-200 text-sm max-w-xl mx-auto leading-relaxed font-semibold">
-            Contact us today to receive a customized patient recovery plan. We arrange medical equipment delivery, nurse schedules, and physician visits within 24 hours.
+            {isTe 
+              ? "అనుకూలీకరించిన రోగి కోలుకునే ప్రణాళికను పొందడానికి ఈ రోజు మమ్మల్ని సంప్రదించండి. మేము 24 గంటల్లో వైద్య పరికరాల సరఫరా, నర్సు షెడ్యూల్స్ మరియు వైద్యుల సందర్శనలను ఏర్పాటు చేస్తాము."
+              : "Contact us today to receive a customized patient recovery plan. We arrange medical equipment delivery, nurse schedules, and physician visits within 24 hours."}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-4 w-full">
             <button 
               onClick={() => navigate('/services')}
               className="w-full sm:w-auto px-6 py-3 bg-teal-400 hover:bg-teal-350 text-slate-955 text-sm font-extrabold rounded-xl text-center transition-all duration-300 shadow-[0_4px_15px_rgba(45,212,191,0.25)] hover:shadow-[0_6px_20px_rgba(45,212,191,0.35)] active:scale-98 cursor-pointer"
             >
-              Explore Services
+              {isTe ? "సేవలను అన్వేషించండి" : "Explore Services"}
             </button>
             <a 
               href={`https://wa.me/${cleanWhatsapp}`} 
@@ -483,7 +520,7 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
               rel="noopener noreferrer" 
               className="w-full sm:w-auto px-6 py-3 bg-white text-slate-900 hover:bg-slate-50 text-sm font-extrabold rounded-xl text-center transition-all duration-300 shadow-md active:scale-98 cursor-pointer"
             >
-              <span>Chat on WhatsApp</span>
+              <span>{isTe ? "వాట్సాప్ చాట్" : "Chat on WhatsApp"}</span>
             </a>
           </div>
         </div>

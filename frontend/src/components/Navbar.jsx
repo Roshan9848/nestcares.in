@@ -108,27 +108,27 @@ const Navbar = ({ webSettings }) => {
       </div>
 
       {/* Mobile Top Bar */}
-      <div className="fixed top-0 left-0 right-0 h-14 bg-white/95 backdrop-blur-md border-b border-slate-200/50 flex items-center justify-between px-4 z-40 md:hidden no-print shadow-sm">
-        <Link to="/" className="h-8 flex items-center">
+      <div className="fixed top-0 left-0 right-0 h-16 bg-white/95 backdrop-blur-md border-b border-slate-200/50 flex items-center justify-between px-4 z-40 md:hidden no-print shadow-sm">
+        <Link to="/" className="h-10 flex items-center">
           {logoSrc ? (
-            <img src={logoSrc} alt={webSettings?.companyName || "Logo"} className="h-8 w-auto object-contain" />
+            <img src={logoSrc} alt={webSettings?.companyName || "Logo"} className="h-10 w-auto object-contain" />
           ) : (
-            <span className="text-xs font-black tracking-widest text-slate-800">{webSettings?.companyName || 'NEST CARES'}</span>
+            <span className="text-sm font-black tracking-widest text-slate-800">{webSettings?.companyName || 'NEST CARES'}</span>
           )}
         </Link>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
           {/* Language Switch Button */}
           <button 
             onClick={toggleLang}
-            className="flex items-center gap-1 bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1.5 rounded-lg border border-slate-200/65 active:scale-95 transition-all cursor-pointer font-bold uppercase text-[9px] tracking-wider"
+            className="flex items-center justify-center bg-slate-50 hover:bg-slate-100 text-slate-700 px-3.5 py-2 rounded-xl border border-slate-200 active:scale-95 transition-all cursor-pointer font-black text-xs"
           >
             <span>{currentLang === 'english' ? 'తెలుగు' : 'EN'}</span>
           </button>
           <Link 
             to="/services" 
-            className="bg-black hover:bg-slate-900 text-white text-[10px] font-black uppercase tracking-wider px-3.5 py-1.5 rounded-full flex items-center gap-1 shadow-sm transition-all active:scale-95"
+            className="bg-teal-800 hover:bg-teal-900 text-white text-xs font-black uppercase tracking-wider px-4.5 py-2.5 rounded-xl flex items-center gap-1 shadow-md active:scale-95 transition-all"
           >
-            <span>{currentLang === 'english' ? 'Book' : 'బుకింగ్'}</span>
+            <span>{currentLang === 'english' ? 'Book Now' : 'బుకింగ్'}</span>
           </Link>
         </div>
       </div>
