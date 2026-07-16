@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import InteractiveDragList from '../components/InteractiveDragList';
+import { resolveImageUrl } from '../utils/url';
 import { BookingTableSkeleton } from '../components/SkeletonLoader';
 import { 
   LayoutDashboard, CalendarCheck, Activity, Home as HomeIcon, MessageSquare, 
@@ -695,7 +696,6 @@ const Dashboard = ({
           {[
             { id: 'overview', name: 'Stats Overview', icon: <LayoutDashboard className="w-4 h-4" /> },
             { id: 'bookings', name: 'Booking Manager', icon: <CalendarCheck className="w-4 h-4" /> },
-            { id: 'doctors', name: 'Manage Doctors', icon: <User className="w-4 h-4" /> },
             { id: 'services', name: 'Service Catalog', icon: <Activity className="w-4 h-4" /> },
             { id: 'homepage', name: 'Homepage Content', icon: <HomeIcon className="w-4 h-4" /> },
             { id: 'testimonials', name: 'Testimonials', icon: <MessageSquare className="w-4 h-4" /> },
@@ -754,7 +754,6 @@ const Dashboard = ({
             <h1 className="text-lg font-bold text-slate-800 uppercase tracking-tight">
               {activeTab === 'overview' && 'Dashboard Overview'}
               {activeTab === 'bookings' && 'Booking Manager'}
-              {activeTab === 'doctors' && 'Clinical Doctor Registry'}
               {activeTab === 'services' && 'Service catalog'}
               {activeTab === 'homepage' && 'Homepage content CMS'}
               {activeTab === 'testimonials' && 'Patient reviews'}
@@ -1007,7 +1006,6 @@ const Dashboard = ({
                           <th className="px-6 py-3.5">Speciality</th>
                           <th className="px-6 py-3.5">Scheduled Date & Slot</th>
                           <th className="px-6 py-3.5">Mobile</th>
-                          <th className="px-6 py-3.5">Assigned Clinician</th>
                           <th className="px-6 py-3.5">Status</th>
                           <th className="px-6 py-3.5 text-right">Quick Actions</th>
                         </tr>
@@ -1015,7 +1013,7 @@ const Dashboard = ({
                       <tbody className="divide-y divide-slate-100 text-slate-600">
                         {bookings.length === 0 ? (
                           <tr>
-                            <td colSpan="7" className="text-center py-10 text-slate-400 text-xs">No matching bookings found.</td>
+                            <td colSpan="6" className="text-center py-10 text-slate-400 text-xs">No matching bookings found.</td>
                           </tr>
                         ) : (
                           bookings.map(b => (
@@ -1030,17 +1028,6 @@ const Dashboard = ({
                                 <div className="text-[10px] text-slate-400">{b.preferredTime}</div>
                               </td>
                               <td className="px-6 py-4">{b.mobile}</td>
-                              <td className="px-6 py-4">
-                                {b.assignedDoctor ? (
-                                  <span className="px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider bg-teal-50 text-teal-700 border border-teal-200/50">
-                                    {b.assignedDoctor}
-                                  </span>
-                                ) : (
-                                  <span className="text-[10px] text-slate-405 font-bold italic">
-                                    Unassigned
-                                  </span>
-                                )}
-                              </td>
                               <td className="px-6 py-4">
                                 <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
                                   b.status === 'pending' && 'bg-amber-50 text-amber-600'
@@ -1242,7 +1229,7 @@ const Dashboard = ({
                         </div>
                         {serviceForm.bannerImage && (
                           <div className="relative w-36 h-20 border border-slate-200 rounded-xl overflow-hidden mt-2 group">
-                            <img src={serviceForm.bannerImage.startsWith('/') ? `http://localhost:5000${serviceForm.bannerImage}` : serviceForm.bannerImage} alt="banner preview" className="w-full h-full object-cover" />
+                            <img src={resolveImageUrl(serviceForm.bannerImage)} alt="banner preview" className="w-full h-full object-cover" />
                             <button
                               type="button"
                               onClick={() => setServiceForm(prev => ({ ...prev, bannerImage: '' }))}
@@ -1270,7 +1257,7 @@ const Dashboard = ({
                           <div className="flex flex-wrap gap-2 mt-2">
                             {serviceForm.galleryImages.map((img, idx) => (
                               <div key={idx} className="relative w-16 h-12 border border-slate-200 rounded-lg overflow-hidden group">
-                                <img src={img.startsWith('/') ? `http://localhost:5000${img}` : img} alt="gallery preview" className="w-full h-full object-cover" />
+                                <img src={resolveImageUrl(img)} alt="gallery preview" className="w-full h-full object-cover" />
                                 <button
                                   type="button"
                                   onClick={() => setServiceForm(prev => ({ ...prev, galleryImages: prev.galleryImages.filter((_, i) => i !== idx) }))}
@@ -1585,7 +1572,7 @@ const Dashboard = ({
                           {item.galleryImages?.length > 0 && (
                             <div className="w-14 h-10 border border-slate-100 rounded-lg overflow-hidden shrink-0 bg-slate-50 flex items-center justify-center">
                               <img
-                                src={item.galleryImages[0].startsWith('/') ? `http://localhost:5000${item.galleryImages[0]}` : item.galleryImages[0]}
+                                src={resolveImageUrl(item.galleryImages[0])}
                                 alt={item.title}
                                 className="w-full h-full object-cover"
                               />
@@ -2061,7 +2048,7 @@ const Dashboard = ({
                         {webCMS.faviconUrl && (
                           <div className="w-8 h-8 mt-1 border border-zinc-200 rounded-lg overflow-hidden bg-slate-50 flex items-center justify-center">
                             <img
-                              src={webCMS.faviconUrl.startsWith('/') ? `http://localhost:5000${webCMS.faviconUrl}` : webCMS.faviconUrl}
+                              src={resolveImageUrl(webCMS.faviconUrl)}
                               alt="Favicon preview"
                               className="w-5 h-5 object-contain"
                             />
@@ -2085,7 +2072,7 @@ const Dashboard = ({
                       {webCMS.logoUrl && (
                         <div className="w-[180px] h-[60px] mt-2 border border-slate-200 rounded-lg overflow-hidden bg-slate-50 flex items-center justify-center p-2 shadow-inner">
                           <img
-                            src={webCMS.logoUrl.startsWith('/') ? `http://localhost:5000${webCMS.logoUrl}` : webCMS.logoUrl}
+                            src={resolveImageUrl(webCMS.logoUrl)}
                             alt="Logo preview"
                             className="max-w-full max-h-full object-contain"
                           />
@@ -2622,46 +2609,6 @@ const Dashboard = ({
                   <div className="text-xs text-slate-500 leading-relaxed mt-1 font-semibold">{selectedBooking.notes}</div>
                 </div>
               )}
-
-              {/* Doctor Assignment Selection */}
-              <div className="border-t border-slate-100 pt-4">
-                <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Assigned Clinician / Doctor</div>
-                <div className="mt-1.5 flex gap-2">
-                  <select
-                    value={selectedBooking.assignedDoctor || ''}
-                    onChange={async (e) => {
-                      const docId = e.target.value;
-                      const updatedBooking = { ...selectedBooking, assignedDoctor: docId };
-                      setSelectedBooking(updatedBooking);
-                      
-                      try {
-                        await axios.put(`/bookings/${selectedBooking._id}/status`, { 
-                          status: selectedBooking.status,
-                          assignedDoctor: docId 
-                        });
-                      } catch (err) {
-                        // fallback mockDb
-                        const mockBookings = JSON.parse(localStorage.getItem('mock_bookings') || '[]');
-                        const idx = mockBookings.findIndex(b => b._id === selectedBooking._id);
-                        if (idx !== -1) {
-                          mockBookings[idx].assignedDoctor = docId;
-                          localStorage.setItem('mock_bookings', JSON.stringify(mockBookings));
-                        }
-                      }
-                      showToast('Clinician assigned successfully!');
-                      fetchBookings();
-                    }}
-                    className="form-input text-xs py-1.5 px-3 bg-slate-50 border-slate-200 text-slate-700 rounded-lg w-full"
-                  >
-                    <option value="">-- Unassigned --</option>
-                    {localDoctors.map(doc => (
-                      <option key={doc._id} value={doc.doctorId}>
-                        {doc.name} ({doc.speciality || doc.designation})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
 
               {/* Logged Doctor Advisory Notes */}
               {selectedBooking.doctorNotes && (

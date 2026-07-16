@@ -17,6 +17,7 @@ const DynamicIcon = ({ name, className }) => {
 };
 
 import { translations } from '../utils/translations';
+import { resolveImageUrl } from '../utils/url';
 
 const translateServiceTitle = (title, isTe) => {
   if (!isTe) return title;
@@ -391,7 +392,7 @@ const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs 
             {filteredServices.length > 0 ? (
               filteredServices.map((service, index) => {
                 const img = service.galleryImages?.[0] || 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&q=80&w=400';
-                const resolvedImg = img.startsWith('/') ? `http://localhost:5000${img}` : img;
+                const resolvedImg = resolveImageUrl(img);
                 
                 return (
                   <motion.div 

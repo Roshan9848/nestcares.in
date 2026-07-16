@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { ArrowRight, Settings as SettingsIcon } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { resolveImageUrl } from '../utils/url';
 
 const Navbar = ({ webSettings }) => {
   const { user } = useAuth();
@@ -46,7 +47,7 @@ const Navbar = ({ webSettings }) => {
       if (logoUrl === '/logo.png') {
         return '/logo.png';
       }
-      return `http://localhost:5000${logoUrl}`;
+      return resolveImageUrl(logoUrl);
     }
     return logoUrl;
   };

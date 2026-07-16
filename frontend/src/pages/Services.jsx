@@ -13,6 +13,7 @@ import PageLayout from '../components/common/PageLayout';
 import { Modal } from '../components/common/Overlays';
 import { useToast } from '../components/common/ToastContext';
 import { bookingsAPI } from '../services/api';
+import { resolveImageUrl } from '../utils/url';
 
 const DynamicIcon = ({ name, className }) => {
   const IconComponent = Icons[name] || Icons.Heart;
@@ -197,7 +198,7 @@ const Services = ({ services }) => {
           <AnimatePresence mode="wait">
             {filteredServices.map((service, index) => {
               const img = service.galleryImages?.[0] || 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&q=80&w=400';
-              const resolvedImg = img.startsWith('/') ? `http://localhost:5000${img}` : img;
+              const resolvedImg = resolveImageUrl(img);
               
               // Proxy popularity rating to render featured ribbons
               const isPopular = service.price > 4000;

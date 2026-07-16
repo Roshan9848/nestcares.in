@@ -13,6 +13,7 @@ import Card from '../components/common/Card';
 import Badge from '../components/common/Badge';
 import { SectionHeading } from '../components/common/Typography';
 import PageLayout from '../components/common/PageLayout';
+import { resolveImageUrl } from '../utils/url';
 
 const getSubServiceImageUrl = (name) => {
   const n = name.toLowerCase();
@@ -87,8 +88,7 @@ const ServiceDetail = ({ services, contactSettings }) => {
   }
 
   const getFullImgUrl = (path) => {
-    if (!path) return 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&q=80&w=600';
-    return path.startsWith('/') ? `http://localhost:5000${path}` : path;
+    return resolveImageUrl(path || 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&q=80&w=600');
   };
 
   const imagesList = service.galleryImages?.length > 0 ? service.galleryImages : ['https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&q=80&w=600'];

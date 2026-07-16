@@ -63,8 +63,25 @@ const sendEmail = async ({ to, subject, templateName, replacements }) => {
 
     // Generate premium HTML templates dynamically based on template name
     let htmlContent = '';
-    const logoUrl = 'https://nestcares.in/logo.png';
+    let logoUrl = 'https://nestcares.in/logo.png';
     const companyName = 'Nest Cares';
+    
+    try {
+      const webConfigDoc = await dbHelper.findOne(Settings, { key: 'web' });
+      if (webConfigDoc && webConfigDoc.value?.logoUrl) {
+        const logoPath = webConfigDoc.value.logoUrl;
+        if (logoPath.startsWith('http://') || logoPath.startsWith('https://')) {
+          logoUrl = logoPath;
+        } else if (logoPath === '/logo.png') {
+          logoUrl = 'https://nestcares.in/logo.png';
+        } else {
+          const backendHost = process.env.BACKEND_URL || 'https://nestcares-backend.onrender.com';
+          logoUrl = `${backendHost}${logoPath.startsWith('/') ? '' : '/'}${logoPath}`;
+        }
+      }
+    } catch (logoErr) {
+      console.error('Failed to resolve dynamic logo URL for email:', logoErr.message);
+    }
     
     if (templateName === 'patientConfirmation') {
       htmlContent = `
