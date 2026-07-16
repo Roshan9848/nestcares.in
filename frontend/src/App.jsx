@@ -28,12 +28,12 @@ const AppContent = () => {
   const location = useLocation();
   const { token } = useAuth();
   
-  // Public Config & Content States
-  const [services, setServices] = useState([]);
-  const [testimonials, setTestimonials] = useState([]);
-  const [faqs, setFaqs] = useState([]);
-  const [doctors, setDoctors] = useState([]);
-  const [settings, setSettings] = useState({ homepage: null, contact: null, web: null });
+  // Public Config & Content States - Pre-load from local mock cache for instant rendering
+  const [services, setServices] = useState(mockDb.getServices(false));
+  const [testimonials, setTestimonials] = useState(mockDb.getTestimonials());
+  const [faqs, setFaqs] = useState(mockDb.getFaqs());
+  const [doctors, setDoctors] = useState(mockDb.getDoctors());
+  const [settings, setSettings] = useState(mockDb.getSettings());
   const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
@@ -71,19 +71,6 @@ const AppContent = () => {
     } catch (err) {
       console.log('[System] Initializing localized database cache...');
       window.useMockDb = true;
-
-      // Fetch from localized local cache storage
-      const mockSettings = mockDb.getSettings();
-      const mockServices = mockDb.getServices(!!token);
-      const mockTestimonials = mockDb.getTestimonials();
-      const mockFaqs = mockDb.getFaqs();
-      const mockDocs = mockDb.getDoctors();
-
-      setSettings(mockSettings);
-      setServices(mockServices);
-      setTestimonials(mockTestimonials);
-      setFaqs(mockFaqs);
-      setDoctors(mockDocs);
     } finally {
       setLoading(false);
     }
@@ -91,6 +78,11 @@ const AppContent = () => {
 
   useEffect(() => {
     fetchData();
+    // Maximum 650ms loading presentation timer to bypass cold starts
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 650);
+    return () => clearTimeout(timer);
   }, [token]);
 
   // Update Favicon & Title from brand settings dynamically
