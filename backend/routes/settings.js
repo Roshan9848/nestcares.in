@@ -18,6 +18,11 @@ router.get('/', async (req, res) => {
         const emailVal = { ...item.value };
         if (emailVal.smtpPass) emailVal.smtpPass = '********'; // Hide password
         mapped[item.key] = emailVal;
+      } else if (item.key === 'cloudinary') {
+        // Obfuscate apiSecret
+        const cloudVal = { ...item.value };
+        if (cloudVal.apiSecret) cloudVal.apiSecret = '********';
+        mapped[item.key] = cloudVal;
       } else {
         mapped[item.key] = item.value;
       }
@@ -42,10 +47,9 @@ router.get('/:key', async (req, res) => {
       return res.status(404).json({ success: false, message: 'Settings category not found' });
     }
 
-    // SMTP settings key must be protected
-    if (key === 'email') {
-      // Check auth header manually or require token
-      return res.status(401).json({ success: false, message: 'Unauthorized access to email configuration. Use admin auth.' });
+    // SMTP and Cloudinary settings key must be protected
+    if (key === 'email' || key === 'cloudinary') {
+      return res.status(401).json({ success: false, message: 'Unauthorized access to configuration. Use admin auth.' });
     }
 
     res.json({ success: true, data: item.value });
@@ -56,7 +60,7 @@ router.get('/:key', async (req, res) => {
 });
 
 // @desc    Get email configurations (with password) for Admin Dashboard
-// @route   GET /api/settings/admin/email
+// @route   GET /api/settings/admin/email-config
 // @access  Private/Admin
 router.get('/admin/email-config', protect, async (req, res) => {
   try {
@@ -67,6 +71,22 @@ router.get('/admin/email-config', protect, async (req, res) => {
     res.json({ success: true, data: item.value });
   } catch (error) {
     console.error('Error fetching admin email configs:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// @desc    Get Cloudinary configurations (with secret keys) for Admin Dashboard
+// @route   GET /api/settings/admin/cloudinary-config
+// @access  Private/Admin
+router.get('/admin/cloudinary-config', protect, async (req, res) => {
+  try {
+    const item = await dbHelper.findOne(Settings, { key: 'cloudinary' });
+    if (!item) {
+      return res.json({ success: true, data: { cloudName: '', apiKey: '', apiSecret: '' } });
+    }
+    res.json({ success: true, data: item.value });
+  } catch (error) {
+    console.error('Error fetching admin cloudinary configs:', error);
     res.status(500).json({ success: false, message: 'Server error' });
   }
 });

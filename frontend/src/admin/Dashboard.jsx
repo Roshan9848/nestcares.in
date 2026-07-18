@@ -9,7 +9,7 @@ import {
   LayoutDashboard, CalendarCheck, Activity, Home as HomeIcon, MessageSquare, 
   HelpCircle, MapPin, Settings as SettingsIcon, LogOut, ExternalLink, Plus, 
   Trash2, Edit, Check, X, ShieldAlert, Sparkles, Download, Printer, Save, Eye, EyeOff,
-  Clock, User
+  Clock, User, FileText, Image, FileImage, UploadCloud, Loader2, Images
 } from 'lucide-react';
 
 const Dashboard = ({ 
@@ -58,6 +58,7 @@ const Dashboard = ({
   const [newBenefit, setNewBenefit] = useState('');
   const [newFaq, setNewFaq] = useState({ question: '', answer: '' });
   const [serviceUploadLoading, setServiceUploadLoading] = useState(false);
+  const [serviceFormTab, setServiceFormTab] = useState('basic');
   const [bannerUploadLoading, setBannerUploadLoading] = useState(false);
 
   // Homepage CMS State
@@ -90,13 +91,10 @@ const Dashboard = ({
   const [emailCMS, setEmailCMS] = useState({ smtpHost: '', smtpPort: '', smtpUser: '', smtpPass: '', businessEmail: '', senderName: '', templates: {} });
   const [webCMS, setWebCMS] = useState({ companyName: '', logoUrl: '', faviconUrl: '', footerContent: '', copyright: '', seoTitle: '', seoDescription: '', googleAnalyticsCode: '', primaryColor: '', secondaryColor: '', accentColor: '' });
   const [settingsUploadLoading, setSettingsUploadLoading] = useState(false);
+  const [cloudinaryCMS, setCloudinaryCMS] = useState({ cloudName: '', apiKey: '', apiSecret: '' });
+  const [cloudinaryLoading, setCloudinaryLoading] = useState(false);
 
-  // Doctors CMS State
-  const [localDoctors, setLocalDoctors] = useState([]);
-  const [editingDoctor, setEditingDoctor] = useState(null);
-  const [doctorForm, setDoctorForm] = useState({
-    name: '', doctorId: '', password: '', designation: '', experience: '', bio: '', img: '', speciality: '', active: true
-  });
+
 
   // Toast feedback state
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
@@ -149,7 +147,6 @@ const Dashboard = ({
   // Initial stats trigger
   useEffect(() => {
     fetchStats();
-    fetchDoctors();
   }, []);
 
   // Fetch tab-specific data on change
@@ -158,9 +155,6 @@ const Dashboard = ({
       fetchStats();
     } else if (activeTab === 'bookings') {
       fetchBookings();
-      fetchDoctors();
-    } else if (activeTab === 'doctors') {
-      fetchDoctors();
     } else if (activeTab === 'homepage') {
       // Sync homepage CMS input state
       setHomepageCMS({
@@ -205,6 +199,12 @@ const Dashboard = ({
           setEmailCMS(res.data.data);
         }
       }).catch(err => console.error('Error fetching SMTP config:', err));
+      // Load Cloudinary settings with secrets
+      axios.get('/settings/admin/cloudinary-config').then(res => {
+        if (res.data.success) {
+          setCloudinaryCMS(res.data.data);
+        }
+      }).catch(err => console.error('Error fetching Cloudinary config:', err));
     }
   }, [activeTab]);
 
@@ -273,60 +273,7 @@ const Dashboard = ({
     window.print();
   };
 
-  const fetchDoctors = async () => {
-    try {
-      let list = [];
-      try {
-        const res = await axios.get('/doctors');
-        list = res.data.success ? res.data.data : mockDb.getDoctors();
-      } catch {
-        list = mockDb.getDoctors();
-      }
-      setLocalDoctors(list);
-    } catch (err) {
-      console.error('Error fetching doctors:', err);
-    }
-  };
 
-  const handleSaveDoctor = async (e) => {
-    e.preventDefault();
-    try {
-      let list;
-      const docPayload = { ...doctorForm };
-      
-      try {
-        const res = await axios.post('/doctors', docPayload);
-        list = res.data.success ? res.data.data : mockDb.saveDoctor(docPayload);
-      } catch (err) {
-        list = mockDb.saveDoctor(docPayload);
-      }
-      
-      setLocalDoctors(list);
-      setEditingDoctor(null);
-      showToast('Doctor profile saved successfully!');
-      fetchDoctors();
-    } catch (err) {
-      showToast('Failed to save doctor.', 'error');
-    }
-  };
-
-  const handleDeleteDoctor = async (id) => {
-    if (!window.confirm('Are you sure you want to remove this doctor?')) return;
-    try {
-      let list;
-      try {
-        const res = await axios.delete(`/doctors/${id}`);
-        list = res.data.success ? res.data.data : mockDb.deleteDoctor(id);
-      } catch (err) {
-        list = mockDb.deleteDoctor(id);
-      }
-      setLocalDoctors(list);
-      showToast('Doctor profile removed.');
-      fetchDoctors();
-    } catch (err) {
-      showToast('Failed to delete doctor.', 'error');
-    }
-  };
 
   // -- IMAGE UPLOAD CONTROLLER HELPERS --
   const handleImageFileChange = async (e, mode) => {
@@ -411,6 +358,7 @@ const Dashboard = ({
     setNewSubService('');
     setNewBenefit('');
     setNewFaq({ question: '', answer: '' });
+    setServiceFormTab('basic');
   };
 
   // Sub-Services CMS management helpers
@@ -661,18 +609,24 @@ const Dashboard = ({
   const saveSettingsCMS = async (e) => {
     e.preventDefault();
     try {
+      setCloudinaryLoading(true);
       // 1. Save general settings
       const resWeb = await axios.put('/settings/web', { value: webCMS });
       
       // 2. Save SMTP settings
       const resMail = await axios.put('/settings/email', { value: emailCMS });
 
-      if (resWeb.data.success && resMail.data.success) {
+      // 3. Save Cloudinary settings
+      const resCloud = await axios.put('/settings/cloudinary', { value: cloudinaryCMS });
+
+      if (resWeb.data.success && resMail.data.success && resCloud.data.success) {
         showToast('All global settings saved successfully!');
         refreshWebSettings();
       }
     } catch (err) {
       showToast('Failed to save settings configurations.', 'error');
+    } finally {
+      setCloudinaryLoading(false);
     }
   };
 
@@ -1106,184 +1060,134 @@ const Dashboard = ({
                     </button>
                   </div>
 
+                  {/* SUB-TABS SELECTOR */}
+                  <div className="flex border-b border-slate-100 mb-6 gap-2 no-print overflow-x-auto">
+                    {[
+                      { id: 'basic', name: '1. Basic Details', icon: <FileText className="w-3.5 h-3.5" /> },
+                      { id: 'treatments', name: '2. Treatments List', icon: <Activity className="w-3.5 h-3.5" /> },
+                      { id: 'media', name: '3. Banners & Media', icon: <Image className="w-3.5 h-3.5" /> },
+                      { id: 'advisory', name: '4. Prep & FAQs', icon: <HelpCircle className="w-3.5 h-3.5" /> },
+                    ].map(tab => (
+                      <button
+                        key={tab.id}
+                        type="button"
+                        onClick={() => setServiceFormTab(tab.id)}
+                        className={`flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold border-b-2 transition-all duration-200 shrink-0 ${
+                          serviceFormTab === tab.id
+                            ? 'border-teal-500 text-teal-600 font-bold'
+                            : 'border-transparent text-slate-400 hover:text-slate-600'
+                        }`}
+                      >
+                        {tab.icon}
+                        <span>{tab.name}</span>
+                      </button>
+                    ))}
+                  </div>
+
                   <form onSubmit={saveService} className="space-y-6">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                      
-                      {/* Service Category Title */}
-                      <div className="flex flex-col gap-1.5">
-                        <label className="text-xs font-bold text-slate-700 uppercase">Service Category Title *</label>
-                        <input
-                          type="text"
-                          required
-                          value={serviceForm.title}
-                          onChange={(e) => setServiceForm({ ...serviceForm, title: e.target.value })}
-                          className="form-input text-xs"
-                          placeholder="e.g. Nursing Services"
-                        />
-                      </div>
-
-                      {/* Pricing Notice */}
-                      <div className="flex flex-col gap-1.5 justify-center bg-teal-50/50 border border-teal-100/50 rounded-xl p-3 text-[10px] text-teal-800 leading-relaxed font-semibold">
-                        ℹ️ Base Pricing has been removed across the entire client site to align with Nizamabad local coordinate quotes.
-                      </div>
-
-                      {/* Lucide Icon Name */}
-                      <div className="flex flex-col gap-1.5">
-                        <label className="text-xs font-bold text-slate-700 uppercase">Category Clinical Icon</label>
-                        <select
-                          value={serviceForm.icon}
-                          onChange={(e) => setServiceForm({ ...serviceForm, icon: e.target.value })}
-                          className="form-input text-xs"
-                        >
-                          <option value="Heart">Heart (Default)</option>
-                          <option value="HeartPulse">Heart Pulse (Nursing)</option>
-                          <option value="Activity">Pulse Activity (ICU)</option>
-                          <option value="UserCheck">Doctor Check (Consultation)</option>
-                          <option value="Truck">Ambulance Truck</option>
-                          <option value="FlaskConical">Laboratory Flask</option>
-                          <option value="Pills">Pharmacy Pills</option>
-                          <option value="Accessibility">Physiotherapy Mobility</option>
-                          <option value="Apple">Dietician Nutrition</option>
-                          <option value="Award">Trust Award</option>
-                          <option value="ShieldAlert">Shield Emergency</option>
-                        </select>
-                      </div>
-
-                      {/* Toggles */}
-                      <div className="flex items-center gap-6 pt-6">
-                        <label className="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={serviceForm.bookable}
-                            onChange={(e) => setServiceForm({ ...serviceForm, bookable: e.target.checked })}
-                            className="w-4 h-4 text-brand-blue rounded border-slate-300 focus:ring-brand-blue"
-                          />
-                          <span>Online Bookable</span>
-                        </label>
+                    {/* SUB-TAB: BASIC */}
+                    {serviceFormTab === 'basic' && (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         
-                        <label className="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+                        {/* Service Category Title */}
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-xs font-bold text-slate-700 uppercase">Service Category Title *</label>
                           <input
-                            type="checkbox"
-                            checked={serviceForm.active}
-                            onChange={(e) => setServiceForm({ ...serviceForm, active: e.target.checked })}
-                            className="w-4 h-4 text-brand-blue rounded border-slate-300 focus:ring-brand-blue"
+                            type="text"
+                            required
+                            value={serviceForm.title}
+                            onChange={(e) => setServiceForm({ ...serviceForm, title: e.target.value })}
+                            className="form-input text-xs"
+                            placeholder="e.g. Nursing Services"
                           />
-                          <span>Published</span>
-                        </label>
-                      </div>
-
-                    </div>
-
-                    {/* Short Description */}
-                    <div className="flex flex-col gap-1.5">
-                      <label className="text-xs font-bold text-slate-700 uppercase">Short Description (for Cards) *</label>
-                      <input
-                        type="text"
-                        required
-                        value={serviceForm.shortDescription}
-                        onChange={(e) => setServiceForm({ ...serviceForm, shortDescription: e.target.value })}
-                        className="form-input text-xs"
-                        placeholder="Keep it concise for summary card listings..."
-                      />
-                    </div>
-
-                    {/* Full Description */}
-                    <div className="flex flex-col gap-1.5">
-                      <label className="text-xs font-bold text-slate-700 uppercase">Detailed Description *</label>
-                      <textarea
-                        required
-                        value={serviceForm.fullDescription}
-                        onChange={(e) => setServiceForm({ ...serviceForm, fullDescription: e.target.value })}
-                        rows="3.5"
-                        className="form-input text-xs resize-none"
-                        placeholder="Describe services scope, clinician vetting, and equipment availability..."
-                      ></textarea>
-                    </div>
-
-                    {/* Preparation Instructions */}
-                    <div className="flex flex-col gap-1.5">
-                      <label className="text-xs font-bold text-slate-700 uppercase">Preparation Instructions (Optional)</label>
-                      <textarea
-                        value={serviceForm.preparationInstructions}
-                        onChange={(e) => setServiceForm({ ...serviceForm, preparationInstructions: e.target.value })}
-                        rows="2"
-                        className="form-input text-xs resize-none"
-                        placeholder="e.g. Fasting of 10 hours required, Keep past medical reports ready..."
-                      ></textarea>
-                    </div>
-
-                    {/* Banners & Images Uploaders */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 border-t border-slate-100 pt-6">
-                      
-                      {/* Banner Image */}
-                      <div className="flex flex-col gap-2">
-                        <label className="text-xs font-bold text-slate-700 uppercase">Category Banner Image</label>
-                        <div className="flex items-center gap-3">
-                          <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => handleImageFileChange(e, 'service_banner')}
-                            className="text-xs block w-full text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand-blue-50 file:text-brand-blue hover:file:bg-brand-blue-100 cursor-pointer"
-                          />
-                          {bannerUploadLoading && <span className="text-[10px] text-brand-blue shrink-0">Uploading...</span>}
                         </div>
-                        {serviceForm.bannerImage && (
-                          <div className="relative w-36 h-20 border border-slate-200 rounded-xl overflow-hidden mt-2 group">
-                            <img src={resolveImageUrl(serviceForm.bannerImage)} alt="banner preview" className="w-full h-full object-cover" />
-                            <button
-                              type="button"
-                              onClick={() => setServiceForm(prev => ({ ...prev, bannerImage: '' }))}
-                              className="absolute top-1 right-1 p-1 bg-red-600 text-white rounded-full hover:bg-red-700"
-                            >
-                              <X className="w-3 h-3" />
-                            </button>
-                          </div>
-                        )}
-                      </div>
 
-                      {/* Gallery Images */}
-                      <div className="flex flex-col gap-2">
-                        <label className="text-xs font-bold text-slate-700 uppercase">Gallery Images (Multiple)</label>
-                        <div className="flex items-center gap-3">
-                          <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => handleImageFileChange(e, 'service_gallery')}
-                            className="text-xs block w-full text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand-blue-50 file:text-brand-blue hover:file:bg-brand-blue-100 cursor-pointer"
-                          />
-                          {serviceUploadLoading && <span className="text-[10px] text-brand-blue shrink-0">Uploading...</span>}
+                        {/* Pricing Notice */}
+                        <div className="flex flex-col gap-1.5 justify-center bg-teal-50/50 border border-teal-100/50 rounded-xl p-3 text-[10px] text-teal-800 leading-relaxed font-semibold">
+                          ℹ️ Base Pricing has been removed across the entire client site to align with Nizamabad local coordinate quotes.
                         </div>
-                        {serviceForm.galleryImages?.length > 0 && (
-                          <div className="flex flex-wrap gap-2 mt-2">
-                            {serviceForm.galleryImages.map((img, idx) => (
-                              <div key={idx} className="relative w-16 h-12 border border-slate-200 rounded-lg overflow-hidden group">
-                                <img src={resolveImageUrl(img)} alt="gallery preview" className="w-full h-full object-cover" />
-                                <button
-                                  type="button"
-                                  onClick={() => setServiceForm(prev => ({ ...prev, galleryImages: prev.galleryImages.filter((_, i) => i !== idx) }))}
-                                  className="absolute -top-1 -right-1 p-0.5 bg-red-600 text-white rounded-full hover:bg-red-700 scale-75"
-                                >
-                                  <X className="w-3.5 h-3.5" />
-                                </button>
-                              </div>
-                            ))}
-                          </div>
-                        )}
+
+                        {/* Lucide Icon Name */}
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-xs font-bold text-slate-700 uppercase">Category Clinical Icon</label>
+                          <select
+                            value={serviceForm.icon}
+                            onChange={(e) => setServiceForm({ ...serviceForm, icon: e.target.value })}
+                            className="form-input text-xs"
+                          >
+                            <option value="Heart">Heart (Default)</option>
+                            <option value="HeartPulse">Heart Pulse (Nursing)</option>
+                            <option value="Activity">Pulse Activity (ICU)</option>
+                            <option value="UserCheck">Doctor Check (Consultation)</option>
+                            <option value="Truck">Ambulance Truck</option>
+                            <option value="FlaskConical">Laboratory Flask</option>
+                            <option value="Pills">Pharmacy Pills</option>
+                            <option value="Accessibility">Physiotherapy Mobility</option>
+                            <option value="Apple">Dietician Nutrition</option>
+                            <option value="Award">Trust Award</option>
+                            <option value="ShieldAlert">Shield Emergency</option>
+                          </select>
+                        </div>
+
+                        {/* Toggles */}
+                        <div className="flex items-center gap-6 pt-6">
+                          <label className="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={serviceForm.bookable}
+                              onChange={(e) => setServiceForm({ ...serviceForm, bookable: e.target.checked })}
+                              className="w-4 h-4 text-teal-705 rounded border-slate-300 focus:ring-teal-700"
+                            />
+                            <span>Online Bookable</span>
+                          </label>
+
+                          <label className="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={serviceForm.active}
+                              onChange={(e) => setServiceForm({ ...serviceForm, active: e.target.checked })}
+                              className="w-4 h-4 text-teal-705 rounded border-slate-300 focus:ring-teal-700"
+                            />
+                            <span>Active (Catalog Visible)</span>
+                          </label>
+                        </div>
+
+                        {/* Short Description */}
+                        <div className="flex flex-col gap-1.5 sm:col-span-2">
+                          <label className="text-xs font-bold text-slate-700 uppercase">Hero Card Short Subtitle *</label>
+                          <input
+                            type="text"
+                            required
+                            value={serviceForm.shortDescription}
+                            onChange={(e) => setServiceForm({ ...serviceForm, shortDescription: e.target.value })}
+                            className="form-input text-xs"
+                            placeholder="e.g. 24/7 ICU Ventilator support & monitoring..."
+                          />
+                        </div>
+
+                        {/* Full Description Detail */}
+                        <div className="flex flex-col gap-1.5 sm:col-span-2">
+                          <label className="text-xs font-bold text-slate-700 uppercase">Full Detail Description</label>
+                          <textarea
+                            value={serviceForm.fullDescription}
+                            onChange={(e) => setServiceForm({ ...serviceForm, fullDescription: e.target.value })}
+                            rows="4"
+                            className="form-input text-xs"
+                            placeholder="Details about clinical services, medical equipments provided, nurses shifts information..."
+                          ></textarea>
+                        </div>
                       </div>
+                    )}
 
-                    </div>
-
-                    {/* DYNAMIC LIST BUILDERS SECTION */}
-                    <div className="border-t border-slate-100 pt-6 space-y-6">
-                      
-                      {/* Array A: Specifications / Sub-Services Upgraded Manager */}
-                      <div className="bg-slate-50 p-5 rounded-2xl border border-slate-200/80 space-y-4">
-                        <div className="flex justify-between items-center border-b border-slate-200/60 pb-2">
-                          <label className="text-xs font-bold text-slate-800 uppercase block">Sub-services & Clinical Treatments</label>
+                    {/* SUB-TAB: TREATMENTS */}
+                    {serviceFormTab === 'treatments' && (
+                      <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 space-y-4">
+                        <div className="flex justify-between items-center flex-wrap gap-2">
+                          <label className="text-xs font-bold text-slate-800 uppercase block">Treatments & Sub-Services Catalog</label>
                           <button
                             type="button"
-                            onClick={() => handleOpenSubForm(-1)}
-                            className="bg-teal-550/10 border border-teal-600/20 hover:bg-teal-850 hover:text-white text-teal-850 text-[10px] font-bold py-1 px-2.5 rounded-lg transition-colors flex items-center gap-1 shadow-sm"
+                            onClick={() => handleOpenSubForm()}
+                            className="px-3 py-1.5 bg-teal-850 hover:bg-teal-900 text-white rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1 transition-all"
                           >
                             <Plus className="w-3.5 h-3.5" />
                             <span>Add Treatment / Sub-Service</span>
@@ -1341,7 +1245,7 @@ const Dashboard = ({
                                   onChange={(e) => setSubForm({ ...subForm, active: e.target.checked })}
                                   className="w-3.5 h-3.5 text-teal-850 rounded border-slate-300 focus:ring-teal-700"
                                 />
-                                <span>Active</span>
+                                <span>Active (Visible)</span>
                               </label>
                             </div>
 
@@ -1413,7 +1317,7 @@ const Dashboard = ({
                                   <button
                                     type="button"
                                     onClick={() => handleOpenSubForm(idx)}
-                                    className="p-1 hover:bg-slate-100 text-slate-600 rounded ml-1"
+                                    className="p-1 hover:bg-slate-100 text-slate-650 rounded ml-1"
                                     title="Edit Sub-service"
                                   >
                                     <Edit className="w-3.5 h-3.5" />
@@ -1434,119 +1338,222 @@ const Dashboard = ({
                           <div className="text-slate-400 text-xs italic">No sub-services / treatments registered.</div>
                         )}
                       </div>
+                    )}
 
-                      {/* Array B: Benefits */}
-                      <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 space-y-4">
-                        <label className="text-xs font-bold text-slate-800 uppercase block">Speciality Care Benefits</label>
+                    {/* SUB-TAB: MEDIA */}
+                    {serviceFormTab === 'media' && (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         
-                        <div className="flex gap-2">
-                          <input
-                            type="text"
-                            value={newBenefit}
-                            onChange={(e) => setNewBenefit(e.target.value)}
-                            placeholder="Add care benefit (e.g. Certified Critical Care nurses)"
-                            className="form-input text-xs grow py-2"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => {
-                              if (newBenefit.trim()) {
-                                setServiceForm(prev => ({ ...prev, benefits: [...prev.benefits, newBenefit.trim()] }));
-                                setNewBenefit('');
-                              }
-                            }}
-                            className="btn-primary py-2 px-4 rounded-xl text-xs shadow-none shrink-0"
-                          >
-                            <Plus className="w-4 h-4" />
-                          </button>
+                        {/* Banner Image */}
+                        <div className="flex flex-col gap-2">
+                          <label className="text-xs font-bold text-slate-700 uppercase">Category Banner Image</label>
+                          <label className="flex flex-col items-center justify-center border-2 border-dashed border-slate-200 hover:border-teal-500 hover:bg-teal-50/10 rounded-2xl p-6 cursor-pointer transition-all duration-300">
+                            <UploadCloud className="w-8 h-8 text-slate-400 mb-2" />
+                            <span className="text-xs font-semibold text-slate-600 font-sans">Select Banner Image</span>
+                            <span className="text-[10px] text-slate-400 mt-1 font-sans">Recommended size: 1200x600 (Max 5MB)</span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => handleImageFileChange(e, 'service_banner')}
+                              className="hidden"
+                            />
+                          </label>
+                          {bannerUploadLoading && (
+                            <div className="flex items-center gap-2 text-xs text-teal-600 font-bold animate-pulse mt-2">
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                              <span>Uploading banner image...</span>
+                            </div>
+                          )}
+                          {serviceForm.bannerImage && (
+                            <div className="relative w-36 h-20 border border-slate-200 rounded-xl overflow-hidden mt-2 group">
+                              <img src={resolveImageUrl(serviceForm.bannerImage)} alt="banner preview" className="w-full h-full object-cover" />
+                              <button
+                                type="button"
+                                onClick={() => setServiceForm(prev => ({ ...prev, bannerImage: '' }))}
+                                className="absolute top-1 right-1 p-1 bg-red-600 text-white rounded-full hover:bg-red-700"
+                              >
+                                <X className="w-3 h-3" />
+                              </button>
+                            </div>
+                          )}
                         </div>
 
-                        {serviceForm.benefits?.length > 0 ? (
-                          <ul className="space-y-2">
-                            {serviceForm.benefits.map((benefit, idx) => (
-                              <li key={idx} className="bg-white border border-slate-200 text-slate-700 text-xs px-3 py-2 rounded-xl flex items-center justify-between font-semibold">
-                                <span className="truncate pr-4">{benefit}</span>
-                                <button
-                                  type="button"
-                                  onClick={() => setServiceForm(prev => ({ ...prev, benefits: prev.benefits.filter((_, i) => i !== idx) }))}
-                                  className="text-red-500 hover:text-red-700 shrink-0"
-                                >
-                                  <Trash2 className="w-4 h-4" />
-                                </button>
-                              </li>
-                            ))}
-                          </ul>
-                        ) : (
-                          <div className="text-slate-400 text-xs italic">No clinical benefits checklist added yet.</div>
-                        )}
-                      </div>
-
-                      {/* Array C: Service FAQs */}
-                      <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 space-y-4">
-                        <label className="text-xs font-bold text-slate-800 uppercase block">Service-Specific FAQs</label>
-                        
-                        <div className="space-y-3 bg-white p-4 rounded-xl border border-slate-200">
-                          <input
-                            type="text"
-                            value={newFaq.question}
-                            onChange={(e) => setNewFaq({ ...newFaq, question: e.target.value })}
-                            placeholder="FAQ Question"
-                            className="form-input text-xs py-2"
-                          />
-                          <textarea
-                            value={newFaq.answer}
-                            onChange={(e) => setNewFaq({ ...newFaq, answer: e.target.value })}
-                            placeholder="FAQ Answer"
-                            rows="2"
-                            className="form-input text-xs py-2 resize-none"
-                          ></textarea>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              if (newFaq.question.trim() && newFaq.answer.trim()) {
-                                setServiceForm(prev => ({ ...prev, faqs: [...prev.faqs, { question: newFaq.question.trim(), answer: newFaq.answer.trim() }] }));
-                                setNewFaq({ question: '', answer: '' });
-                              }
-                            }}
-                            className="btn-primary py-2 px-4 rounded-lg text-xs shadow-none w-full"
-                          >
-                            <span>Add FAQ Pair</span>
-                          </button>
-                        </div>
-
-                        {serviceForm.faqs?.length > 0 ? (
-                          <div className="space-y-3.5">
-                            {serviceForm.faqs.map((faq, idx) => (
-                              <div key={idx} className="bg-white p-4 rounded-xl border border-slate-200 relative text-left flex justify-between gap-4">
-                                <div className="text-xs">
-                                  <div className="font-bold text-slate-900">Q: {faq.question}</div>
-                                  <div className="text-slate-500 mt-1">A: {faq.answer}</div>
+                        {/* Gallery Images */}
+                        <div className="flex flex-col gap-2">
+                          <label className="text-xs font-bold text-slate-700 uppercase">Gallery Images (Multiple)</label>
+                          <label className="flex flex-col items-center justify-center border-2 border-dashed border-slate-200 hover:border-teal-500 hover:bg-teal-50/10 rounded-2xl p-6 cursor-pointer transition-all duration-300">
+                            <Images className="w-8 h-8 text-slate-400 mb-2" />
+                            <span className="text-xs font-semibold text-slate-600 font-sans">Upload Gallery Image</span>
+                            <span className="text-[10px] text-slate-400 mt-1 font-sans">PNG, JPG or WEBP (Max 5MB)</span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => handleImageFileChange(e, 'service_gallery')}
+                              className="hidden"
+                            />
+                          </label>
+                          {serviceUploadLoading && (
+                            <div className="flex items-center gap-2 text-xs text-teal-600 font-bold animate-pulse mt-2">
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                              <span>Uploading gallery image...</span>
+                            </div>
+                          )}
+                          {serviceForm.galleryImages?.length > 0 && (
+                            <div className="flex flex-wrap gap-2 mt-2">
+                              {serviceForm.galleryImages.map((img, idx) => (
+                                <div key={idx} className="relative w-16 h-12 border border-slate-200 rounded-lg overflow-hidden group">
+                                  <img src={resolveImageUrl(img)} alt="gallery preview" className="w-full h-full object-cover" />
+                                  <button
+                                    type="button"
+                                    onClick={() => setServiceForm(prev => ({ ...prev, galleryImages: prev.galleryImages.filter((_, i) => i !== idx) }))}
+                                    className="absolute -top-1 -right-1 p-0.5 bg-red-600 text-white rounded-full hover:bg-red-700 scale-75"
+                                  >
+                                    <X className="w-3.5 h-3.5" />
+                                  </button>
                                 </div>
-                                <button
-                                  type="button"
-                                  onClick={() => setServiceForm(prev => ({ ...prev, faqs: prev.faqs.filter((_, i) => i !== idx) }))}
-                                  className="text-red-500 hover:text-red-700 shrink-0"
-                                >
-                                  <Trash2 className="w-4 h-4" />
-                                </button>
-                              </div>
-                            ))}
-                          </div>
-                        ) : (
-                          <div className="text-slate-400 text-xs italic">No service-specific FAQs added yet.</div>
-                        )}
+                              ))}
+                            </div>
+                          )}
+                        </div>
+
                       </div>
+                    )}
 
+                    {/* SUB-TAB: ADVISORY */}
+                    {serviceFormTab === 'advisory' && (
+                      <div className="space-y-6">
+                        {/* Preparation instructions */}
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-xs font-bold text-slate-700 uppercase">Preparation / Guidelines (Telugu translation syncs)</label>
+                          <textarea
+                            value={serviceForm.preparationInstructions}
+                            onChange={(e) => setServiceForm({ ...serviceForm, preparationInstructions: e.target.value })}
+                            rows="2.5"
+                            className="form-input text-xs resize-none"
+                            placeholder="e.g. Fasting of 10 hours required, Keep past medical reports ready..."
+                          ></textarea>
+                        </div>
+
+                        {/* Array B: Benefits */}
+                        <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 space-y-4">
+                          <label className="text-xs font-bold text-slate-800 uppercase block">Speciality Care Benefits</label>
+                          
+                          <div className="flex gap-2">
+                            <input
+                              type="text"
+                              value={newBenefit}
+                              onChange={(e) => setNewBenefit(e.target.value)}
+                              placeholder="Add care benefit (e.g. Certified Critical Care nurses)"
+                              className="form-input text-xs grow py-2"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (newBenefit.trim()) {
+                                  setServiceForm(prev => ({ ...prev, benefits: [...prev.benefits, newBenefit.trim()] }));
+                                  setNewBenefit('');
+                                }
+                              }}
+                              className="btn-primary py-2 px-4 rounded-xl text-xs shadow-none shrink-0"
+                            >
+                              <Plus className="w-4 h-4" />
+                            </button>
+                          </div>
+
+                          {serviceForm.benefits?.length > 0 ? (
+                            <ul className="space-y-2">
+                              {serviceForm.benefits.map((benefit, idx) => (
+                                <li key={idx} className="bg-white border border-slate-200 text-slate-700 text-xs px-3 py-2 rounded-xl flex items-center justify-between font-semibold font-sans">
+                                  <span className="truncate pr-4">{benefit}</span>
+                                  <button
+                                    type="button"
+                                    onClick={() => setServiceForm(prev => ({ ...prev, benefits: prev.benefits.filter((_, i) => i !== idx) }))}
+                                    className="text-red-500 hover:text-red-700 shrink-0"
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                  </button>
+                                </li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <div className="text-slate-400 text-xs italic">No clinical benefits checklist added yet.</div>
+                          )}
+                        </div>
+
+                        {/* Array C: Service FAQs */}
+                        <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 space-y-4">
+                          <label className="text-xs font-bold text-slate-800 uppercase block">Service-Specific FAQs</label>
+                          
+                          <div className="space-y-3 bg-white p-4 rounded-xl border border-slate-200">
+                            <input
+                              type="text"
+                              value={newFaq.question}
+                              onChange={(e) => setNewFaq({ ...newFaq, question: e.target.value })}
+                              placeholder="FAQ Question"
+                              className="form-input text-xs py-2"
+                            />
+                            <textarea
+                              value={newFaq.answer}
+                              onChange={(e) => setNewFaq({ ...newFaq, answer: e.target.value })}
+                              placeholder="FAQ Answer"
+                              rows="2"
+                              className="form-input text-xs py-2 resize-none"
+                            ></textarea>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (newFaq.question.trim() && newFaq.answer.trim()) {
+                                  setServiceForm(prev => ({ ...prev, faqs: [...prev.faqs, { question: newFaq.question.trim(), answer: newFaq.answer.trim() }] }));
+                                  setNewFaq({ question: '', answer: '' });
+                                }
+                              }}
+                              className="btn-primary py-2 px-4 rounded-lg text-xs shadow-none w-full"
+                            >
+                              <span>Add FAQ Pair</span>
+                            </button>
+                          </div>
+
+                          {serviceForm.faqs?.length > 0 ? (
+                            <div className="space-y-3.5 font-sans">
+                              {serviceForm.faqs.map((faq, idx) => (
+                                <div key={idx} className="bg-white p-4 rounded-xl border border-slate-200 relative text-left flex justify-between gap-4">
+                                  <div className="text-xs">
+                                    <div className="font-bold text-slate-900 font-sans">Q: {faq.question}</div>
+                                    <div className="text-slate-550 mt-1 font-sans">A: {faq.answer}</div>
+                                  </div>
+                                  <button
+                                    type="button"
+                                    onClick={() => setServiceForm(prev => ({ ...prev, faqs: prev.faqs.filter((_, i) => i !== idx) }))}
+                                    className="text-red-500 hover:text-red-700 shrink-0"
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <div className="text-slate-400 text-xs italic">No service-specific FAQs added yet.</div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="flex items-center gap-3 border-t border-slate-100 pt-5 justify-end">
+                      <button
+                        type="button"
+                        onClick={() => setEditingService(null)}
+                        className="btn-secondary py-2.5 px-6 rounded-xl font-semibold text-xs"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        className="btn-primary py-2.5 px-6 rounded-xl font-bold text-xs"
+                      >
+                        <Save className="w-4 h-4" />
+                        <span>Save Speciality</span>
+                      </button>
                     </div>
-
-                    <button
-                      type="submit"
-                      className="btn-primary py-3 px-8 rounded-xl text-sm font-bold flex items-center gap-2 shadow-none mt-6 w-full"
-                    >
-                      <Save className="w-4.5 h-4.5" />
-                      <span>Save Service Category</span>
-                    </button>
-
                   </form>
                 </div>
               ) : (
@@ -2035,16 +2042,24 @@ const Dashboard = ({
                       </div>
                       
                       {/* Upload Favicon */}
-                      <div className="flex flex-col gap-1.5">
-                        <label className="text-xs font-bold text-slate-700 uppercase font-sans">Upload Favicon (.ico / .png)</label>
-                        <div className="flex items-center gap-3">
+                      <div className="flex flex-col gap-1.5 font-sans">
+                        <label className="text-xs font-bold text-slate-700 uppercase">Favicon (.ico / .png)</label>
+                        <label className="flex items-center justify-center gap-2 border border-slate-200 hover:border-teal-500 hover:bg-teal-50/10 rounded-xl px-4 py-2.5 cursor-pointer transition-all duration-300">
+                          <FileImage className="w-4 h-4 text-slate-400 animate-pulse" />
+                          <span className="text-xs font-semibold text-slate-600">Select Favicon Asset</span>
                           <input
                             type="file"
                             accept="image/x-icon,image/png,image/jpeg"
                             onChange={(e) => handleImageFileChange(e, 'settings_favicon')}
-                            className="text-xs block w-full text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-zinc-100 file:text-zinc-700 hover:file:bg-zinc-200 cursor-pointer"
+                            className="hidden"
                           />
-                        </div>
+                        </label>
+                        {settingsUploadLoading && (
+                          <div className="flex items-center gap-2 text-[10px] text-teal-600 font-bold animate-pulse mt-1">
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                            <span>Uploading favicon...</span>
+                          </div>
+                        )}
                         {webCMS.faviconUrl && (
                           <div className="w-8 h-8 mt-1 border border-zinc-200 rounded-lg overflow-hidden bg-slate-50 flex items-center justify-center">
                             <img
@@ -2058,16 +2073,23 @@ const Dashboard = ({
                     </div>
 
                     <div className="flex flex-col gap-1.5">
-                      <label className="text-xs font-bold text-slate-700 uppercase font-sans">Upload Brand Logo</label>
-                      <div className="flex items-center gap-3">
+                      <label className="text-xs font-bold text-slate-700 uppercase font-sans">Brand Logo</label>
+                      <label className="flex items-center justify-center gap-2 border border-slate-200 hover:border-teal-500 hover:bg-teal-50/10 rounded-xl px-4 py-2.5 cursor-pointer transition-all duration-300">
+                        <UploadCloud className="w-4 h-4 text-slate-400" />
+                        <span className="text-xs font-semibold text-slate-600">Select Logo Image</span>
                         <input
                           type="file"
                           accept="image/*"
                           onChange={(e) => handleImageFileChange(e, 'settings')}
-                          className="text-xs block w-full text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-zinc-100 file:text-zinc-700 hover:file:bg-zinc-200 cursor-pointer"
+                          className="hidden"
                         />
-                        {settingsUploadLoading && <span className="text-[10px] text-zinc-500 animate-pulse">Processing asset...</span>}
-                      </div>
+                      </label>
+                      {settingsUploadLoading && (
+                        <div className="flex items-center gap-2 text-[10px] text-teal-600 font-bold animate-pulse mt-1">
+                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                          <span>Uploading logo...</span>
+                        </div>
+                      )}
                       
                       {webCMS.logoUrl && (
                         <div className="w-[180px] h-[60px] mt-2 border border-slate-200 rounded-lg overflow-hidden bg-slate-50 flex items-center justify-center p-2 shadow-inner">
@@ -2255,6 +2277,46 @@ const Dashboard = ({
                   </div>
                 </div>
 
+                {/* Section E: Cloudinary Credentials */}
+                <div className="pt-2">
+                  <h3 className="text-sm font-bold text-slate-800 border-b border-slate-100 pb-2 mb-4 uppercase tracking-wider">Cloudinary Storage (Permanent media hosting)</h3>
+                  <p className="text-[10px] text-slate-500 mb-4 font-semibold">
+                    Set up cloud storage to store website logos, specialities, banners, and review avatars permanently, preventing Render server wipes.
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-xs font-bold text-slate-700 uppercase">Cloud Name</label>
+                      <input
+                        type="text"
+                        value={cloudinaryCMS.cloudName || ''}
+                        onChange={(e) => setCloudinaryCMS({ ...cloudinaryCMS, cloudName: e.target.value })}
+                        placeholder="e.g. dlkfsad9a"
+                        className="form-input text-xs"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-xs font-bold text-slate-700 uppercase">API Key</label>
+                      <input
+                        type="text"
+                        value={cloudinaryCMS.apiKey || ''}
+                        onChange={(e) => setCloudinaryCMS({ ...cloudinaryCMS, apiKey: e.target.value })}
+                        placeholder="e.g. 84218942189421"
+                        className="form-input text-xs"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-xs font-bold text-slate-700 uppercase">API Secret</label>
+                      <input
+                        type="password"
+                        value={cloudinaryCMS.apiSecret || ''}
+                        onChange={(e) => setCloudinaryCMS({ ...cloudinaryCMS, apiSecret: e.target.value })}
+                        placeholder="••••••••"
+                        className="form-input text-xs"
+                      />
+                    </div>
+                  </div>
+                </div>
+
                 {/* Footer Content */}
                 <div className="pt-2">
                   <h3 className="text-sm font-bold text-slate-800 border-b border-slate-100 pb-2 mb-4 uppercase tracking-wider">Footer Metadata</h3>
@@ -2288,232 +2350,7 @@ const Dashboard = ({
                 </div>
 
               </form>
-            </div>
-          )}
-
-          {/* TAB: DOCTORS */}
-          {activeTab === 'doctors' && (
-            <div className="space-y-6 text-left max-w-5xl">
-              <div className="flex items-center justify-between">
-                <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider">Clinical Doctor Registry</h3>
-                {editingDoctor === null && (
-                  <button 
-                    onClick={() => {
-                      setEditingDoctor({});
-                      setDoctorForm({ name: '', doctorId: '', password: 'doctor123', designation: '', experience: '', bio: '', img: '', speciality: '', active: true });
-                    }}
-                    className="px-4 py-2 bg-teal-850 hover:bg-teal-900 text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-sm cursor-pointer border border-teal-700/50"
-                  >
-                    <Plus className="w-4 h-4" />
-                    <span>Register Doctor</span>
-                  </button>
-                )}
               </div>
-
-              {editingDoctor !== null ? (
-                <div className="card-premium bg-white p-6 rounded-2xl border border-slate-100 shadow-premium">
-                  <h4 className="text-xs font-bold text-slate-800 uppercase border-b border-slate-100 pb-3 mb-5 tracking-wider">
-                    {doctorForm._id ? 'Edit Doctor Profile' : 'Register New Medical Specialist'}
-                  </h4>
-                  <form onSubmit={handleSaveDoctor} className="space-y-5">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 text-left">
-                      <div className="flex flex-col gap-1.5">
-                        <label className="text-xs font-bold text-slate-705 uppercase">Doctor Name *</label>
-                        <input
-                          type="text"
-                          required
-                          value={doctorForm.name}
-                          onChange={(e) => setDoctorForm({ ...doctorForm, name: e.target.value })}
-                          className="form-input text-xs"
-                          placeholder="e.g. Dr. Priya Naidu"
-                        />
-                      </div>
-                      
-                      <div className="flex flex-col gap-1.5">
-                        <label className="text-xs font-bold text-slate-705 uppercase">Speciality Area *</label>
-                        <input
-                          type="text"
-                          required
-                          value={doctorForm.speciality}
-                          onChange={(e) => setDoctorForm({ ...doctorForm, speciality: e.target.value })}
-                          className="form-input text-xs"
-                          placeholder="e.g. Geriatrics & Pediatrics"
-                        />
-                      </div>
-
-                      <div className="flex flex-col gap-1.5">
-                        <label className="text-xs font-bold text-slate-705 uppercase">Doctor Login ID (Unique) *</label>
-                        <input
-                          type="text"
-                          required
-                          value={doctorForm.doctorId}
-                          onChange={(e) => setDoctorForm({ ...doctorForm, doctorId: e.target.value })}
-                          className="form-input text-xs"
-                          placeholder="e.g. DOC-104"
-                        />
-                      </div>
-
-                      <div className="flex flex-col gap-1.5">
-                        <label className="text-xs font-bold text-slate-705 uppercase">Portal Password *</label>
-                        <input
-                          type="password"
-                          required
-                          value={doctorForm.password}
-                          onChange={(e) => setDoctorForm({ ...doctorForm, password: e.target.value })}
-                          className="form-input text-xs"
-                          placeholder="Default: doctor123"
-                        />
-                      </div>
-
-                      <div className="flex flex-col gap-1.5">
-                        <label className="text-xs font-bold text-slate-705 uppercase">Clinical Designation *</label>
-                        <input
-                          type="text"
-                          required
-                          value={doctorForm.designation}
-                          onChange={(e) => setDoctorForm({ ...doctorForm, designation: e.target.value })}
-                          className="form-input text-xs"
-                          placeholder="e.g. Senior Consultant Pediatrist"
-                        />
-                      </div>
-
-                      <div className="flex flex-col gap-1.5">
-                        <label className="text-xs font-bold text-slate-705 uppercase">Years of Experience *</label>
-                        <input
-                          type="text"
-                          required
-                          value={doctorForm.experience}
-                          onChange={(e) => setDoctorForm({ ...doctorForm, experience: e.target.value })}
-                          className="form-input text-xs"
-                          placeholder="e.g. 15 Years Experience"
-                        />
-                      </div>
-
-                      <div className="flex flex-col gap-1.5 sm:col-span-2">
-                        <label className="text-xs font-bold text-slate-705 uppercase">Doctor Avatar Image URL *</label>
-                        <input
-                          type="url"
-                          required
-                          value={doctorForm.img}
-                          onChange={(e) => setDoctorForm({ ...doctorForm, img: e.target.value })}
-                          className="form-input text-xs"
-                          placeholder="https://images.unsplash.com/... or /bot-avatar.png"
-                        />
-                      </div>
-
-                      <div className="flex flex-col gap-1.5 sm:col-span-2">
-                        <label className="text-xs font-bold text-slate-705 uppercase">Professional Biography</label>
-                        <textarea
-                          value={doctorForm.bio}
-                          onChange={(e) => setDoctorForm({ ...doctorForm, bio: e.target.value })}
-                          className="form-input text-xs min-h-[80px]"
-                          placeholder="Brief summary of doctor's clinical history..."
-                        />
-                      </div>
-                      
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          id="docActive"
-                          checked={doctorForm.active}
-                          onChange={(e) => setDoctorForm({ ...doctorForm, active: e.target.checked })}
-                          className="w-4 h-4 text-teal-800 border-slate-350 rounded"
-                        />
-                        <label htmlFor="docActive" className="text-xs font-bold text-slate-700 uppercase cursor-pointer">On-Call Duty Active</label>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-3 border-t border-slate-100 pt-5 justify-end">
-                      <button 
-                        type="button" 
-                        onClick={() => setEditingDoctor(null)}
-                        className="btn-secondary py-2 px-5 text-xs font-bold rounded-xl"
-                      >
-                        Cancel
-                      </button>
-                      <button 
-                        type="submit" 
-                        className="px-5 py-2 bg-teal-800 hover:bg-teal-900 text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-sm cursor-pointer border border-teal-700/50"
-                      >
-                        <Save className="w-4 h-4" />
-                        <span>Save Profile</span>
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              ) : (
-                <div className="card-premium bg-white p-6 rounded-2xl border border-slate-100 shadow-premium overflow-hidden">
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm text-left">
-                      <thead>
-                        <tr className="bg-slate-50 border-b border-slate-150 text-slate-400 uppercase text-[9px] font-bold tracking-widest">
-                          <th className="px-6 py-4">Avatar</th>
-                          <th className="px-6 py-4">Doctor Name</th>
-                          <th className="px-6 py-4">Doctor ID</th>
-                          <th className="px-6 py-4">Speciality & Experience</th>
-                          <th className="px-6 py-4 text-center">Status</th>
-                          <th className="px-6 py-4 text-right">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-100 text-slate-600 font-sans">
-                        {localDoctors.length === 0 ? (
-                          <tr>
-                            <td colSpan="6" className="text-center py-6 text-slate-400 text-xs">No doctors registered yet.</td>
-                          </tr>
-                        ) : (
-                          localDoctors.map(doc => (
-                            <tr key={doc._id} className="hover:bg-slate-50/50">
-                              <td className="px-6 py-3">
-                                <div className="w-9 h-9 rounded-full overflow-hidden border border-slate-200 shrink-0">
-                                  <img src={doc.img} alt={doc.name} className="w-full h-full object-cover" />
-                                </div>
-                              </td>
-                              <td className="px-6 py-3 font-bold text-slate-900">
-                                <div>{doc.name}</div>
-                                <div className="text-[9px] text-slate-400 font-semibold">{doc.designation}</div>
-                              </td>
-                              <td className="px-6 py-3 font-mono text-xs">{doc.doctorId}</td>
-                              <td className="px-6 py-3">
-                                <div className="font-bold text-slate-705">{doc.speciality}</div>
-                                <div className="text-[9px] text-slate-400 font-semibold">{doc.experience}</div>
-                              </td>
-                              <td className="px-6 py-3 text-center">
-                                <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider ${
-                                  doc.active ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-400'
-                                }`}>
-                                  {doc.active ? 'Active' : 'Offline'}
-                                </span>
-                              </td>
-                              <td className="px-6 py-3 text-right">
-                                <div className="flex items-center justify-end gap-1.5">
-                                  <button
-                                    onClick={() => {
-                                      setEditingDoctor(doc);
-                                      setDoctorForm(doc);
-                                    }}
-                                    className="p-1.5 hover:bg-slate-100 hover:text-teal-800 rounded transition-colors text-slate-400 cursor-pointer"
-                                    title="Edit Profile"
-                                  >
-                                    <Edit className="w-4 h-4" />
-                                  </button>
-                                  <button
-                                    onClick={() => handleDeleteDoctor(doc._id)}
-                                    className="p-1.5 hover:bg-rose-50 hover:text-rose-600 rounded transition-colors text-slate-400 cursor-pointer"
-                                    title="Remove Doctor"
-                                  >
-                                    <Trash2 className="w-4 h-4" />
-                                  </button>
-                                </div>
-                              </td>
-                            </tr>
-                          ))
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              )}
-            </div>
           )}
 
         </div>

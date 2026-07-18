@@ -35,7 +35,33 @@ router.post('/', protect, upload.single('image'), async (req, res) => {
 
     const localFilePath = req.file.path;
 
-    if (isCloudinaryConfigured) {
+    // 1. Fetch dynamic Cloudinary settings from database
+    let cloudConfig = null;
+    try {
+      const Settings = require('../models/Settings');
+      const cloudDoc = await dbHelper.findOne(Settings, { key: 'cloudinary' });
+      if (cloudDoc && cloudDoc.value?.cloudName && cloudDoc.value?.apiKey && cloudDoc.value?.apiSecret) {
+        cloudConfig = cloudDoc.value;
+      }
+    } catch (dbErr) {
+      console.warn('Could not read dynamic Cloudinary settings, using env:', dbErr.message);
+    }
+
+    // 2. Resolve credentials (DB values take precedence, fallback to env)
+    const cloudName = cloudConfig?.cloudName || process.env.CLOUDINARY_CLOUD_NAME;
+    const apiKey = cloudConfig?.apiKey || process.env.CLOUDINARY_API_KEY;
+    const apiSecret = cloudConfig?.apiSecret || process.env.CLOUDINARY_API_SECRET;
+
+    const useCloudinary = !!(cloudName && apiKey && apiSecret);
+
+    if (useCloudinary) {
+      // Re-configure Cloudinary dynamically on-demand
+      cloudinary.config({
+        cloud_name: cloudName,
+        api_key: apiKey,
+        api_secret: apiSecret
+      });
+
       // Upload file to Cloudinary
       const result = await cloudinary.uploader.upload(localFilePath, {
         folder: 'home-healthcare',
@@ -76,7 +102,33 @@ router.delete('/:id', protect, async (req, res) => {
   const fileId = req.params.id;
 
   try {
-    if (isCloudinaryConfigured) {
+    // 1. Fetch dynamic Cloudinary settings from database
+    let cloudConfig = null;
+    try {
+      const Settings = require('../models/Settings');
+      const cloudDoc = await dbHelper.findOne(Settings, { key: 'cloudinary' });
+      if (cloudDoc && cloudDoc.value?.cloudName && cloudDoc.value?.apiKey && cloudDoc.value?.apiSecret) {
+        cloudConfig = cloudDoc.value;
+      }
+    } catch (dbErr) {
+      console.warn('Could not read dynamic Cloudinary settings, using env:', dbErr.message);
+    }
+
+    // 2. Resolve credentials (DB values take precedence, fallback to env)
+    const cloudName = cloudConfig?.cloudName || process.env.CLOUDINARY_CLOUD_NAME;
+    const apiKey = cloudConfig?.apiKey || process.env.CLOUDINARY_API_KEY;
+    const apiSecret = cloudConfig?.apiSecret || process.env.CLOUDINARY_API_SECRET;
+
+    const useCloudinary = !!(cloudName && apiKey && apiSecret);
+
+    if (useCloudinary) {
+      // Re-configure Cloudinary dynamically on-demand
+      cloudinary.config({
+        cloud_name: cloudName,
+        api_key: apiKey,
+        api_secret: apiSecret
+      });
+
       // Delete from Cloudinary
       const result = await cloudinary.uploader.destroy(fileId);
       if (result.result === 'ok' || result.result === 'not_found') {
