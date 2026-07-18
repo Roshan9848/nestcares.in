@@ -5,7 +5,7 @@ import './index.css'
 import App from './App.jsx'
 
 // Set global base URL for all API requests to point to backend server
-axios.defaults.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+axios.defaults.baseURL = import.meta.env.VITE_API_URL || 'https://nestcares-backend.onrender.com/api';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

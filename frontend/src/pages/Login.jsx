@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { ShieldCheck, Mail, Lock, ArrowLeft, ArrowRight, Activity } from 'lucide-react';
+import { resolveImageUrl } from '../utils/url';
 
 const Login = () => {
   const { user, login } = useAuth();
@@ -23,7 +24,7 @@ const Login = () => {
         if (settings?.web?.logoUrl) {
           const url = settings.web.logoUrl;
           if (url.startsWith('/')) {
-            setLogoSrc(url === '/logo.png' ? '/logo.png' : `http://localhost:5000${url}`);
+            setLogoSrc(url === '/logo.png' ? '/logo.png' : resolveImageUrl(url));
           } else {
             setLogoSrc(url);
           }

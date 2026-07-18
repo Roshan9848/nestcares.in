@@ -101,7 +101,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token') || null);
   const [loading, setLoading] = useState(true);
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+  const API_URL = import.meta.env.VITE_API_URL || 'https://nestcares-backend.onrender.com/api';
   axios.defaults.baseURL = API_URL;
 
   // Set initial token header if present

@@ -69,7 +69,7 @@ const DoctorDashboard = () => {
 
       // Trigger backend mail dispatch to nestcares.in@gmail.com
       try {
-        await axios.post('http://localhost:5000/api/auth/doctor-otp', {
+        await axios.post('/auth/doctor-otp', {
           doctorId: doctor.doctorId,
           doctorName: doctor.name,
           otpCode: otp

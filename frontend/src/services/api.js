@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api', // Default local API server port
+  baseURL: import.meta.env.VITE_API_URL || 'https://nestcares-backend.onrender.com/api',
   headers: {
     'Content-Type': 'application/json'
   }
