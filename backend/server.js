@@ -11,7 +11,7 @@ const app = express();
 
 // Middlewares
 app.use(cors({
-  origin: '*', // Allow all origins for dev simplicity
+  origin: process.env.CLIENT_URL || '*', // Tighten to client domain in production
   credentials: true
 }));
 app.use(express.json());
