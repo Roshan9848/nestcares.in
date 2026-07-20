@@ -4,7 +4,8 @@ let isConnected = false;
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/home-healthcare', {
+    const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://nestcaresin_db_user:cr3ntemeJtYpDCGg@cluster0.b8dulz4.mongodb.net/nestcares?retryWrites=true&w=majority&appName=Cluster0';
+    const conn = await mongoose.connect(mongoUri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });

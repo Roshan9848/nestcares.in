@@ -27,7 +27,10 @@ const sendEmail = async ({ to, subject, templateName, replacements }) => {
     const smtpHost = (rawHost && rawHost !== 'smtp.mailtrap.io') ? rawHost : (process.env.SMTP_HOST || 'smtp.gmail.com');
     
     const rawPort = emailConfig?.smtpPort;
-    const smtpPort = (rawPort && parseInt(rawPort) !== 2525) ? parseInt(rawPort) : (parseInt(process.env.SMTP_PORT) || 587);
+    let smtpPort = (rawPort && parseInt(rawPort) !== 2525) ? parseInt(rawPort) : (parseInt(process.env.SMTP_PORT) || 465);
+    if (smtpHost && smtpHost.includes('gmail.com')) {
+      smtpPort = 465;
+    }
     
     const smtpUser = (emailConfig?.smtpUser && emailConfig.smtpUser.trim() !== '') ? emailConfig.smtpUser : (process.env.SMTP_USER || 'nestcares.in@gmail.com');
     const smtpPass = (emailConfig?.smtpPass && emailConfig.smtpPass.trim() !== '') ? emailConfig.smtpPass : (process.env.SMTP_PASS || 'zunfiznbypyqxblg');

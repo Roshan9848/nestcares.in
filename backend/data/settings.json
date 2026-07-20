@@ -76,7 +76,7 @@
     "key": "email",
     "value": {
       "smtpHost": "smtp.gmail.com",
-      "smtpPort": 587,
+      "smtpPort": 465,
       "smtpUser": "nestcares.in@gmail.com",
       "smtpPass": "zunfiznbypyqxblg",
       "businessEmail": "nestcares.in@gmail.com",
