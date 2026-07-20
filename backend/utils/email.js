@@ -100,7 +100,7 @@ const sendEmail = async ({ to, subject, templateName, replacements }) => {
         } else if (logoPath === '/logo.png') {
           logoUrl = 'https://nestcares.in/logo.png';
         } else {
-          const backendHost = process.env.BACKEND_URL || 'https://nestcares-backend.onrender.com';
+          const backendHost = process.env.BACKEND_URL || 'https://nestcares-in.onrender.com';
           logoUrl = `${backendHost}${logoPath.startsWith('/') ? '' : '/'}${logoPath}`;
         }
       }
