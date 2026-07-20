@@ -4,7 +4,10 @@ let isConnected = false;
 
 const connectDB = async () => {
   try {
-    const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://nestcaresin_db_user:cr3ntemeJtYpDCGg@cluster0.b8dulz4.mongodb.net/nestcares?retryWrites=true&w=majority&appName=Cluster0';
+    const mongoUri = process.env.MONGODB_URI;
+    if (!mongoUri) {
+      throw new Error('MONGODB_URI environment variable is missing.');
+    }
     const conn = await mongoose.connect(mongoUri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
