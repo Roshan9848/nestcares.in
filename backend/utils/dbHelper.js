@@ -98,12 +98,12 @@ const checkAndSeedJSON = () => {
         _id: 'set_contact',
         key: 'contact',
         value: {
-          phoneNumbers: ['+91 98765 43210', '+91 11 2345 6789'],
-          emailAddress: 'contact@carehome.com',
-          whatsappNumber: '+91 98765 43210',
-          officeAddress: '123, Healthcare Enclave, Medical Square, Sector 45, New Delhi - 110001',
+          phoneNumbers: ['+91 92488 49388', '+91 92488 49389'],
+          emailAddress: 'nestcares.in@gmail.com',
+          whatsappNumber: '+91 92488 49388',
+          officeAddress: 'House No: 5-6-745, Beside Vijaya High School, Pragathi Nagar, Nizamabad, Telangana - 503002',
           workingHours: 'Mon - Sun: 24/7 Available for Emergencies',
-          emergencyContact: '+91 99999 88888',
+          emergencyContact: '+91 92488 49388',
           googleMapsLink: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.562013898231!2d77.2281987!3d28.6139391!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjjCsDM2JzUwLjIiTiA3N8KwMTMnNDEuNSJF!5e0!3m2!1sen!2sin!4v1625000000000!5m2!1sen!2sin',
           socials: {
             facebook: 'https://facebook.com',
@@ -117,14 +117,14 @@ const checkAndSeedJSON = () => {
         _id: 'set_email',
         key: 'email',
         value: {
-          smtpHost: 'smtp.mailtrap.io',
-          smtpPort: 2525,
-          smtpUser: '',
-          smtpPass: '',
-          businessEmail: 'bookings@carehome.com',
-          senderName: 'CareHome Services Support',
+          smtpHost: 'smtp.gmail.com',
+          smtpPort: 587,
+          smtpUser: 'nestcares.in@gmail.com',
+          smtpPass: 'zunfiznbypyqxblg',
+          businessEmail: 'nestcares.in@gmail.com',
+          senderName: 'Nest Cares Support',
           templates: {
-            patientConfirmation: 'Dear {{patientName}},\n\nThank you for choosing CareHome Services. We have received your booking request for {{serviceName}} on {{date}} at {{time}}.\n\nOur medical coordinator will call you shortly at {{mobile}} to confirm your appointment and assign your care team.\n\nAddress Details:\n{{address}}\n\nWarm regards,\nCareHome Team',
+            patientConfirmation: 'Dear {{patientName}},\n\nThank you for choosing Nest Cares. We have received your booking request for {{serviceName}} on {{date}} at {{time}}.\n\nOur medical coordinator will call you shortly at {{mobile}} to confirm your appointment and assign your care team.\n\nAddress Details:\n{{address}}\n\nWarm regards,\nNest Cares Team',
             adminNotification: 'Hello Admin,\n\nA new booking request has been submitted:\n\nPatient Name: {{patientName}}\nPhone: {{mobile}}\nEmail: {{email}}\nService: {{serviceName}}\nDate: {{date}}\nTime: {{time}}\nAddress: {{address}}\nNotes: {{notes}}\n\nPlease review and approve this booking in your Dashboard.'
           }
         }
@@ -133,11 +133,11 @@ const checkAndSeedJSON = () => {
         _id: 'set_web',
         key: 'web',
         value: {
-          companyName: 'CareHome Healthcare',
+          companyName: 'Nest Cares',
           logoUrl: '',
           faviconUrl: '',
           footerContent: 'Providing hospital-level medical services at the comfort of your home. Trusted by over 10,000+ families.',
-          copyright: '© 2026 CareHome Healthcare Services. All rights reserved.',
+          copyright: '© 2026 Nest Cares Home Healthcare Services. All rights reserved.',
           seoTitle: 'CareHome - Premium Home Healthcare Services',
           seoDescription: 'Hospital-level ICU setups, experienced home doctors, specialized nurses, and 24/7 ambulance services at your bedside.',
           googleAnalyticsCode: 'UA-XXXXX-X'

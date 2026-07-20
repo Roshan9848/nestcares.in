@@ -22,13 +22,23 @@ const sendEmail = async ({ to, subject, templateName, replacements }) => {
     const emailConfigDoc = await dbHelper.findOne(Settings, { key: 'email' });
     const emailConfig = emailConfigDoc ? emailConfigDoc.value : null;
 
-    if (!emailConfig) {
-      console.warn('⚠️ No email configuration found in DB. Simulating email...');
-      logEmailLocal(to, subject, `[Simulated] ${templateName}\nReplacements: ${JSON.stringify(replacements)}`);
-      return true;
-    }
+    // Resolve credentials (DB values take precedence if valid and not dummy, fallback to .env)
+    const rawHost = emailConfig?.smtpHost;
+    const smtpHost = (rawHost && rawHost !== 'smtp.mailtrap.io') ? rawHost : (process.env.SMTP_HOST || 'smtp.gmail.com');
+    
+    const rawPort = emailConfig?.smtpPort;
+    const smtpPort = (rawPort && parseInt(rawPort) !== 2525) ? parseInt(rawPort) : (parseInt(process.env.SMTP_PORT) || 587);
+    
+    const smtpUser = (emailConfig?.smtpUser && emailConfig.smtpUser.trim() !== '') ? emailConfig.smtpUser : (process.env.SMTP_USER || 'nestcares.in@gmail.com');
+    const smtpPass = (emailConfig?.smtpPass && emailConfig.smtpPass.trim() !== '') ? emailConfig.smtpPass : (process.env.SMTP_PASS || 'zunfiznbypyqxblg');
+    
+    const rawBusEmail = emailConfig?.businessEmail;
+    const businessEmail = (rawBusEmail && rawBusEmail !== 'bookings@carehome.com') ? rawBusEmail : (process.env.BUSINESS_EMAIL || 'nestcares.in@gmail.com');
+    
+    const rawSender = emailConfig?.senderName;
+    const senderName = (rawSender && rawSender !== 'CareHome Services Support') ? rawSender : (process.env.SENDER_NAME || 'Nest Cares Support');
 
-    const { smtpHost, smtpPort, smtpUser, smtpPass, businessEmail, senderName, templates } = emailConfig;
+    const templates = emailConfig?.templates || {};
 
     // Pick and interpolate template
     let templateText = templates ? templates[templateName] : '';
@@ -53,8 +63,8 @@ const sendEmail = async ({ to, subject, templateName, replacements }) => {
     // Create transporter dynamically
     const transporter = nodemailer.createTransport({
       host: smtpHost,
-      port: parseInt(smtpPort) || 5858,
-      secure: parseInt(smtpPort) === 465, // true for 465, false for other ports
+      port: smtpPort,
+      secure: smtpPort === 465, // true for 465, false for 587 / other ports
       auth: {
         user: smtpUser,
         pass: smtpPass,
@@ -253,10 +263,13 @@ const sendEmail = async ({ to, subject, templateName, replacements }) => {
       `;
     }
 
+    // Resolve target recipient (if dummy target is passed, send to business email)
+    const targetRecipient = (!to || to === 'admin@carehome.com' || to === 'admin@nestcares.in') ? businessEmail : to;
+
     // Send mail
     const mailOptions = {
       from: `"${senderName || 'Nest Cares'}" <${businessEmail || smtpUser}>`,
-      to,
+      to: targetRecipient,
       subject,
       text: body,
       html: htmlContent || undefined

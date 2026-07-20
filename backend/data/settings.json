@@ -75,14 +75,14 @@
     "_id": "set_email",
     "key": "email",
     "value": {
-      "smtpHost": "smtp.mailtrap.io",
-      "smtpPort": 2525,
-      "smtpUser": "",
-      "smtpPass": "",
-      "businessEmail": "bookings@carehome.com",
-      "senderName": "CareHome Services Support",
+      "smtpHost": "smtp.gmail.com",
+      "smtpPort": 587,
+      "smtpUser": "nestcares.in@gmail.com",
+      "smtpPass": "zunfiznbypyqxblg",
+      "businessEmail": "nestcares.in@gmail.com",
+      "senderName": "Nest Cares Support",
       "templates": {
-        "patientConfirmation": "Dear {{patientName}},\n\nThank you for choosing CareHome Services. We have received your booking request for {{serviceName}} on {{date}} at {{time}}.\n\nOur medical coordinator will call you shortly at {{mobile}} to confirm your appointment and assign your care team.\n\nAddress Details:\n{{address}}\n\nWarm regards,\nCareHome Team",
+        "patientConfirmation": "Dear {{patientName}},\n\nThank you for choosing Nest Cares. We have received your booking request for {{serviceName}} on {{date}} at {{time}}.\n\nOur medical coordinator will call you shortly at {{mobile}} to confirm your appointment and assign your care team.\n\nAddress Details:\n{{address}}\n\nWarm regards,\nNest Cares Team",
         "adminNotification": "Hello Admin,\n\nA new booking request has been submitted:\n\nPatient Name: {{patientName}}\nPhone: {{mobile}}\nEmail: {{email}}\nService: {{serviceName}}\nDate: {{date}}\nTime: {{time}}\nAddress: {{address}}\nNotes: {{notes}}\n\nPlease review and approve this booking in your Dashboard."
       }
     }
