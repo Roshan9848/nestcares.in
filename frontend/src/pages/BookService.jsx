@@ -121,19 +121,15 @@ const BookService = ({ services }) => {
         setSuccess(true);
         localStorage.removeItem('healthcare_booking_draft');
         addToast('Appointment request registered successfully!', 'success');
+      } else {
+        addToast(res.message || 'Failed to submit booking request.', 'error');
       }
     } catch (err) {
-      // Mock Database Submission Fallback if API is offline
-      setTimeout(() => {
-        const saved = mockDb.createBooking(formData);
-        setCreatedBooking(saved);
-        setSuccess(true);
-        localStorage.removeItem('healthcare_booking_draft');
-        addToast('Appointment request registered successfully!', 'success');
-        setLoading(false);
-      }, 1000);
+      console.error('Booking submission error:', err);
+      const errMsg = err.response?.data?.message || err.message || 'Failed to submit booking request. Please check connection.';
+      addToast(errMsg, 'error');
     } finally {
-      // Keep loading active for mock timeout
+      setLoading(false);
     }
   };
 
@@ -237,9 +233,9 @@ const BookService = ({ services }) => {
               )}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full py-3 bg-[#25D366] hover:bg-[#20ba59] text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-sm active:scale-97 text-center cursor-pointer font-sans"
+              className="w-full py-3.5 px-4 bg-[#25D366] hover:bg-[#20ba59] text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-sm active:scale-97 text-center cursor-pointer font-sans"
             >
-              <svg className="w-4.5 h-4.5 fill-white shrink-0" viewBox="0 0 24 24">
+              <svg className="fill-white shrink-0" style={{ width: '20px', height: '20px', minWidth: '20px', minHeight: '20px' }} viewBox="0 0 24 24">
                 <path d="M12.004 2C6.48 2 2 6.48 2 12.004c0 1.88.52 3.63 1.43 5.16L2 22l4.98-1.32c1.47.8 3.12 1.25 4.86 1.25 5.52 0 10-4.48 10-10.004C21.84 6.48 17.38 2 12.004 2zM12 20.354c-1.63 0-3.23-.44-4.63-1.27l-.33-.2-3.44.91.93-3.35-.22-.35c-.91-1.45-1.39-3.13-1.39-4.88 0-4.73 3.85-8.58 8.58-8.58 2.29 0 4.45.89 6.07 2.51a8.5 8.5 0 0 1 2.51 6.07c0 4.73-3.85 8.58-8.58 8.58zm4.72-6.47c-.26-.13-1.52-.75-1.76-.84-.23-.09-.4-.13-.57.13-.17.26-.66.84-.81 1.01-.15.17-.3.2-.56.07-.26-.13-1.1-.4-2.1-1.29-.77-.69-1.29-1.55-1.44-1.81-.15-.26-.02-.4.11-.53.12-.12.26-.3.39-.45.13-.15.17-.26.26-.43.09-.17.04-.33-.02-.46-.07-.13-.57-1.37-.78-1.88-.2-.5-.42-.43-.57-.44h-.49c-.17 0-.45.06-.69.31-.24.25-.92.9-1 .9-1 .9 0 1.94-.17 2.05.08.3.13.56.24.81.42 1.15.82 2 2.2 2.68.86.35 1.52.39 2.09.3.64-.09 1.52-.61 1.73-1.2.22-.59.22-1.1.15-1.2-.07-.1-.26-.16-.52-.29z" />
               </svg>
               <span>Save & Share Booking on WhatsApp</span>

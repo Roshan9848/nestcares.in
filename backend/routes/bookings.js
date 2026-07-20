@@ -51,7 +51,7 @@ router.post('/', async (req, res) => {
       status: 'pending'
     });
 
-    // Send emails in background (non-blocking)
+    // Send emails (blocking or settled to guarantee execution before response)
     const emailReplacements = {
       patientName: name,
       serviceName: `${serviceName} - ${subServiceName}`,
@@ -63,24 +63,31 @@ router.post('/', async (req, res) => {
       notes: notes || 'None'
     };
 
-    // 1. Send confirmation to Patient
+    const emailPromises = [];
+
+    // 1. Send confirmation to Patient (if provided)
     if (email && email.trim() !== '') {
-      sendEmail({
-        to: email,
-        subject: `Booking Confirmed - ${serviceName} (${subServiceName})`,
-        templateName: 'patientConfirmation',
-        replacements: emailReplacements
-      }).catch(err => console.error('Patient email error:', err.message));
+      emailPromises.push(
+        sendEmail({
+          to: email,
+          subject: `Booking Confirmed - ${serviceName} (${subServiceName})`,
+          templateName: 'patientConfirmation',
+          replacements: emailReplacements
+        })
+      );
     }
 
-    // 2. Send notification to Admin (will load admin email from settings inside sendEmail)
-    // We fetch SMTP settings to see what business email is configured
-    sendEmail({
-      to: 'admin@carehome.com', // fallback target, nodemailer utility will also try reading the businessEmail setting
-      subject: `New Booking Request: ${serviceName} (${subServiceName}) - ${name}`,
-      templateName: 'adminNotification',
-      replacements: emailReplacements
-    }).catch(err => console.error('Admin email error:', err.message));
+    // 2. Send notification to Admin
+    emailPromises.push(
+      sendEmail({
+        to: 'nestcares.in@gmail.com',
+        subject: `New Booking Request: ${serviceName} (${subServiceName}) - ${name}`,
+        templateName: 'adminNotification',
+        replacements: emailReplacements
+      })
+    );
+
+    await Promise.allSettled(emailPromises);
 
     res.status(201).json({
       success: true,
