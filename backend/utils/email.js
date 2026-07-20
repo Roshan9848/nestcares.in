@@ -60,19 +60,31 @@ const sendEmail = async ({ to, subject, templateName, replacements }) => {
       return true;
     }
 
-    // Create transporter dynamically with strict socket timeouts
-    const transporter = nodemailer.createTransport({
-      host: smtpHost,
-      port: smtpPort,
-      secure: smtpPort === 465, // true for 465, false for 587 / other ports
+    // Create transporter dynamically (auto-detect Gmail for direct SSL port 465)
+    const isGmail = (smtpHost && smtpHost.includes('gmail.com')) || (smtpUser && smtpUser.includes('gmail.com'));
+    const transporterConfig = isGmail ? {
+      service: 'gmail',
       auth: {
         user: smtpUser,
         pass: smtpPass,
       },
-      connectionTimeout: 5000, // 5 sec max connection setup
-      greetingTimeout: 5000,   // 5 sec max greeting response
-      socketTimeout: 10000,    // 10 sec max socket inactivity
-    });
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 15000,
+    } : {
+      host: smtpHost,
+      port: smtpPort,
+      secure: smtpPort === 465,
+      auth: {
+        user: smtpUser,
+        pass: smtpPass,
+      },
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 15000,
+    };
+
+    const transporter = nodemailer.createTransport(transporterConfig);
 
     // Generate premium HTML templates dynamically based on template name
     let htmlContent = '';
