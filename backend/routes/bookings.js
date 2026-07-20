@@ -51,45 +51,50 @@ router.post('/', async (req, res) => {
       status: 'pending'
     });
 
-    // 1. Send instant HTTP response to browser so UI never hangs
-    res.status(201).json({
-      success: true,
-      message: 'Booking request submitted successfully! Confirmation email queued.',
-      data: booking
-    });
+    // Send emails over direct SSL (port 465)
+    const emailReplacements = {
+      patientName: name,
+      serviceName: `${serviceName} - ${subServiceName}`,
+      date: preferredDate,
+      time: preferredTime,
+      mobile,
+      email: email || 'None',
+      address,
+      notes: notes || 'None'
+    };
 
-    // 2. Dispatch emails asynchronously in background
-    setImmediate(async () => {
-      const emailReplacements = {
-        patientName: name,
-        serviceName: `${serviceName} - ${subServiceName}`,
-        date: preferredDate,
-        time: preferredTime,
-        mobile,
-        email: email || 'None',
-        address,
-        notes: notes || 'None'
-      };
+    try {
+      const emailPromises = [];
 
-      try {
-        if (email && email.trim() !== '') {
+      if (email && email.trim() !== '') {
+        emailPromises.push(
           sendEmail({
             to: email,
             subject: `Booking Confirmed - ${serviceName} (${subServiceName})`,
             templateName: 'patientConfirmation',
             replacements: emailReplacements
-          }).catch(err => console.error('Patient email dispatch error:', err.message));
-        }
+          })
+        );
+      }
 
+      emailPromises.push(
         sendEmail({
           to: 'nestcares.in@gmail.com',
           subject: `New Booking Request: ${serviceName} (${subServiceName}) - ${name}`,
           templateName: 'adminNotification',
           replacements: emailReplacements
-        }).catch(err => console.error('Admin email dispatch error:', err.message));
-      } catch (err) {
-        console.error('Async email trigger error:', err.message);
-      }
+        })
+      );
+
+      await Promise.allSettled(emailPromises);
+    } catch (err) {
+      console.error('Email dispatch warning:', err.message);
+    }
+
+    res.status(201).json({
+      success: true,
+      message: 'Booking request submitted successfully! Confirmation email sent.',
+      data: booking
     });
   } catch (error) {
     console.error('Error submitting booking:', error);
