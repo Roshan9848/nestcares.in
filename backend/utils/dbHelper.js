@@ -120,7 +120,7 @@ const checkAndSeedJSON = () => {
           smtpHost: 'smtp.gmail.com',
           smtpPort: 587,
           smtpUser: 'nestcares.in@gmail.com',
-          smtpPass: 'zunfiznbypyqxblg',
+          smtpPass: '',
           businessEmail: 'nestcares.in@gmail.com',
           senderName: 'Nest Cares Support',
           templates: {

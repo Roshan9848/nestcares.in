@@ -32,8 +32,8 @@ const sendEmail = async ({ to, subject, templateName, replacements }) => {
       smtpPort = 465;
     }
     
-    const smtpUser = (emailConfig?.smtpUser && emailConfig.smtpUser.trim() !== '') ? emailConfig.smtpUser : (process.env.SMTP_USER || 'nestcares.in@gmail.com');
-    const smtpPass = (emailConfig?.smtpPass && emailConfig.smtpPass.trim() !== '') ? emailConfig.smtpPass : (process.env.SMTP_PASS || 'zunfiznbypyqxblg');
+    const smtpUser = (emailConfig?.smtpUser && emailConfig.smtpUser.trim() !== '') ? emailConfig.smtpUser : (process.env.SMTP_USER || '');
+    const smtpPass = (emailConfig?.smtpPass && emailConfig.smtpPass.trim() !== '') ? emailConfig.smtpPass : (process.env.SMTP_PASS || '');
     
     const rawBusEmail = emailConfig?.businessEmail;
     const businessEmail = (rawBusEmail && rawBusEmail !== 'bookings@carehome.com') ? rawBusEmail : (process.env.BUSINESS_EMAIL || 'nestcares.in@gmail.com');
