@@ -51,48 +51,45 @@ router.post('/', async (req, res) => {
       status: 'pending'
     });
 
-    // Send emails (blocking or settled to guarantee execution before response)
-    const emailReplacements = {
-      patientName: name,
-      serviceName: `${serviceName} - ${subServiceName}`,
-      date: preferredDate,
-      time: preferredTime,
-      mobile,
-      email: email || 'None',
-      address,
-      notes: notes || 'None'
-    };
-
-    const emailPromises = [];
-
-    // 1. Send confirmation to Patient (if provided)
-    if (email && email.trim() !== '') {
-      emailPromises.push(
-        sendEmail({
-          to: email,
-          subject: `Booking Confirmed - ${serviceName} (${subServiceName})`,
-          templateName: 'patientConfirmation',
-          replacements: emailReplacements
-        })
-      );
-    }
-
-    // 2. Send notification to Admin
-    emailPromises.push(
-      sendEmail({
-        to: 'nestcares.in@gmail.com',
-        subject: `New Booking Request: ${serviceName} (${subServiceName}) - ${name}`,
-        templateName: 'adminNotification',
-        replacements: emailReplacements
-      })
-    );
-
-    await Promise.allSettled(emailPromises);
-
+    // 1. Send instant HTTP response to browser so UI never hangs
     res.status(201).json({
       success: true,
-      message: 'Booking request submitted successfully! Confirmation email sent.',
+      message: 'Booking request submitted successfully! Confirmation email queued.',
       data: booking
+    });
+
+    // 2. Dispatch emails asynchronously in background
+    setImmediate(async () => {
+      const emailReplacements = {
+        patientName: name,
+        serviceName: `${serviceName} - ${subServiceName}`,
+        date: preferredDate,
+        time: preferredTime,
+        mobile,
+        email: email || 'None',
+        address,
+        notes: notes || 'None'
+      };
+
+      try {
+        if (email && email.trim() !== '') {
+          sendEmail({
+            to: email,
+            subject: `Booking Confirmed - ${serviceName} (${subServiceName})`,
+            templateName: 'patientConfirmation',
+            replacements: emailReplacements
+          }).catch(err => console.error('Patient email dispatch error:', err.message));
+        }
+
+        sendEmail({
+          to: 'nestcares.in@gmail.com',
+          subject: `New Booking Request: ${serviceName} (${subServiceName}) - ${name}`,
+          templateName: 'adminNotification',
+          replacements: emailReplacements
+        }).catch(err => console.error('Admin email dispatch error:', err.message));
+      } catch (err) {
+        console.error('Async email trigger error:', err.message);
+      }
     });
   } catch (error) {
     console.error('Error submitting booking:', error);

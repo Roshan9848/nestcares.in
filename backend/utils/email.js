@@ -60,7 +60,7 @@ const sendEmail = async ({ to, subject, templateName, replacements }) => {
       return true;
     }
 
-    // Create transporter dynamically
+    // Create transporter dynamically with strict socket timeouts
     const transporter = nodemailer.createTransport({
       host: smtpHost,
       port: smtpPort,
@@ -69,6 +69,9 @@ const sendEmail = async ({ to, subject, templateName, replacements }) => {
         user: smtpUser,
         pass: smtpPass,
       },
+      connectionTimeout: 5000, // 5 sec max connection setup
+      greetingTimeout: 5000,   // 5 sec max greeting response
+      socketTimeout: 10000,    // 10 sec max socket inactivity
     });
 
     // Generate premium HTML templates dynamically based on template name
