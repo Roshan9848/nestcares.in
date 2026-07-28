@@ -105,15 +105,15 @@ const Footer = ({ webSettings, contactSettings }) => {
 
         {/* Footer Sub-row */}
         <div className="border-t border-slate-800 pt-8 pb-20 md:pb-0 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <div>{copyright}</div>
-          <div className="flex items-center gap-6">
-            <Link to="/login" className="hover:text-slate-300 transition-colors flex items-center gap-1">
-              <span>Admin Portal</span>
+          <div className="flex flex-col sm:flex-row items-center gap-4">
+            <div>{copyright}</div>
+            <span className="hidden sm:inline text-slate-800">|</span>
+            <Link to="/login" className="hover:text-slate-300 transition-colors flex items-center gap-1 font-semibold text-slate-400">
+              Admin Portal
             </Link>
-            <span className="text-slate-700">|</span>
-            <span className="flex items-center gap-1">
-              Developed with medical trust
-            </span>
+          </div>
+          <div className="flex items-center gap-1 text-[11px] text-slate-600 font-medium">
+            Developed with medical trust
           </div>
         </div>
 

@@ -771,11 +771,11 @@ const FloatingButtons = ({ contactSettings }) => {
   };
 
   return (
-    <div className="fixed bottom-[80px] md:bottom-6 right-4 md:right-6 z-50 flex flex-col gap-3.5 no-print items-end select-none">
+    <div className="fixed bottom-[80px] md:bottom-6 right-4 md:right-6 z-50 flex flex-col gap-3.5 no-print items-end select-none pointer-events-none">
       
       {/* Interactive Voice-Enabled Chatbot Window */}
       {isChatOpen && (
-        <div className="bg-white/95 backdrop-blur-md border border-slate-200/60 p-0 rounded-2xl shadow-[0_12px_40px_rgba(0,0,0,0.12)] w-[320px] max-w-[90vw] h-[400px] text-left mr-2 relative z-50 no-print flex flex-col overflow-hidden transition-all duration-300">
+        <div className="bg-white/95 backdrop-blur-md border border-slate-200/60 p-0 rounded-2xl shadow-[0_12px_40px_rgba(0,0,0,0.12)] w-[320px] max-w-[90vw] h-[400px] text-left mr-2 relative z-50 no-print flex flex-col overflow-hidden transition-all duration-300 pointer-events-auto">
           
           {/* Chat Header */}
           <div className="bg-teal-900 text-white p-3.5 flex items-center justify-between shadow-sm shrink-0">
@@ -887,7 +887,7 @@ const FloatingButtons = ({ contactSettings }) => {
       )}
 
       {/* Chatbot Toggle Button Container with Tooltip */}
-      <div className="relative group/bot flex items-center gap-2">
+      <div className="relative group/bot flex items-center gap-2 pointer-events-auto">
         {!isChatOpen && (
           <div className="hidden md:flex bg-white text-slate-800 text-[10px] font-bold py-1.5 px-3 rounded-xl shadow-md border border-slate-200/80 mr-2 whitespace-nowrap opacity-0 group-hover/bot:opacity-100 transition-opacity duration-300 font-sans pointer-events-none relative items-center">
             <span>Need Help? Chat with Dr. Ritu 💬</span>
@@ -937,7 +937,7 @@ const FloatingButtons = ({ contactSettings }) => {
       <button
         onClick={scrollToTop}
         id="back-to-top"
-        className={`w-14 h-14 bg-slate-800 hover:bg-slate-900 text-white rounded-full flex items-center justify-center shadow-lg transition-all duration-500 active:scale-95 group cursor-pointer ${
+        className={`w-14 h-14 bg-slate-800 hover:bg-slate-900 text-white rounded-full flex items-center justify-center shadow-lg transition-all duration-500 active:scale-95 group cursor-pointer pointer-events-auto ${
           showScroll ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'
         }`}
         title="Scroll to Top"
