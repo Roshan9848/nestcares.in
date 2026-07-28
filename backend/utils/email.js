@@ -6,14 +6,20 @@ const dbHelper = require('./dbHelper');
 
 const logEmailLocal = (to, subject, body) => {
   const logDir = path.join(__dirname, '../data');
-  if (!fs.existsSync(logDir)) {
-    fs.mkdirSync(logDir, { recursive: true });
+  if (!process.env.VERCEL && !fs.existsSync(logDir)) {
+    try {
+      fs.mkdirSync(logDir, { recursive: true });
+    } catch (e) {}
   }
-  const logPath = path.join(logDir, 'emails.log');
-  const logEntry = `[${new Date().toISOString()}]\nTO: ${to}\nSUBJECT: ${subject}\nBODY:\n${body}\n-----------------------------------------\n\n`;
   
-  fs.appendFileSync(logPath, logEntry, 'utf8');
-  console.log(`✉️ Email Mock Sent (Logged to backend/data/emails.log):\nTo: ${to}\nSubject: ${subject}`);
+  if (!process.env.VERCEL) {
+    const logPath = path.join(logDir, 'emails.log');
+    const logEntry = `[${new Date().toISOString()}]\nTO: ${to}\nSUBJECT: ${subject}\nBODY:\n${body}\n-----------------------------------------\n\n`;
+    try {
+      fs.appendFileSync(logPath, logEntry, 'utf8');
+    } catch (e) {}
+  }
+  console.log(`✉️ Email Mock Sent (Logged to console):\nTo: ${to}\nSubject: ${subject}`);
 };
 
 const sendEmail = async ({ to, subject, templateName, replacements }) => {
