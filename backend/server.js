@@ -67,17 +67,21 @@ app.use((err, req, res, next) => {
   });
 });
 
-const PORT = process.env.PORT || 5000;
-
-const server = app.listen(PORT, () => {
-  console.log(`🚀 CareHome Healthcare server running on port ${PORT}`);
-});
-
-// Graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('SIGTERM signal received. Shutting down gracefully...');
-  server.close(() => {
-    console.log('Http server closed.');
-    process.exit(0);
+// Only start listener if running locally/outside serverless environments
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  const PORT = process.env.PORT || 5000;
+  const server = app.listen(PORT, () => {
+    console.log(`🚀 CareHome Healthcare server running on port ${PORT}`);
   });
-});
+
+  // Graceful shutdown (only applicable to standalone node processes)
+  process.on('SIGTERM', () => {
+    console.log('SIGTERM signal received. Shutting down gracefully...');
+    server.close(() => {
+      console.log('Http server closed.');
+      process.exit(0);
+    });
+  });
+}
+
+module.exports = app;
