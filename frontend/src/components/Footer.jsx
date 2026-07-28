@@ -104,7 +104,7 @@ const Footer = ({ webSettings, contactSettings }) => {
         </div>
 
         {/* Footer Sub-row */}
-        <div className="border-t border-slate-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <div className="border-t border-slate-800 pt-8 pb-20 md:pb-0 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <div>{copyright}</div>
           <div className="flex items-center gap-6">
             <Link to="/login" className="hover:text-slate-300 transition-colors flex items-center gap-1">
