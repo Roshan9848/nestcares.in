@@ -6,8 +6,12 @@ const bcrypt = require('bcryptjs');
 const DATA_DIR = path.join(__dirname, '../data');
 
 // Ensure data folder exists
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
+if (!process.env.VERCEL && !fs.existsSync(DATA_DIR)) {
+  try {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  } catch (err) {
+    console.error('Error creating data directory:', err);
+  }
 }
 
 const getFilePath = (modelName) => {
@@ -467,7 +471,9 @@ const checkAndSeedJSON = () => {
   }
 };
 
-checkAndSeedJSON();
+if (!process.env.VERCEL) {
+  checkAndSeedJSON();
+}
 
 // Repository helper functions
 const dbHelper = {
