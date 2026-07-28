@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { mockDb } from './utils/mockDb';
-import { settingsAPI, servicesAPI, testimonialsAPI, faqsAPI } from './services/api';
+import { settingsAPI, servicesAPI, testimonialsAPI, faqsAPI, apiClient } from './services/api';
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -44,7 +44,7 @@ const AppContent = () => {
         servicesAPI.getServices(!!token),
         testimonialsAPI.getTestimonials(),
         faqsAPI.getFaqs(),
-        axios.get('/doctors').catch(() => null)
+        apiClient.get('/doctors').catch(() => null)
       ]);
 
       if (resSettings.status === 'fulfilled' && resSettings.value?.success) {
