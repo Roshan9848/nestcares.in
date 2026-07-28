@@ -9,7 +9,7 @@ import {
   LayoutDashboard, CalendarCheck, Activity, Home as HomeIcon, MessageSquare, 
   HelpCircle, MapPin, Settings as SettingsIcon, LogOut, ExternalLink, Plus, 
   Trash2, Edit, Check, X, ShieldAlert, Sparkles, Download, Printer, Save, Eye, EyeOff,
-  Clock, User, FileText, Image, FileImage, UploadCloud, Loader2, Images
+  Clock, User, FileText, Image, FileImage, UploadCloud, Loader2, Images, Menu
 } from 'lucide-react';
 
 const Dashboard = ({ 
@@ -22,6 +22,7 @@ const Dashboard = ({
 
   // CMS Tabs: 'overview' | 'bookings' | 'services' | 'homepage' | 'testimonials' | 'faqs' | 'contact' | 'settings'
   const [activeTab, setActiveTab] = useState('overview');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Stats State
   const [stats, setStats] = useState({
@@ -631,18 +632,38 @@ const Dashboard = ({
   };
 
   return (
-    <div className="bg-slate-50 min-h-screen flex text-slate-800 font-sans">
+    <div className="bg-slate-50 min-h-screen flex text-slate-800 font-sans relative overflow-x-hidden">
       
+      {/* MOBILE BACKDROP OVERLAY */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* CMS SIDEBAR */}
-      <aside className="w-64 bg-gradient-to-b from-[#0a0f1d] via-[#0f172a] to-[#0a0f1d] text-slate-350 flex flex-col shrink-0 no-print border-r border-slate-800/60 shadow-2xl relative z-10">
-        <div className="p-6 border-b border-slate-800/80 flex items-center gap-3">
-          <div className="p-2.5 bg-teal-500/10 text-teal-400 border border-teal-500/20 rounded-2xl flex items-center justify-center">
-            <Sparkles className="w-4 h-4 animate-pulse" />
+      <aside className={`w-64 bg-gradient-to-b from-[#0a0f1d] via-[#0f172a] to-[#0a0f1d] text-slate-350 flex flex-col shrink-0 no-print border-r border-slate-800/60 shadow-2xl fixed inset-y-0 left-0 z-50 transform lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out ${
+        isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+      }`}>
+        <div className="p-6 border-b border-slate-800/80 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-teal-500/10 text-teal-400 border border-teal-500/20 rounded-2xl flex items-center justify-center">
+              <Sparkles className="w-4 h-4 animate-pulse" />
+            </div>
+            <div>
+              <h2 className="text-xs font-black text-white uppercase tracking-wider leading-none">Nest Cares</h2>
+              <p className="text-[8px] text-slate-500 font-extrabold uppercase mt-1 leading-none">Portal CMS Panel</p>
+            </div>
           </div>
-          <div>
-            <h2 className="text-xs font-black text-white uppercase tracking-wider leading-none">Nest Cares</h2>
-            <p className="text-[8px] text-slate-500 font-extrabold uppercase mt-1 leading-none">Portal CMS Panel</p>
-          </div>
+          {/* Close button on mobile sidebar header */}
+          <button 
+            type="button"
+            onClick={() => setIsSidebarOpen(false)}
+            className="p-1 text-slate-500 hover:text-white rounded lg:hidden"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
 
         {/* Sidebar Nav Links */}
@@ -664,6 +685,7 @@ const Dashboard = ({
                 setEditingService(null);
                 setEditingTestimonial(null);
                 setEditingFaq(null);
+                setIsSidebarOpen(false); // Close menu on tab click (mobile)
               }}
               className={`w-full flex items-center gap-3 px-4 py-3 text-xs font-semibold rounded-xl transition-all duration-200 border-l-4 ${
                 activeTab === tab.id
@@ -703,9 +725,18 @@ const Dashboard = ({
       <main className="flex-1 flex flex-col min-w-0">
         
         {/* Header - No print */}
-        <header className="h-16 bg-white border-b border-slate-100 flex items-center justify-between px-8 shrink-0 no-print">
-          <div className="flex items-center gap-4">
-            <h1 className="text-lg font-bold text-slate-800 uppercase tracking-tight">
+        <header className="h-16 bg-white border-b border-slate-100 flex items-center justify-between px-4 sm:px-8 shrink-0 no-print">
+          <div className="flex items-center gap-3">
+            {/* Hamburger Trigger button */}
+            <button
+              type="button"
+              onClick={() => setIsSidebarOpen(true)}
+              className="p-2 -ml-2 text-slate-500 hover:text-slate-900 rounded-lg lg:hidden"
+              title="Open Menu"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
+            <h1 className="text-sm sm:text-lg font-bold text-slate-800 uppercase tracking-tight truncate max-w-[150px] sm:max-w-none">
               {activeTab === 'overview' && 'Dashboard Overview'}
               {activeTab === 'bookings' && 'Booking Manager'}
               {activeTab === 'services' && 'Service catalog'}
@@ -720,7 +751,7 @@ const Dashboard = ({
             <Link 
               to="/"
               target="_blank"
-              className="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-4 py-2 rounded-lg flex items-center gap-1.5 transition-all"
+              className="text-[10px] sm:text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg flex items-center gap-1.5 transition-all"
             >
               <span>Preview Live Site</span>
               <ExternalLink className="w-3.5 h-3.5" />
@@ -729,7 +760,7 @@ const Dashboard = ({
         </header>
 
         {/* Scrollable Work Pane */}
-        <div className="flex-1 p-8 overflow-y-auto">
+        <div className="flex-1 p-4 sm:p-8 overflow-y-auto">
           
           {/* TAB 1: OVERVIEW */}
           {activeTab === 'overview' && (

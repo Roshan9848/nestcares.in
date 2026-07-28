@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const fs = require('fs');
+const dbHelper = require('../utils/dbHelper');
 const upload = require('../middleware/upload');
 const { protect } = require('../middleware/auth');
 const cloudinary = require('cloudinary').v2;
