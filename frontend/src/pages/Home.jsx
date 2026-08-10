@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { 
   ShieldCheck, HeartPulse, Clock, Phone, Award, 
   ArrowRight, CheckCircle2, Sparkles, Star, Users, 
   Activity, Stethoscope, ChevronRight, HelpCircle,
   Truck, Microscope, UserCheck, Check, MessageSquare
 } from 'lucide-react';
-import { resolveImageUrl } from '../utils/url';
 
 const HOME_SERVICES = [
   {
@@ -116,7 +114,6 @@ const Home = ({
   webSettings, 
   contactSettings 
 }) => {
-  const companyName = webSettings?.companyName || "Nest Cares Home Healthcare";
   const phone = contactSettings?.phoneNumbers?.[0] || "+91 92488 49388";
   const whatsapp = contactSettings?.whatsappNumber || "+91 92488 49388";
 
@@ -124,149 +121,77 @@ const Home = ({
     <div className="bg-[#fafafb] min-h-screen text-slate-800 font-sans selection:bg-teal-100 selection:text-teal-900">
       
       {/* ========================================================
-          1. HERO SECTION (2026 LUXURY CLINICAL DESIGN)
+          1. HERO SECTION (CENTERED, MINIMALIST & MODERN 2026)
       ======================================================== */}
-      <section className="relative pt-12 pb-20 lg:pt-16 lg:pb-28 overflow-hidden bg-gradient-to-b from-teal-950/5 via-[#fafafb] to-[#fafafb]">
+      <section className="relative pt-16 pb-20 lg:pt-24 lg:pb-28 overflow-hidden bg-gradient-to-b from-teal-950/5 via-[#fafafb] to-[#fafafb]">
         
         {/* Soft Ambient Glows */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[450px] bg-gradient-to-tr from-teal-500/10 to-emerald-500/5 blur-[120px] rounded-full pointer-events-none -z-10" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-tr from-teal-500/10 via-emerald-500/5 to-transparent blur-[140px] rounded-full pointer-events-none -z-10" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           
-          {/* Top Bar Badges */}
-          <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 mb-6">
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 bg-teal-900 text-teal-100 rounded-full text-xs font-black uppercase tracking-widest shadow-sm">
-              <Sparkles className="w-3.5 h-3.5 text-teal-300" />
-              Nizamabad’s #1 Home Healthcare Platform
+          {/* Centered Top Badge */}
+          <div className="inline-flex flex-wrap items-center justify-center gap-2.5 px-4 py-1.5 bg-white border border-slate-200/80 rounded-full shadow-xs mb-8">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-teal-900 text-teal-100 rounded-full text-[11px] font-black uppercase tracking-wider">
+              <Sparkles className="w-3 h-3 text-teal-300" />
+              Nizamabad
             </span>
-            <div className="flex items-center gap-1.5 text-xs font-bold text-slate-600 bg-white px-3 py-1 rounded-full border border-slate-200/80 shadow-xs">
+            <span className="text-xs font-bold text-slate-700">#1 Home Healthcare Platform</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+            <span className="flex items-center gap-1 text-xs font-bold text-emerald-700">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Standby Response Active</span>
-            </div>
+              24/7 Standby Active
+            </span>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center text-center lg:text-left">
-            
-            {/* Left Column: Headlines & Call to Action */}
-            <div className="lg:col-span-7 space-y-6">
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.12]">
-                Hospital-Grade <span className="text-teal-800 underline decoration-teal-500/30 decoration-wavy decoration-2">Intensive Care</span> Directly in Your Home.
-              </h1>
+          {/* Centered High-Impact Headline */}
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-slate-900 tracking-tight leading-[1.08] max-w-4xl mx-auto">
+            Hospital-Grade <span className="text-teal-800 underline decoration-teal-500/30 decoration-wavy decoration-2">Intensive Care</span> Directly in Your Home.
+          </h1>
 
-              <p className="text-slate-600 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed font-medium">
-                Emergency ICU ambulances, 24/7 bedside nursing, home doctor visits, and complete ICU setups installed in patient bedrooms across Nizamabad.
-              </p>
+          {/* Centered Subtitle */}
+          <p className="text-slate-600 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto mt-6 leading-relaxed font-normal">
+            Emergency ICU ambulances, 24/7 bedside nursing, home doctor visits, and complete hospital ICU setups delivered across Nizamabad.
+          </p>
 
-              {/* Action Buttons */}
-              <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                <Link
-                  to="/book"
-                  className="w-full sm:w-auto px-8 py-4 bg-teal-900 hover:bg-teal-950 active:scale-[0.98] text-white text-xs font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2.5 shadow-xl shadow-teal-950/20 transition-all hover:-translate-y-0.5"
-                >
-                  <HeartPulse className="w-4 h-4 text-teal-300" />
-                  <span>Request Healthcare Service</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
+          {/* Centered Action Buttons */}
+          <div className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-4 max-w-xl mx-auto">
+            <Link
+              to="/book"
+              className="w-full sm:w-auto px-8 py-4 bg-teal-900 hover:bg-teal-950 active:scale-[0.98] text-white text-xs font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2.5 shadow-xl shadow-teal-950/20 transition-all hover:-translate-y-0.5"
+            >
+              <HeartPulse className="w-4 h-4 text-teal-300" />
+              <span>Request Healthcare Service</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
 
-                <a
-                  href={`tel:${phone}`}
-                  className="w-full sm:w-auto px-7 py-4 bg-white hover:bg-slate-50 text-slate-900 text-xs font-black uppercase tracking-widest rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5"
-                >
-                  <Phone className="w-4 h-4 text-emerald-600" />
-                  <span>24/7 Helpline: {phone}</span>
-                </a>
-              </div>
+            <a
+              href={`tel:${phone}`}
+              className="w-full sm:w-auto px-7 py-4 bg-white hover:bg-slate-50 text-slate-900 text-xs font-black uppercase tracking-widest rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5"
+            >
+              <Phone className="w-4 h-4 text-emerald-600" />
+              <span>24/7 Helpline: {phone}</span>
+            </a>
+          </div>
 
-              {/* Highlights Micro-Strip */}
-              <div className="pt-4 grid grid-cols-2 sm:grid-cols-4 gap-3 text-left">
-                <div className="bg-white/80 backdrop-blur-sm p-3 rounded-2xl border border-slate-200/60 shadow-xs">
-                  <span className="text-lg font-black text-slate-900 block">15 Min</span>
-                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Fast Callback</span>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm p-3 rounded-2xl border border-slate-200/60 shadow-xs">
-                  <span className="text-lg font-black text-emerald-700 block">100%</span>
-                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Verified Doctors</span>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm p-3 rounded-2xl border border-slate-200/60 shadow-xs">
-                  <span className="text-lg font-black text-teal-800 block">Hospital</span>
-                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Grade Equipment</span>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm p-3 rounded-2xl border border-slate-200/60 shadow-xs">
-                  <span className="text-lg font-black text-amber-600 block">4.9 ★</span>
-                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Patient Rating</span>
-                </div>
-              </div>
-
+          {/* Centered Key Trust Metrics Strip */}
+          <div className="pt-12 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
+            <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
+              <span className="text-xl font-black text-slate-900 block">15 Min</span>
+              <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5 block">Fast Callback</span>
             </div>
-
-            {/* Right Column: Interactive Clinical Status Card */}
-            <div className="lg:col-span-5">
-              <div className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_20px_50px_rgba(15,23,42,0.08)] p-6 sm:p-8 text-left relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-teal-500/5 rounded-full blur-2xl" />
-                
-                <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
-                  <div>
-                    <span className="text-[10px] font-black text-teal-700 uppercase tracking-widest">Live Clinical Desk</span>
-                    <h3 className="text-base font-black text-slate-900">Nizamabad Care Hub</h3>
-                  </div>
-                  <span className="px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full text-[10px] font-bold flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
-                    Available 24/7
-                  </span>
-                </div>
-
-                <div className="space-y-3.5 mb-6">
-                  <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center font-bold text-xs">
-                        🩺
-                      </div>
-                      <div>
-                        <div className="text-xs font-bold text-slate-900">Physician Home Visit</div>
-                        <div className="text-[10px] text-slate-500">Same-day bedside diagnosis</div>
-                      </div>
-                    </div>
-                    <span className="text-[10px] font-bold text-teal-800 bg-teal-50 px-2 py-0.5 rounded-md border border-teal-100">Verified MD</span>
-                  </div>
-
-                  <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-xl bg-rose-100 text-rose-800 flex items-center justify-center font-bold text-xs">
-                        🚑
-                      </div>
-                      <div>
-                        <div className="text-xs font-bold text-slate-900">Emergency Ambulance</div>
-                        <div className="text-[10px] text-slate-500">Oxygen & paramedic on board</div>
-                      </div>
-                    </div>
-                    <span className="text-[10px] font-bold text-rose-800 bg-rose-50 px-2 py-0.5 rounded-md border border-rose-100">15-Min Fast</span>
-                  </div>
-
-                  <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-xl bg-blue-100 text-blue-800 flex items-center justify-center font-bold text-xs">
-                        👩‍⚕️
-                      </div>
-                      <div>
-                        <div className="text-xs font-bold text-slate-900">12h Bedside Nursing</div>
-                        <div className="text-[10px] text-slate-500">Vitals, IV, medication protocol</div>
-                      </div>
-                    </div>
-                    <span className="text-[10px] font-bold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">ICU Trained</span>
-                  </div>
-                </div>
-
-                <Link
-                  to="/book"
-                  className="w-full py-3 bg-slate-900 hover:bg-slate-950 text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors"
-                >
-                  <span>Select & Request Service</span>
-                  <ChevronRight className="w-4 h-4" />
-                </Link>
-
-              </div>
+            <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
+              <span className="text-xl font-black text-emerald-700 block">100%</span>
+              <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5 block">Verified Doctors</span>
             </div>
-
+            <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
+              <span className="text-xl font-black text-teal-800 block">Hospital</span>
+              <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5 block">Grade Equipment</span>
+            </div>
+            <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
+              <span className="text-xl font-black text-amber-600 block">4.9 ★</span>
+              <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5 block">Patient Rating</span>
+            </div>
           </div>
 
         </div>
