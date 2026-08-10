@@ -12,16 +12,15 @@ const HOME_SERVICES = [
     id: 'doctor-consultation',
     title: 'Doctor Consultation',
     desc: 'Senior MBBS / MD physicians visit your home in Nizamabad for comprehensive bedside diagnostics and treatment protocols.',
-    icon: '🩺',
-    badge: 'Same-Day Visit',
-    popular: true,
+    image: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=600',
+    badge: 'Home Visit',
     tags: ['General Medicine', 'Specialist Visits', 'Post-Op Followup']
   },
   {
     id: 'ambulance-services',
     title: 'Ambulance Services',
     desc: '24/7 Basic Life Support (BLS) and Advanced ICU Ventilator ambulances with emergency paramedics on standby.',
-    icon: '🚑',
+    image: 'https://images.unsplash.com/photo-1587745416684-47953f16f02f?auto=format&fit=crop&q=80&w=600',
     badge: '15-Min Dispatch',
     emergency: true,
     tags: ['Oxygen Support', 'ICU Ventilator', 'Inter-City Transfer']
@@ -30,16 +29,15 @@ const HOME_SERVICES = [
     id: 'nursing-services',
     title: 'Professional Home Nursing',
     desc: 'Certified ICU and general bedside nurses for 12h / 24h continuous clinical care, wound dressing, and vitals tracking.',
-    icon: '👩‍⚕️',
-    badge: '12h / 24h Shifts',
-    popular: true,
+    image: 'https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&q=80&w=600',
+    badge: '12h / 24h Care',
     tags: ['Bedside Care', 'Tracheostomy', 'Injections & IV']
   },
   {
     id: 'icu-setup',
     title: 'ICU Setup at Home',
     desc: 'Complete hospital-grade intensive care unit installed in your bedroom: motorized bed, ventilator, 5-para monitor, and oxygen.',
-    icon: '🏥',
+    image: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=600',
     badge: 'Hospital-Grade',
     tags: ['Motorized ICU Bed', 'BiPAP / CPAP', 'Multipara Monitor']
   },
@@ -47,16 +45,16 @@ const HOME_SERVICES = [
     id: 'lab-services',
     title: 'Doorstep Lab Diagnostics',
     desc: 'Certified phlebotomists collect blood & urine samples at your home. NABL certified test reports delivered within 4-6 hours.',
-    icon: '🔬',
-    badge: 'NABL Certified',
+    image: 'https://images.unsplash.com/photo-1582719471384-894fbb16e074?auto=format&fit=crop&q=80&w=600',
+    badge: 'Doorstep Sample',
     tags: ['Complete Health Panel', 'Cardiac Profile', 'Fast Reports']
   },
   {
     id: 'physiotherapy',
     title: 'Home Physiotherapy',
     desc: 'Licensed physiotherapists for post-surgery joint rehabilitation, neuro-recovery, stroke rehab, and geriatric mobility.',
-    icon: '💪',
-    badge: 'Targeted Rehab',
+    image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=600',
+    badge: 'Mobility Rehab',
     tags: ['Stroke Recovery', 'Joint Mobility', 'Pain Relief']
   }
 ];
@@ -121,44 +119,44 @@ const Home = ({
     <div className="bg-[#fafafb] min-h-screen text-slate-800 font-sans selection:bg-teal-100 selection:text-teal-900">
       
       {/* ========================================================
-          1. HERO SECTION (CENTERED, MINIMALIST & MODERN 2026)
+          1. HERO SECTION (CENTERED, MINIMALIST & MOBILE-OPTIMIZED)
       ======================================================== */}
-      <section className="relative pt-16 pb-20 lg:pt-24 lg:pb-28 overflow-hidden bg-gradient-to-b from-teal-950/5 via-[#fafafb] to-[#fafafb]">
+      <section className="relative pt-12 pb-16 lg:pt-20 lg:pb-24 overflow-hidden bg-gradient-to-b from-teal-950/5 via-[#fafafb] to-[#fafafb]">
         
-        {/* Soft Ambient Glows */}
+        {/* Soft Ambient Glow */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-tr from-teal-500/10 via-emerald-500/5 to-transparent blur-[140px] rounded-full pointer-events-none -z-10" />
 
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           
           {/* Centered Top Badge */}
-          <div className="inline-flex flex-wrap items-center justify-center gap-2.5 px-4 py-1.5 bg-white border border-slate-200/80 rounded-full shadow-xs mb-8">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-teal-900 text-teal-100 rounded-full text-[11px] font-black uppercase tracking-wider">
+          <div className="inline-flex flex-wrap items-center justify-center gap-2 px-3.5 py-1.5 bg-white border border-slate-200/80 rounded-full shadow-xs mb-6 sm:mb-8">
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-teal-900 text-teal-100 rounded-full text-[10px] sm:text-[11px] font-black uppercase tracking-wider">
               <Sparkles className="w-3 h-3 text-teal-300" />
               Nizamabad
             </span>
-            <span className="text-xs font-bold text-slate-700">#1 Home Healthcare Platform</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+            <span className="text-xs font-bold text-slate-700">#1 Home Healthcare</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-slate-300 hidden sm:inline-block" />
             <span className="flex items-center gap-1 text-xs font-bold text-emerald-700">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              24/7 Standby Active
+              24/7 Active
             </span>
           </div>
 
           {/* Centered High-Impact Headline */}
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-slate-900 tracking-tight leading-[1.08] max-w-4xl mx-auto">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.12] max-w-4xl mx-auto">
             Hospital-Grade <span className="text-teal-800 underline decoration-teal-500/30 decoration-wavy decoration-2">Intensive Care</span> Directly in Your Home.
           </h1>
 
           {/* Centered Subtitle */}
-          <p className="text-slate-600 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto mt-6 leading-relaxed font-normal">
+          <p className="text-slate-600 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto mt-4 sm:mt-6 leading-relaxed font-normal">
             Emergency ICU ambulances, 24/7 bedside nursing, home doctor visits, and complete hospital ICU setups delivered across Nizamabad.
           </p>
 
-          {/* Centered Action Buttons */}
-          <div className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-4 max-w-xl mx-auto">
+          {/* Centered Action Buttons (Stacked on mobile, large tap targets) */}
+          <div className="pt-6 sm:pt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 max-w-xl mx-auto">
             <Link
               to="/book"
-              className="w-full sm:w-auto px-8 py-4 bg-teal-900 hover:bg-teal-950 active:scale-[0.98] text-white text-xs font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2.5 shadow-xl shadow-teal-950/20 transition-all hover:-translate-y-0.5"
+              className="w-full sm:w-auto px-8 py-4 bg-teal-900 hover:bg-teal-950 active:scale-[0.98] text-white text-xs font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2.5 shadow-xl shadow-teal-950/20 transition-all"
             >
               <HeartPulse className="w-4 h-4 text-teal-300" />
               <span>Request Healthcare Service</span>
@@ -167,7 +165,7 @@ const Home = ({
 
             <a
               href={`tel:${phone}`}
-              className="w-full sm:w-auto px-7 py-4 bg-white hover:bg-slate-50 text-slate-900 text-xs font-black uppercase tracking-widest rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5"
+              className="w-full sm:w-auto px-7 py-4 bg-white hover:bg-slate-50 text-slate-900 text-xs font-black uppercase tracking-widest rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-center gap-2 transition-all"
             >
               <Phone className="w-4 h-4 text-emerald-600" />
               <span>24/7 Helpline: {phone}</span>
@@ -175,21 +173,21 @@ const Home = ({
           </div>
 
           {/* Centered Key Trust Metrics Strip */}
-          <div className="pt-12 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
-            <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
-              <span className="text-xl font-black text-slate-900 block">15 Min</span>
+          <div className="pt-8 sm:pt-12 grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 max-w-3xl mx-auto">
+            <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 shadow-xs text-center">
+              <span className="text-lg sm:text-xl font-black text-slate-900 block">15 Min</span>
               <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5 block">Fast Callback</span>
             </div>
-            <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
-              <span className="text-xl font-black text-emerald-700 block">100%</span>
+            <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 shadow-xs text-center">
+              <span className="text-lg sm:text-xl font-black text-emerald-700 block">100%</span>
               <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5 block">Verified Doctors</span>
             </div>
-            <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
-              <span className="text-xl font-black text-teal-800 block">Hospital</span>
+            <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 shadow-xs text-center">
+              <span className="text-lg sm:text-xl font-black text-teal-800 block">Hospital</span>
               <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5 block">Grade Equipment</span>
             </div>
-            <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
-              <span className="text-xl font-black text-amber-600 block">4.9 ★</span>
+            <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 shadow-xs text-center">
+              <span className="text-lg sm:text-xl font-black text-amber-600 block">4.9 ★</span>
               <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5 block">Patient Rating</span>
             </div>
           </div>
@@ -198,74 +196,82 @@ const Home = ({
       </section>
 
       {/* ========================================================
-          2. CORE SERVICES SECTION
+          2. CORE SERVICES SECTION (MOBILE-FIRST PHOTOGRAPHIC CARDS)
       ======================================================== */}
-      <section className="py-20 bg-white border-y border-slate-100">
+      <section className="py-16 sm:py-20 bg-white border-y border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 space-y-3">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-teal-50 text-teal-800 rounded-full text-xs font-black uppercase tracking-widest border border-teal-100">
               <Stethoscope className="w-3.5 h-3.5 text-teal-600" />
               Comprehensive Care Offerings
             </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
               Hospital Services in Your Bedroom
             </h2>
-            <p className="text-slate-600 text-sm sm:text-base">
-              Select what you need below. Our medical team will call you back to confirm details and dispatch clinicians.
+            <p className="text-slate-600 text-xs sm:text-sm max-w-xl mx-auto">
+              Select what you need below. Our medical team will call you back immediately to confirm details and dispatch clinicians.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Visual Photographic Cards Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
             {HOME_SERVICES.map((serv) => (
               <div 
                 key={serv.id}
-                className="bg-[#fafafb] hover:bg-white rounded-3xl border border-slate-200/80 hover:border-teal-700/30 p-6 sm:p-7 flex flex-col justify-between shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group text-left"
+                className="group relative rounded-3xl overflow-hidden bg-slate-900 border border-slate-800 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between min-h-[320px] sm:min-h-[360px] p-5 sm:p-6"
               >
-                <div>
-                  <div className="flex items-start justify-between gap-3 mb-4">
-                    <span className="text-3xl p-3 bg-white rounded-2xl border border-slate-200/60 shadow-xs group-hover:scale-110 transition-transform">
-                      {serv.icon}
-                    </span>
-                    <span className={`text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full border ${
-                      serv.emergency 
-                        ? 'bg-rose-50 text-rose-800 border-rose-200' 
-                        : 'bg-teal-50 text-teal-800 border-teal-200'
-                    }`}>
-                      {serv.badge}
-                    </span>
+                {/* Background Image with smooth zoom */}
+                <img 
+                  src={serv.image} 
+                  alt={serv.title}
+                  loading="lazy"
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 z-0 opacity-75"
+                />
+
+                {/* Dark Cinematic Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/75 to-slate-950/40 z-10" />
+
+                {/* Top Badge Overlay */}
+                <div className="relative z-20 flex items-center justify-between">
+                  <span className={`text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full backdrop-blur-md border ${
+                    serv.emergency 
+                      ? 'bg-rose-500/20 text-rose-200 border-rose-400/30' 
+                      : 'bg-teal-500/20 text-teal-200 border-teal-400/30'
+                  }`}>
+                    {serv.badge}
+                  </span>
+                  <span className="text-[10px] font-bold text-white/80 uppercase tracking-widest bg-white/10 backdrop-blur-md px-2.5 py-0.5 rounded-md">
+                    Nizamabad
+                  </span>
+                </div>
+
+                {/* Bottom Content & Request Care Button */}
+                <div className="relative z-20 space-y-3 pt-12">
+                  <div>
+                    <h3 className="text-lg sm:text-xl font-black text-white leading-tight drop-shadow-md">
+                      {serv.title}
+                    </h3>
+                    <p className="text-slate-300 text-xs mt-1.5 line-clamp-2 leading-relaxed font-medium">
+                      {serv.desc}
+                    </p>
                   </div>
 
-                  <h3 className="text-lg font-black text-slate-900 group-hover:text-teal-900 transition-colors">
-                    {serv.title}
-                  </h3>
-
-                  <p className="text-slate-600 text-xs mt-2 line-clamp-3 leading-relaxed font-normal">
-                    {serv.desc}
-                  </p>
-
-                  <div className="flex flex-wrap gap-1.5 mt-4">
+                  <div className="flex flex-wrap gap-1.5 pt-1">
                     {serv.tags.map(tag => (
-                      <span key={tag} className="text-[10px] font-bold bg-white text-slate-600 px-2 py-0.5 rounded-md border border-slate-200/60">
+                      <span key={tag} className="text-[9px] font-bold bg-white/15 backdrop-blur-md text-slate-200 px-2 py-0.5 rounded border border-white/15">
                         {tag}
                       </span>
                     ))}
-                  </div>
-                </div>
-
-                <div className="pt-6 mt-6 border-t border-slate-200/60 flex items-center justify-between">
-                  <div>
-                    <span className="text-[10px] text-teal-700 font-bold uppercase tracking-wider block">Requirement Type</span>
-                    <span className="text-xs font-bold text-slate-800">Home Dispatch</span>
                   </div>
 
                   <Link
                     to="/book"
                     state={{ selectService: serv.title }}
-                    className="px-4 py-2.5 bg-teal-900 group-hover:bg-teal-950 text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-sm transition-all"
+                    className="w-full py-3.5 bg-teal-500 hover:bg-teal-400 text-slate-950 font-black text-xs uppercase tracking-widest rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer mt-3"
                   >
                     <span>Request Care</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
               </div>
@@ -278,34 +284,34 @@ const Home = ({
       {/* ========================================================
           3. CLINICAL RIGOR & STANDARDS
       ======================================================== */}
-      <section className="py-20 bg-[#fafafb]">
+      <section className="py-16 sm:py-20 bg-[#fafafb]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 space-y-3">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-800 rounded-full text-xs font-black uppercase tracking-widest border border-emerald-100">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
               Patient Safety & Quality Guarantee
             </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
               Why Nizamabad Families Trust Nest Cares
             </h2>
-            <p className="text-slate-600 text-sm sm:text-base">
+            <p className="text-slate-600 text-xs sm:text-sm">
               Every detail is engineered to match the safety standards of a modern multispecialty hospital.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 text-left">
             {CLINICAL_STANDARDS.map((std) => {
               const Icon = std.icon;
               return (
                 <div 
                   key={std.title}
-                  className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs hover:shadow-md transition-shadow"
+                  className="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-xs hover:shadow-md transition-shadow"
                 >
                   <div className="w-12 h-12 rounded-2xl bg-teal-50 text-teal-800 flex items-center justify-center mb-4">
                     <Icon className="w-6 h-6" />
                   </div>
-                  <h4 className="text-sm font-black text-slate-900 mb-2">
+                  <h4 className="text-sm font-black text-slate-900 mb-1.5">
                     {std.title}
                   </h4>
                   <p className="text-xs text-slate-600 leading-relaxed">
@@ -322,29 +328,29 @@ const Home = ({
       {/* ========================================================
           4. HOW IT WORKS (SIMPLE 4-STEP PROCESS)
       ======================================================== */}
-      <section className="py-20 bg-white border-y border-slate-100">
+      <section className="py-16 sm:py-20 bg-white border-y border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 space-y-3">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-teal-50 text-teal-800 rounded-full text-xs font-black uppercase tracking-widest border border-teal-100">
               <Activity className="w-3.5 h-3.5 text-teal-600" />
               Streamlined Clinical Workflow
             </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
               How Home Healthcare Works
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-left relative">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 text-left relative">
             {PROCESS_STEPS.map((step) => (
               <div 
                 key={step.step}
-                className="bg-[#fafafb] p-6 rounded-3xl border border-slate-200/60 relative group hover:bg-white hover:shadow-lg transition-all"
+                className="bg-[#fafafb] p-5 sm:p-6 rounded-3xl border border-slate-200/60 relative group hover:bg-white hover:shadow-lg transition-all"
               >
-                <span className="text-3xl font-black text-teal-200 group-hover:text-teal-600 transition-colors block mb-3">
+                <span className="text-3xl font-black text-teal-200 group-hover:text-teal-600 transition-colors block mb-2 sm:mb-3">
                   {step.step}
                 </span>
-                <h4 className="text-sm font-black text-slate-900 mb-1.5">
+                <h4 className="text-sm font-black text-slate-900 mb-1">
                   {step.title}
                 </h4>
                 <p className="text-xs text-slate-600 leading-relaxed">
@@ -360,22 +366,22 @@ const Home = ({
       {/* ========================================================
           5. CALL TO ACTION FOOTER BANNER
       ======================================================== */}
-      <section className="py-16 bg-gradient-to-r from-teal-950 via-slate-900 to-teal-950 text-white relative overflow-hidden">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 relative z-10">
+      <section className="py-14 sm:py-16 bg-gradient-to-r from-teal-950 via-slate-900 to-teal-950 text-white relative overflow-hidden">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-5 sm:space-y-6 relative z-10">
           <span className="inline-flex items-center gap-1.5 px-3.5 py-1 bg-white/10 text-teal-300 rounded-full text-xs font-bold uppercase tracking-widest">
             24/7 Standby Support Across Nizamabad
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
             Need Medical Assistance Right Now?
           </h2>
-          <p className="text-slate-300 text-sm sm:text-base max-w-xl mx-auto">
+          <p className="text-slate-300 text-xs sm:text-base max-w-xl mx-auto">
             Submit your care request online or contact our medical desk directly on WhatsApp.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 pt-2 sm:pt-4">
             <Link
               to="/book"
-              className="w-full sm:w-auto px-8 py-4 bg-teal-500 hover:bg-teal-400 text-slate-950 font-black text-xs uppercase tracking-widest rounded-2xl shadow-xl transition-all hover:-translate-y-0.5"
+              className="w-full sm:w-auto px-8 py-4 bg-teal-500 hover:bg-teal-400 text-slate-950 font-black text-xs uppercase tracking-widest rounded-2xl shadow-xl transition-all"
             >
               Request Care Appointment
             </Link>
