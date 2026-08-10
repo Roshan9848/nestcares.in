@@ -124,80 +124,81 @@ const Home = ({
     <div className="bg-[#fafafb] min-h-screen text-slate-800 font-sans selection:bg-teal-100 selection:text-teal-900">
       
       {/* ========================================================
-          1. HERO SECTION (CLEAN LIGHT THEME WITH FOCUSED MOBILE STRUCTURE)
+          1. HERO SECTION (DESKTOP & MOBILE STRUCTURED)
       ======================================================== */}
-      <section className="relative min-h-[85vh] flex flex-col justify-between pt-10 pb-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center overflow-hidden">
+      <section className="relative min-h-[88vh] flex flex-col justify-between pt-12 pb-16 lg:pt-20 lg:pb-24 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center overflow-hidden">
         
         {/* Soft Ambient Radial Background Glow */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[600px] h-[350px] sm:h-[600px] bg-gradient-to-b from-teal-500/10 via-emerald-500/5 to-transparent blur-[120px] rounded-full pointer-events-none -z-10" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] sm:w-[800px] h-[400px] sm:h-[600px] bg-gradient-to-b from-teal-500/10 via-emerald-500/5 to-transparent blur-[140px] rounded-full pointer-events-none -z-10" />
 
-        {/* Top Content Block */}
-        <div className="space-y-5 sm:space-y-7 my-auto">
+        {/* Centered Content Container */}
+        <div className="space-y-6 sm:space-y-8 my-auto">
           
-          {/* Top Pill Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-slate-200/90 bg-white shadow-xs">
+          {/* 1. Top Pill Badge */}
+          <div className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full border border-slate-200/90 bg-white shadow-xs">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-slate-700">
-              10,000+ Patients Cared • Nizamabad Healthcare
+            <span className="text-[11px] sm:text-xs font-black uppercase tracking-widest text-slate-700">
+              10,000+ Patients Cared • Nizamabad's #1 Home Healthcare
             </span>
           </div>
 
-          {/* Bold Impact Headline */}
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.12] text-slate-900 max-w-3xl mx-auto">
-            Hospital-Grade Care <br className="hidden sm:inline" />
+          {/* 2. Bold Impact Headline */}
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.08] text-slate-900 uppercase max-w-4xl mx-auto">
+            Hospital-Grade Care <br />
             <span className="text-teal-800 underline decoration-teal-500/30 decoration-wavy decoration-2">
               Directly in Your Home
             </span>
           </h1>
 
-          {/* Clean Subtitle for Patient/Family */}
-          <p className="text-slate-600 text-xs sm:text-base max-w-xl mx-auto leading-relaxed font-normal px-2">
-            Emergency ICU ambulances, 24/7 bedside nursing, home doctor visits, and complete hospital ICU setups delivered to your doorstep in Nizamabad.
+          {/* 3. Clean Descriptive Subtitle */}
+          <p className="text-slate-600 text-sm sm:text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed font-normal px-2">
+            Emergency ICU ambulances, 24/7 bedside nursing, home doctor visits, and complete hospital ICU setups delivered to your doorstep across Nizamabad.
           </p>
 
-          {/* Two Big Stacked Mobile Action Buttons */}
-          <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3.5 max-w-md mx-auto">
+          {/* 4. Two Centered Action Buttons (Side-by-side on laptop, stacked on mobile) */}
+          <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 max-w-lg mx-auto">
             <Link
               to="/book"
-              className="w-full py-4 px-8 bg-teal-900 hover:bg-teal-950 active:scale-[0.98] text-white text-xs sm:text-sm font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-teal-950/15 flex items-center justify-center gap-2 transition-all cursor-pointer"
+              className="px-8 py-4 bg-teal-900 hover:bg-teal-950 active:scale-[0.98] text-white text-xs sm:text-sm font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-teal-950/20 flex items-center justify-center gap-2.5 transition-all hover:-translate-y-0.5 cursor-pointer"
             >
               <HeartPulse className="w-4 h-4 text-teal-300" />
               <span>Book Healthcare Service</span>
+              <ArrowRight className="w-4 h-4" />
             </Link>
 
             <button
               type="button"
               onClick={scrollToServices}
-              className="w-full py-4 px-8 bg-white hover:bg-slate-50 active:scale-[0.98] text-slate-800 text-xs sm:text-sm font-bold uppercase tracking-widest rounded-2xl border border-slate-200 shadow-xs flex items-center justify-center gap-2 transition-all cursor-pointer"
+              className="px-8 py-4 bg-white hover:bg-slate-50 active:scale-[0.98] text-slate-800 text-xs sm:text-sm font-bold uppercase tracking-widest rounded-2xl border border-slate-200 shadow-xs flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5 cursor-pointer"
             >
               <span>Explore All Treatments</span>
             </button>
           </div>
 
-          {/* Unified 3-Column Stats Container */}
-          <div className="pt-3 max-w-lg mx-auto">
-            <div className="grid grid-cols-3 divide-x divide-slate-200/80 bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-xs">
-              <div className="px-2 text-center">
-                <span className="text-xl sm:text-2xl font-black text-teal-800 block leading-tight">15 Min</span>
-                <span className="text-[9px] sm:text-[10px] text-slate-500 font-bold uppercase tracking-wider block mt-0.5">Fast Response</span>
+          {/* 5. Unified 3-Column Stats Container */}
+          <div className="pt-4 max-w-2xl mx-auto">
+            <div className="grid grid-cols-3 divide-x divide-slate-200/90 bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-6 shadow-sm">
+              <div className="px-3 sm:px-6 text-center">
+                <span className="text-2xl sm:text-3xl font-black text-teal-800 block leading-tight">15 Min</span>
+                <span className="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-wider block mt-1">Fast Response</span>
               </div>
-              <div className="px-2 text-center">
-                <span className="text-xl sm:text-2xl font-black text-emerald-700 block leading-tight">100%</span>
-                <span className="text-[9px] sm:text-[10px] text-slate-500 font-bold uppercase tracking-wider block mt-0.5">Verified Staff</span>
+              <div className="px-3 sm:px-6 text-center">
+                <span className="text-2xl sm:text-3xl font-black text-emerald-700 block leading-tight">100%</span>
+                <span className="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-wider block mt-1">Verified Doctors</span>
               </div>
-              <div className="px-2 text-center">
-                <span className="text-xl sm:text-2xl font-black text-amber-600 block leading-tight">4.9 ★</span>
-                <span className="text-[9px] sm:text-[10px] text-slate-500 font-bold uppercase tracking-wider block mt-0.5">Patient Rating</span>
+              <div className="px-3 sm:px-6 text-center">
+                <span className="text-2xl sm:text-3xl font-black text-amber-600 block leading-tight">4.9 ★</span>
+                <span className="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-wider block mt-1">Patient Rating</span>
               </div>
             </div>
           </div>
 
         </div>
 
-        {/* Bottom Scroll Indicator */}
+        {/* 6. Scroll Down Indicator */}
         <div 
           onClick={scrollToServices}
-          className="pt-6 flex flex-col items-center justify-center gap-1.5 opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
+          className="pt-8 flex flex-col items-center justify-center gap-1.5 opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
         >
           <span className="text-[10px] font-black tracking-widest uppercase text-slate-500">Scroll Down</span>
           <div className="w-5 h-8 rounded-full border-2 border-slate-300 flex items-start justify-center p-1">
@@ -208,7 +209,7 @@ const Home = ({
       </section>
 
       {/* ========================================================
-          2. CORE SERVICES SECTION (CLEAN LIGHT THEME WITH TOUCH CARDS)
+          2. CORE SERVICES SECTION (CLEAN VISUAL TOUCH CARDS)
       ======================================================== */}
       <section id="services-section" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-slate-100">
         
@@ -226,7 +227,7 @@ const Home = ({
         </div>
 
         {/* Visual Touch Cards Grid (1 col on mobile, 2 on tablet, 3 on desktop) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           {HOME_SERVICES.map((serv) => (
             <div 
               key={serv.id}
