@@ -9,7 +9,8 @@ import { bookingsAPI } from '../services/api';
 const DEFAULT_SERVICES = [
   {
     title: 'Doctor Consultation',
-    icon: '🩺',
+    image: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=600',
+    badge: 'Home Visit',
     sub: [
       { name: 'Home Doctor Visit', desc: 'Senior MBBS / MD physician visits your home for full physical examination and diagnostics.' },
       { name: 'Tele Consultation', desc: 'Audio / Video triage consultation with certified general physician.' },
@@ -18,7 +19,8 @@ const DEFAULT_SERVICES = [
   },
   {
     title: 'Ambulance Services',
-    icon: '🚑',
+    image: 'https://images.unsplash.com/photo-1587745416684-47953f16f02f?auto=format&fit=crop&q=80&w=600',
+    badge: '24/7 Standby',
     sub: [
       { name: 'Emergency Response Ambulance', desc: 'Basic Life Support (BLS) rapid dispatch ambulance with oxygen and paramedic.' },
       { name: 'ICU Ventilator Ambulance', desc: 'Advanced Life Support (ALS) with ventilator, multipara monitor, and emergency clinician.' },
@@ -27,7 +29,8 @@ const DEFAULT_SERVICES = [
   },
   {
     title: 'Nursing Services',
-    icon: '👩‍⚕️',
+    image: 'https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&q=80&w=600',
+    badge: '12h / 24h Care',
     sub: [
       { name: 'General Nursing Care (12h / 24h Shift)', desc: 'Bedside nurse for vitals monitoring, patient hygiene, and daily medication logs.' },
       { name: '24/7 Live-in Home Nursing', desc: 'Round-the-clock intensive clinical nursing care for critical recovery.' },
@@ -38,7 +41,8 @@ const DEFAULT_SERVICES = [
   },
   {
     title: 'ICU Setup at Home',
-    icon: '🏥',
+    image: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=600',
+    badge: 'Hospital-Grade',
     sub: [
       { name: 'Complete Home ICU Setup', desc: 'Hospital bed, ventilator, monitor, suction, oxygen, and 24/7 ICU nurse.' },
       { name: 'ICU Hospital Bed Rental', desc: 'Motorized 5-function / 3-function hospital bed with remote controls.' },
@@ -49,7 +53,8 @@ const DEFAULT_SERVICES = [
   },
   {
     title: 'Laboratory Services',
-    icon: '🔬',
+    image: 'https://images.unsplash.com/photo-1579154204601-01588f351167?auto=format&fit=crop&q=80&w=600',
+    badge: 'Doorstep Sample',
     sub: [
       { name: 'Home Blood Sample Collection', desc: 'Certified phlebotomist collects blood samples right at your doorstep.' },
       { name: 'Complete Health Package (60+ Tests)', desc: 'CBC, Lipid, LFT, KFT, Thyroid, Blood Sugar, and Urine routine.' },
@@ -58,7 +63,8 @@ const DEFAULT_SERVICES = [
   },
   {
     title: 'Physiotherapy',
-    icon: '💪',
+    image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=600',
+    badge: 'Mobility Rehab',
     sub: [
       { name: 'Home Physiotherapy Session', desc: 'Certified physiotherapist delivers 45-min targeted mobility therapy.' },
       { name: 'Post-Surgery Joint Rehabilitation', desc: 'Knee / hip replacement post-op mobility and gait recovery.' },
@@ -67,7 +73,8 @@ const DEFAULT_SERVICES = [
   },
   {
     title: 'Dietician Advisory',
-    icon: '🍎',
+    image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&q=80&w=600',
+    badge: 'Nutrition Plan',
     sub: [
       { name: 'Personalized Clinical Diet Plan', desc: 'Custom nutrition chart formulated based on medical reports & lifestyle.' },
       { name: 'Diabetes & Renal Diet Consultation', desc: 'Specialized glycemic-control and renal-friendly nutrition counseling.' }
@@ -334,7 +341,7 @@ const BookingForm = ({
             Schedule Healthcare Service
           </h2>
           <p className="text-slate-500 text-xs mt-1">
-            Choose what you need. Our clinical team will contact you back immediately to understand the patient details and arrange certified clinicians.
+            Tap a service card below to guide your care selection. Our coordination team will contact you back immediately.
           </p>
         </div>
 
@@ -354,12 +361,17 @@ const BookingForm = ({
         </div>
       )}
 
-      {/* SECTION 1: Service Category Selection */}
+      {/* SECTION 1: Visual Photo-Card Category Selection */}
       <div className="mb-8">
-        <label className="block text-xs font-black text-slate-900 uppercase tracking-wider mb-3">
-          1. Select Healthcare Service Category
-        </label>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
+        <div className="flex items-center justify-between mb-3.5">
+          <label className="text-xs font-black text-slate-900 uppercase tracking-wider">
+            1. Select Healthcare Service Category
+          </label>
+          <span className="text-[11px] text-slate-400 font-bold">Tap a card to select</span>
+        </div>
+
+        {/* Visual Photographic Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5">
           {activeServicesList.map((service) => {
             const isSelected = formData.serviceName === service.title;
             return (
@@ -367,16 +379,44 @@ const BookingForm = ({
                 key={service.title}
                 type="button"
                 onClick={() => handleCategoryChange(service.title)}
-                className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between gap-2 min-h-[85px] ${
+                className={`group relative h-36 sm:h-40 rounded-2xl overflow-hidden text-left transition-all duration-300 cursor-pointer flex flex-col justify-between p-3.5 ${
                   isSelected
-                    ? 'bg-teal-900 text-white border-teal-900 shadow-md shadow-teal-900/10 scale-[1.02]'
-                    : 'bg-slate-50 hover:bg-slate-100/80 text-slate-800 border-slate-200/80'
+                    ? 'ring-4 ring-teal-600 ring-offset-2 scale-[1.02] shadow-lg shadow-teal-900/20'
+                    : 'hover:scale-[1.02] shadow-sm hover:shadow-md border border-slate-200/60'
                 }`}
               >
-                <span className="text-xl">{service.icon}</span>
-                <span className="text-xs font-bold leading-tight line-clamp-2">
-                  {service.title}
-                </span>
+                {/* Background Image with Zoom on Hover */}
+                <img 
+                  src={service.image} 
+                  alt={service.title}
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 -z-20"
+                />
+
+                {/* Dark Cinematic Gradient Overlay */}
+                <div className={`absolute inset-0 transition-opacity duration-300 -z-10 ${
+                  isSelected 
+                    ? 'bg-gradient-to-t from-teal-950/95 via-teal-950/60 to-teal-950/30' 
+                    : 'bg-gradient-to-t from-slate-950/90 via-slate-950/50 to-slate-950/20 group-hover:from-slate-950/95'
+                }`} />
+
+                {/* Top Badge & Active Indicator */}
+                <div className="flex items-center justify-between w-full relative z-10">
+                  <span className="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md bg-white/20 backdrop-blur-md text-white border border-white/20">
+                    {service.badge}
+                  </span>
+                  {isSelected && (
+                    <div className="w-5 h-5 rounded-full bg-teal-400 text-teal-950 flex items-center justify-center shadow-md">
+                      <Check className="w-3.5 h-3.5 stroke-[3]" />
+                    </div>
+                  )}
+                </div>
+
+                {/* Bottom Title */}
+                <div className="relative z-10">
+                  <h4 className="text-xs sm:text-sm font-black text-white leading-snug drop-shadow-md">
+                    {service.title}
+                  </h4>
+                </div>
               </button>
             );
           })}
