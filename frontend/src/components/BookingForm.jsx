@@ -53,7 +53,7 @@ const DEFAULT_SERVICES = [
   },
   {
     title: 'Laboratory Services',
-    image: 'https://images.unsplash.com/photo-1579154204601-01588f351167?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1582719471384-894fbb16e074?auto=format&fit=crop&q=80&w=600',
     badge: 'Doorstep Sample',
     sub: [
       { name: 'Home Blood Sample Collection', desc: 'Certified phlebotomist collects blood samples right at your doorstep.' },
@@ -379,28 +379,29 @@ const BookingForm = ({
                 key={service.title}
                 type="button"
                 onClick={() => handleCategoryChange(service.title)}
-                className={`group relative h-36 sm:h-40 rounded-2xl overflow-hidden text-left transition-all duration-300 cursor-pointer flex flex-col justify-between p-3.5 ${
+                className={`group relative h-36 sm:h-44 rounded-2xl overflow-hidden text-left transition-all duration-300 cursor-pointer flex flex-col justify-between p-3.5 bg-slate-900 border ${
                   isSelected
-                    ? 'ring-4 ring-teal-600 ring-offset-2 scale-[1.02] shadow-lg shadow-teal-900/20'
-                    : 'hover:scale-[1.02] shadow-sm hover:shadow-md border border-slate-200/60'
+                    ? 'ring-4 ring-teal-500 ring-offset-2 border-teal-500 scale-[1.02] shadow-xl shadow-teal-900/30'
+                    : 'border-slate-800 hover:border-slate-600 hover:scale-[1.02] shadow-sm hover:shadow-md'
                 }`}
               >
-                {/* Background Image with Zoom on Hover */}
+                {/* Background Image (z-0) */}
                 <img 
                   src={service.image} 
                   alt={service.title}
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 -z-20"
+                  loading="lazy"
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 z-0 opacity-80"
                 />
 
-                {/* Dark Cinematic Gradient Overlay */}
-                <div className={`absolute inset-0 transition-opacity duration-300 -z-10 ${
+                {/* Dark Cinematic Gradient Overlay (z-10) */}
+                <div className={`absolute inset-0 transition-opacity duration-300 z-10 ${
                   isSelected 
-                    ? 'bg-gradient-to-t from-teal-950/95 via-teal-950/60 to-teal-950/30' 
-                    : 'bg-gradient-to-t from-slate-950/90 via-slate-950/50 to-slate-950/20 group-hover:from-slate-950/95'
+                    ? 'bg-gradient-to-t from-teal-950 via-teal-950/70 to-teal-950/40 opacity-95' 
+                    : 'bg-gradient-to-t from-slate-950 via-slate-950/70 to-slate-950/40 opacity-90 group-hover:opacity-95'
                 }`} />
 
-                {/* Top Badge & Active Indicator */}
-                <div className="flex items-center justify-between w-full relative z-10">
+                {/* Top Badge & Active Indicator (z-20) */}
+                <div className="flex items-center justify-between w-full relative z-20">
                   <span className="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md bg-white/20 backdrop-blur-md text-white border border-white/20">
                     {service.badge}
                   </span>
@@ -411,8 +412,8 @@ const BookingForm = ({
                   )}
                 </div>
 
-                {/* Bottom Title */}
-                <div className="relative z-10">
+                {/* Bottom Title (z-20) */}
+                <div className="relative z-20">
                   <h4 className="text-xs sm:text-sm font-black text-white leading-snug drop-shadow-md">
                     {service.title}
                   </h4>
