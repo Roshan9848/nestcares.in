@@ -372,34 +372,35 @@ const Home = ({
       </section>
 
       {/* ========================================================
-          5. CALL TO ACTION FOOTER BANNER
+          5. CALL TO ACTION BANNER (CLEAN LIGHT MEDICAL THEME)
       ======================================================== */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center space-y-6">
-        <div className="bg-gradient-to-r from-teal-950 via-slate-900 to-teal-950 text-white rounded-3xl p-8 sm:p-12 shadow-xl space-y-6">
-          <span className="inline-flex items-center gap-1.5 px-3.5 py-1 bg-white/10 text-teal-300 rounded-full text-xs font-bold uppercase tracking-widest">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center">
+        <div className="bg-gradient-to-b from-teal-50/70 to-white border border-teal-100 rounded-3xl p-8 sm:p-12 shadow-[0_15px_40px_rgba(15,23,42,0.04)] space-y-6">
+          <span className="inline-flex items-center gap-1.5 px-3.5 py-1 bg-teal-100/80 text-teal-900 rounded-full text-xs font-black uppercase tracking-widest border border-teal-200">
             24/7 Standby Support Across Nizamabad
           </span>
-          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight">
             Need Medical Assistance Right Now?
           </h2>
-          <p className="text-slate-300 text-xs sm:text-base max-w-xl mx-auto">
+          <p className="text-slate-600 text-xs sm:text-base max-w-xl mx-auto font-medium leading-relaxed">
             Submit your care request online or speak with our medical coordination desk directly on WhatsApp.
           </p>
 
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3.5 max-w-md mx-auto pt-2">
             <Link
               to="/book"
-              className="w-full py-4 px-8 bg-teal-500 hover:bg-teal-400 text-slate-950 font-black text-xs uppercase tracking-widest rounded-2xl shadow-xl transition-all"
+              className="w-full py-4 px-8 bg-teal-900 hover:bg-teal-950 active:scale-[0.98] text-white font-black text-xs uppercase tracking-widest rounded-2xl shadow-xl shadow-teal-950/20 transition-all flex items-center justify-center gap-2"
             >
-              Request Care Appointment
+              <HeartPulse className="w-4 h-4 text-teal-300" />
+              <span>Request Care Appointment</span>
             </Link>
             <a
               href={`https://wa.me/${whatsapp.replace(/\D/g, '')}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full py-4 px-8 bg-white/10 hover:bg-white/20 text-white font-black text-xs uppercase tracking-widest rounded-2xl border border-white/20 transition-all flex items-center justify-center gap-2"
+              className="w-full py-4 px-8 bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-black text-xs uppercase tracking-widest rounded-2xl shadow-lg shadow-emerald-600/20 transition-all flex items-center justify-center gap-2"
             >
-              <MessageSquare className="w-4 h-4 text-emerald-400" />
+              <MessageSquare className="w-4 h-4 text-emerald-100" />
               <span>Chat on WhatsApp</span>
             </a>
           </div>
