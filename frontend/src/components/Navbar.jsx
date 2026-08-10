@@ -174,14 +174,13 @@ const Navbar = ({ webSettings }) => {
           {/* Vertical Divider */}
           <span className="h-5 w-px bg-slate-200"></span>
 
-          {/* Black Pill Button */}
+          {/* Standardized Book Appointment CTA */}
           <Link
-            to="/services"
-            className="bg-black hover:bg-slate-900 text-white px-5 py-2.5 rounded-full text-[10px] sm:text-xs font-extrabold uppercase tracking-wider flex items-center gap-1.5 transition-all duration-300 hover:shadow-lg active:scale-95 text-center whitespace-nowrap"
+            to="/book"
+            className="bg-teal-900 hover:bg-teal-950 text-white px-5 py-2.5 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-wider flex items-center gap-1.5 transition-all duration-300 shadow-md shadow-teal-950/15 active:scale-95 text-center whitespace-nowrap"
           >
-            <span className="sm:hidden">{currentLang === 'english' ? 'Book Now' : 'బుకింగ్'}</span>
-            <span className="hidden sm:inline">{currentLang === 'english' ? 'Book Appointment' : 'సేవను బుక్ చేయండి'}</span>
-            <ArrowRight className="w-3 h-3 text-white" />
+            <span>{currentLang === 'english' ? 'Book Appointment' : 'అపాయింట్‌మెంట్ బుక్ చేయండి'}</span>
+            <ArrowRight className="w-3.5 h-3.5 text-teal-300" />
           </Link>
         </div>
       </header>

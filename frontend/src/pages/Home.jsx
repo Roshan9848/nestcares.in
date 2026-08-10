@@ -124,47 +124,46 @@ const Home = ({
     <div className="bg-[#fafafb] min-h-screen text-slate-800 font-sans selection:bg-teal-100 selection:text-teal-900">
       
       {/* ========================================================
-          1. HERO SECTION (3-ROW CENTERED IMPACT HEADLINE)
+          1. HERO SECTION (CLEAN 3-ROW CENTERED IMPACT HEADLINE)
       ======================================================== */}
-      <section className="relative min-h-[88vh] flex flex-col justify-between pt-12 pb-16 lg:pt-20 lg:pb-24 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center overflow-hidden">
+      <section className="relative min-h-[85vh] flex flex-col justify-between pt-10 pb-12 lg:pt-16 lg:pb-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center overflow-hidden">
         
         {/* Soft Ambient Radial Background Glow */}
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] sm:w-[800px] h-[400px] sm:h-[600px] bg-gradient-to-b from-teal-500/10 via-emerald-500/5 to-transparent blur-[140px] rounded-full pointer-events-none -z-10" />
 
         {/* Centered Content Container */}
-        <div className="space-y-6 sm:space-y-8 my-auto">
+        <div className="space-y-6 sm:space-y-7 my-auto">
           
           {/* 1. Top Pill Badge */}
-          <div className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full border border-slate-200/90 bg-white shadow-xs">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-slate-200/90 bg-white shadow-xs">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span className="text-[11px] sm:text-xs font-black uppercase tracking-widest text-slate-700">
               10,000+ Patients Cared • Nizamabad's #1 Home Healthcare
             </span>
           </div>
 
-          {/* 2. 3-Row Centered Impact Headline */}
-          <h1 className="text-3xl sm:text-5xl lg:text-7xl font-black tracking-tight leading-[1.1] text-slate-900 uppercase max-w-4xl mx-auto flex flex-col items-center gap-1 sm:gap-2">
+          {/* 2. 3-Row Centered Clean Impact Headline */}
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.12] text-slate-900 uppercase max-w-4xl mx-auto flex flex-col items-center gap-1 sm:gap-1.5">
             <span className="block">Hospital-Grade</span>
             <span className="block">Intensive Care</span>
-            <span className="block text-teal-800 underline decoration-teal-500/30 decoration-wavy decoration-2">
+            <span className="block text-teal-800">
               In Your Home
             </span>
           </h1>
 
           {/* 3. Clean Descriptive Subtitle */}
-          <p className="text-slate-600 text-sm sm:text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed font-normal px-2">
+          <p className="text-slate-600 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto leading-relaxed font-normal px-2">
             Emergency ICU ambulances, 24/7 bedside nursing, home doctor visits, and complete hospital ICU setups delivered to your doorstep across Nizamabad.
           </p>
 
-          {/* 4. Two Centered Action Buttons (Side-by-side on laptop, stacked on mobile) */}
-          <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 max-w-lg mx-auto">
+          {/* 4. Unified Action Buttons */}
+          <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3.5 max-w-md mx-auto">
             <Link
               to="/book"
               className="px-8 py-4 bg-teal-900 hover:bg-teal-950 active:scale-[0.98] text-white text-xs sm:text-sm font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-teal-950/20 flex items-center justify-center gap-2.5 transition-all hover:-translate-y-0.5 cursor-pointer"
             >
-              <HeartPulse className="w-4 h-4 text-teal-300" />
-              <span>Book Healthcare Service</span>
-              <ArrowRight className="w-4 h-4" />
+              <span>Book Appointment</span>
+              <ArrowRight className="w-4 h-4 text-teal-300" />
             </Link>
 
             <button
@@ -172,23 +171,23 @@ const Home = ({
               onClick={scrollToServices}
               className="px-8 py-4 bg-white hover:bg-slate-50 active:scale-[0.98] text-slate-800 text-xs sm:text-sm font-bold uppercase tracking-widest rounded-2xl border border-slate-200 shadow-xs flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5 cursor-pointer"
             >
-              <span>Explore All Treatments</span>
+              <span>Explore Services</span>
             </button>
           </div>
 
           {/* 5. Unified 3-Column Stats Container */}
-          <div className="pt-4 max-w-2xl mx-auto">
-            <div className="grid grid-cols-3 divide-x divide-slate-200/90 bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-6 shadow-sm">
+          <div className="pt-3 max-w-2xl mx-auto">
+            <div className="grid grid-cols-3 divide-x divide-slate-200/90 bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-sm">
               <div className="px-3 sm:px-6 text-center">
-                <span className="text-2xl sm:text-3xl font-black text-teal-800 block leading-tight">15 Min</span>
+                <span className="text-xl sm:text-3xl font-black text-teal-800 block leading-tight">15 Min</span>
                 <span className="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-wider block mt-1">Fast Response</span>
               </div>
               <div className="px-3 sm:px-6 text-center">
-                <span className="text-2xl sm:text-3xl font-black text-emerald-700 block leading-tight">100%</span>
+                <span className="text-xl sm:text-3xl font-black text-emerald-700 block leading-tight">100%</span>
                 <span className="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-wider block mt-1">Verified Doctors</span>
               </div>
               <div className="px-3 sm:px-6 text-center">
-                <span className="text-2xl sm:text-3xl font-black text-amber-600 block leading-tight">4.9 ★</span>
+                <span className="text-xl sm:text-3xl font-black text-amber-600 block leading-tight">4.9 ★</span>
                 <span className="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-wider block mt-1">Patient Rating</span>
               </div>
             </div>
@@ -199,7 +198,7 @@ const Home = ({
         {/* 6. Scroll Down Indicator */}
         <div 
           onClick={scrollToServices}
-          className="pt-8 flex flex-col items-center justify-center gap-1.5 opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
+          className="pt-6 flex flex-col items-center justify-center gap-1.5 opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
         >
           <span className="text-[10px] font-black tracking-widest uppercase text-slate-500">Scroll Down</span>
           <div className="w-5 h-8 rounded-full border-2 border-slate-300 flex items-start justify-center p-1">
@@ -283,7 +282,7 @@ const Home = ({
                   state={{ selectService: serv.title }}
                   className="w-full py-3.5 bg-teal-500 hover:bg-teal-400 text-slate-950 font-black text-xs uppercase tracking-widest rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer mt-3"
                 >
-                  <span>Request Care</span>
+                  <span>Book Appointment</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
@@ -392,7 +391,7 @@ const Home = ({
               className="w-full py-4 px-8 bg-teal-900 hover:bg-teal-950 active:scale-[0.98] text-white font-black text-xs uppercase tracking-widest rounded-2xl shadow-xl shadow-teal-950/20 transition-all flex items-center justify-center gap-2"
             >
               <HeartPulse className="w-4 h-4 text-teal-300" />
-              <span>Request Care Appointment</span>
+              <span>Book Appointment</span>
             </Link>
             <a
               href={`https://wa.me/${whatsapp.replace(/\D/g, '')}`}

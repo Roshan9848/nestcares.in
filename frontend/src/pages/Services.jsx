@@ -278,19 +278,13 @@ const Services = ({ services }) => {
                         </Link>
                         
                         <div className="flex items-center gap-1.5">
-                          {service.bookable && (
-                            <button 
-                              onClick={() => openQuickBook(service)}
-                              className="bg-teal-800 hover:bg-teal-900 text-white text-xs font-extrabold uppercase py-2 px-4 rounded-full transition-all duration-300 shadow-sm hover:shadow active:scale-98"
-                            >
-                              {isTe ? "త్వరిత బుక్" : "Quick Book"}
-                            </button>
-                          )}
                           <Link
-                            to={`/services/${service.slug}`}
-                            className="bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-black uppercase py-2 px-3.5 rounded-lg border border-slate-200/50 transition-all"
+                            to="/book"
+                            state={{ selectService: service.title }}
+                            className="bg-teal-900 hover:bg-teal-950 text-white text-xs font-black uppercase py-2 px-4 rounded-xl transition-all duration-300 shadow-sm hover:shadow active:scale-98 flex items-center gap-1.5"
                           >
-                            {isTe ? "గైడ్" : "Setup Guide"}
+                            <span>{isTe ? "అపాయింట్‌మెంట్" : "Book Appointment"}</span>
+                            <ArrowRight className="w-3.5 h-3.5" />
                           </Link>
                         </div>
                       </div>
