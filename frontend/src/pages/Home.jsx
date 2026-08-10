@@ -1,532 +1,482 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import Button from '../components/common/Button';
-import Card from '../components/common/Card';
-import Badge from '../components/common/Badge';
-import * as Icons from 'lucide-react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { 
-  ArrowRight, Phone, MessageSquare, ShieldCheck, Clock, Award, Users, 
-  ChevronRight, Calendar, UserPlus, CheckCircle, ChevronDown, Activity,
-  Sliders, Layout, HelpCircle, HardDrive, Compass, Info, CheckCircle2
+  ShieldCheck, HeartPulse, Clock, Phone, Award, 
+  ArrowRight, CheckCircle2, Sparkles, Star, Users, 
+  Activity, Stethoscope, ChevronRight, HelpCircle,
+  Truck, Microscope, UserCheck, Check, MessageSquare
 } from 'lucide-react';
-
-const DynamicIcon = ({ name, className }) => {
-  const IconComponent = Icons[name] || Icons.Heart;
-  return <IconComponent className={className} />;
-};
-
-import { translations } from '../utils/translations';
 import { resolveImageUrl } from '../utils/url';
 
-const translateServiceTitle = (title, isTe) => {
-  if (!isTe) return title;
-  const map = {
-    'Doctor Consultation': 'వైద్య సంప్రదింపులు',
-    'Ambulance Services': 'అంబులెన్స్ సేవలు',
-    'Nursing Services': 'నర్సింగ్ సేవలు',
-    'ICU Setup at Home': 'ఇంటి వద్ద ఐసీయూ (ICU) ఏర్పాటు',
-    'Laboratory Services': 'ల్యాబ్ పరీక్షలు',
-    'Physiotherapy': 'ఫిజియోథెరపీ',
-    'Dietician Advisory': 'డైటీషియన్ సలహాలు'
-  };
-  return map[title] || title;
-};
+const HOME_SERVICES = [
+  {
+    id: 'doctor-consultation',
+    title: 'Doctor Consultation',
+    desc: 'Senior MBBS / MD physicians visit your home in Nizamabad for comprehensive bedside diagnostics and treatment protocols.',
+    price: 1500,
+    icon: '🩺',
+    badge: 'Same-Day Visit',
+    popular: true,
+    tags: ['General Medicine', 'Specialist Visits', 'Post-Op Followup']
+  },
+  {
+    id: 'ambulance-services',
+    title: 'Ambulance Services',
+    desc: '24/7 Basic Life Support (BLS) and Advanced ICU Ventilator ambulances with emergency paramedics on standby.',
+    price: 3000,
+    icon: '🚑',
+    badge: '15-Min Dispatch',
+    emergency: true,
+    tags: ['Oxygen Support', 'ICU Ventilator', 'Inter-City Transfer']
+  },
+  {
+    id: 'nursing-services',
+    title: 'Professional Home Nursing',
+    desc: 'Certified ICU and general bedside nurses for 12h / 24h continuous clinical care, wound dressing, and vitals tracking.',
+    price: 2500,
+    icon: '👩‍⚕️',
+    badge: '12h / 24h Shifts',
+    popular: true,
+    tags: ['Bedside Care', 'Tracheostomy', 'Injections & IV']
+  },
+  {
+    id: 'icu-setup',
+    title: 'ICU Setup at Home',
+    desc: 'Complete hospital-grade intensive care unit installed in your bedroom: motorized bed, ventilator, 5-para monitor, and oxygen.',
+    price: 15000,
+    icon: '🏥',
+    badge: 'Hospital-Grade',
+    tags: ['Motorized ICU Bed', 'BiPAP / CPAP', 'Multipara Monitor']
+  },
+  {
+    id: 'lab-services',
+    title: 'Doorstep Lab Diagnostics',
+    desc: 'Certified phlebotomists collect blood & urine samples at your home. NABL certified test reports delivered within 4-6 hours.',
+    price: 300,
+    icon: '🔬',
+    badge: 'NABL Certified',
+    tags: ['Complete Health Panel', 'Cardiac Profile', 'Fast Reports']
+  },
+  {
+    id: 'physiotherapy',
+    title: 'Home Physiotherapy',
+    desc: 'Licensed physiotherapists for post-surgery joint rehabilitation, neuro-recovery, stroke rehab, and geriatric mobility.',
+    price: 1000,
+    icon: '💪',
+    badge: 'Targeted Rehab',
+    tags: ['Stroke Recovery', 'Joint Mobility', 'Pain Relief']
+  }
+];
 
-const translateServiceDesc = (title, desc, isTe) => {
-  if (!isTe) return desc;
-  const map = {
-    'Doctor Consultation': 'అనుభవజ్ఞులైన క్లినికల్ వైద్యులు మీ ఇంటి వద్ద సంప్రదింపులు మరియు బెడ్‌సైడ్ సంరక్షణ తనిఖీలను సమన్వయం చేస్తారు.',
-    'Ambulance Services': '24/7 అధునాతన మరియు ప్రాథమిక రక్షణ సేవలతో కూడిన వైద్య రవాణా సేవలు.',
-    'Nursing Services': 'స్వల్పకాలిక మరియు దీర్ఘకాలిక కోలుకోవడం కోసం సహాయక, వృత్తిపరమైన నర్సింగ్ సంరక్షణ.',
-    'ICU Setup at Home': 'వెంటిలేటర్లు, మానిటర్లు మరియు 24/7 నర్సింగ్‌తో కూడిన సమగ్ర అత్యవసర సంరక్షణ ఏర్పాటు.',
-    'Laboratory Services': 'ఇంటి వద్దే డయాగ్నస్టిక్ పరీక్షలు, రక్త నమూనాల సేకరణ మరియు వేగవంతమైన నివేదికలు.',
-    'Physiotherapy': 'ఇంటి వద్దే పునరావాస ప్రణాళికలు, చలనశీలత పునరుద్ధరణ మరియు కండరాల భౌతిక చికిత్సలు.',
-    'Dietician Advisory': 'దీర్ఘకాలిక రికవరీ కోసం క్లినికల్ న్యూట్రిషన్ ప్లానర్లు మరియు అనుకూల ఆహార పట్టికలు.'
-  };
-  return map[title] || desc;
-};
+const CLINICAL_STANDARDS = [
+  {
+    title: '100% Certified Clinicians',
+    desc: 'Every doctor, nurse, and technician is background-verified with active hospital clinical registration.',
+    icon: ShieldCheck
+  },
+  {
+    title: 'Hospital-Grade Bio-Equipment',
+    desc: 'Calibrated multipara monitors, Philips / ResMed ventilators, and motorized ICU beds sanitized before every dispatch.',
+    icon: Activity
+  },
+  {
+    title: '15-Minute Response Protocol',
+    desc: 'Dedicated emergency coordinator hotline in Nizamabad ensures rapid triage and immediate dispatch.',
+    icon: Clock
+  },
+  {
+    title: 'Zero Advance Required',
+    desc: 'Transparent pricing with no hidden charges. Review the clinical setup and pay after delivery.',
+    icon: CheckCircle2
+  }
+];
 
-const Home = ({ homepageSettings, contactSettings, services, testimonials, faqs }) => {
-  const navigate = useNavigate();
-  const [activeFaq, setActiveFaq] = useState(null);
-  
-  const [searchQuery, setSearchQuery] = useState('');
-  const [activeCategory, setActiveCategory] = useState('All');
+const PROCESS_STEPS = [
+  {
+    step: '01',
+    title: 'Select Treatment',
+    desc: 'Choose your medical category online or phone our 24/7 coordinator helpline.'
+  },
+  {
+    step: '02',
+    title: 'Clinical Triage',
+    desc: 'Our senior physician reviews patient vitals and determines required equipment & nursing level.'
+  },
+  {
+    step: '03',
+    title: 'Bedside Setup',
+    desc: 'Certified clinicians and sterilized hospital-grade equipment arrive at your home promptly.'
+  },
+  {
+    step: '04',
+    title: 'Continuous Care',
+    desc: 'Daily medical charts, physician check-ins, and 24/7 standby emergency backup.'
+  }
+];
 
-  const [currentLang, setCurrentLang] = useState(localStorage.getItem('preferred_language') || 'english');
+const Home = ({ 
+  services = [], 
+  testimonials = [], 
+  faqs = [], 
+  webSettings, 
+  contactSettings 
+}) => {
+  const [lang, setLang] = useState('en');
+  const isTe = lang === 'te';
 
-  useEffect(() => {
-    const syncLang = () => {
-      setCurrentLang(localStorage.getItem('preferred_language') || 'english');
-    };
-    window.addEventListener('languageChanged', syncLang);
-    return () => window.removeEventListener('languageChanged', syncLang);
-  }, []);
-
-  const isTe = currentLang === 'telugu';
-  const t = (key, fallback) => translations[isTe ? 'TE' : 'EN'][key] || fallback;
-
-  const heroHeading = isTe ? t('hero_title') : (homepageSettings?.heroHeading || t('hero_title'));
-  const heroDescription = isTe ? t('hero_desc') : (homepageSettings?.heroDescription || t('hero_desc'));
-  const ctaText = isTe ? t('cta_primary') : (homepageSettings?.ctaText || t('cta_primary'));
-
-  const whyChooseUs = isTe ? [
-    { title: 'అనుభవజ్ఞులైన వైద్యులు', desc: 'అత్యవసర మరియు ఇంటెన్సివ్ కేర్ నేపథ్యం ఉన్న లైసెన్స్ పొందిన నిపుణులే సేవలు అందిస్తారు.' },
-    { title: 'ఆసుపత్రి తరహా పరికరాలు', desc: 'మేము మీ ఇంట్లోనే వెంటిలేటర్లు, మానిటర్లు మరియు ప్రత్యేక బెడ్లను ఇన్‌స్టాల్ చేస్తాము.' },
-    { title: '24/7 త్వరిత స్పందన', desc: 'అంబులెన్స్ సేవలు మరియు సహాయక డెస్క్ 24 గంటలూ అందుబాటులో ఉంటాయి.' },
-    { title: 'సరసమైన ధరలు', desc: 'ఆసుపత్రి ఐసీయూ ఛార్జీలతో పోలిస్తే 60% వరకు ఖర్చు ఆదా చేసుకోండి.' }
-  ] : (homepageSettings?.whyChooseUs || [
-    { title: 'Experienced Clinicians', desc: 'All care is delivered by licensed medical professionals with intensive hospital backgrounds.' },
-    { title: 'Hospital-Grade Equipment', desc: 'We install high-quality ventilators, monitors, and specialized medical beds directly at home.' },
-    { title: '24/7 Quick Response', desc: 'Dedicated round-the-clock ambulance dispatch and medical helpline at your disposal.' },
-    { title: 'Affordable Recovery', desc: 'Save up to 60% compared to extended hospital ICU or clinical boarding charges.' }
-  ]);
-
-  const howItWorks = isTe ? [
-    { step: '1', title: 'సేవను ఎంచుకోండి', desc: 'మా సాధారణ ఫారమ్ నింపండి లేదా కాల్/వాట్సాప్ ద్వారా మీ అవసరాలను మాకు తెలియజేయండి.' },
-    { step: '2', title: 'వైద్య మూల్యాంకనం', desc: 'మా కోఆర్డినేటర్ వైద్యులతో చర్చించి ఒక సమగ్ర చికిత్స ప్రణాళికను సిద్ధం చేస్తారు.' },
-    { step: '3', title: 'నిపుణుల నియోగం', desc: 'మేము వైద్య పరికరాలను సరఫరా చేసి, నిపుణులైన నర్సులను మీ ఇంటి వద్ద ఏర్పాటు చేస్తాము.' },
-    { step: '4', title: 'నిరంతర పర్యవేక్షణ', desc: 'చికిత్స పర్యవేక్షణ, రెగ్యులర్ డాక్టర్ చెకప్‌లు మరియు అత్యవసర బ్యాకప్ అందుబాటులో ఉంటాయి.' }
-  ] : (homepageSettings?.howItWorks || [
-    { step: '1', title: 'Request Service', desc: 'Fill out our simple form or contact us via call/WhatsApp to describe your clinical needs.' },
-    { step: '2', title: 'Medical Assessment', desc: 'Our head coordinator reviews and aligns with doctors to design a custom care plan.' },
-    { step: '3', title: 'Expert Deployment', desc: 'We deliver medical machinery, dispatch professionals, and coordinate immediate setup.' },
-    { step: '4', title: 'Continuous Monitoring', desc: 'Get ongoing clinical audits, physician visits, and emergency support backup.' }
-  ]);
-
-  // Safe array fallbacks to prevent TypeError if data is null/undefined during API loading
-  const servicesList = Array.isArray(services) ? services : [];
-  const testimonialsList = Array.isArray(testimonials) ? testimonials : [];
-  const faqsList = Array.isArray(faqs) ? faqs : [];
-
-  const filteredServices = servicesList
-    .filter(s => s && s.active)
-    .filter(s => {
-      if (activeCategory === 'All') return true;
-      const title = s.title.toLowerCase();
-      const slug = s.slug.toLowerCase();
-      if (activeCategory === 'Critical Care') return slug.includes('icu') || title.includes('icu') || title.includes('critical');
-      if (activeCategory === 'Physiotherapy') return slug.includes('physio') || title.includes('physio') || title.includes('rehab');
-      if (activeCategory === 'Home Nursing') return slug.includes('nurse') || title.includes('nursing') || title.includes('caregiver');
-      if (activeCategory === 'Diagnostics') return slug.includes('test') || title.includes('diagnostic') || title.includes('lab');
-      return true;
-    })
-    .filter(s => {
-      if (!searchQuery.trim()) return true;
-      const q = searchQuery.toLowerCase();
-      return (
-        s.title.toLowerCase().includes(q) || 
-        s.shortDescription.toLowerCase().includes(q)
-      );
-    });
-
-  const phone = contactSettings?.phoneNumbers?.[0] || '+91 98765 43210';
-  const whatsapp = contactSettings?.whatsappNumber || '+91 98765 43210';
-  const cleanPhone = String(phone || '').replace(/[^+\d]/g, '');
-  const cleanWhatsapp = String(whatsapp || '').replace(/[^+\d]/g, '');
-
-  const toggleFaq = (index) => {
-    setActiveFaq(activeFaq === index ? null : index);
-  };
-
-  const whyIcons = [
-    <Award className="w-5 h-5 text-teal-850" />,
-    <ShieldCheck className="w-5 h-5 text-emerald-600" />,
-    <Clock className="w-5 h-5 text-teal-650" />,
-    <Users className="w-5 h-5 text-indigo-700" />
-  ];
+  const companyName = webSettings?.companyName || "Nest Cares Home Healthcare";
+  const phone = contactSettings?.phoneNumbers?.[0] || "+91 92488 49388";
+  const whatsapp = contactSettings?.whatsappNumber || "+91 92488 49388";
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      className="bg-[#fdfcfb] min-h-screen text-slate-700 font-sans-editorial"
-    >
+    <div className="bg-[#fafafb] min-h-screen text-slate-800 font-sans selection:bg-teal-100 selection:text-teal-900">
       
-      {/* 1. HERO SECTION (EDITORIAL ASYMMETRICAL LAYOUT) */}
-      <section className="relative min-h-[85vh] flex items-center py-12 lg:py-16 overflow-hidden bg-warm-ambient">
-        {/* Animated Ambient background blobs */}
-        <div className="absolute top-12 left-1/4 w-80 h-80 rounded-full bg-teal-500/5 blur-[100px] pointer-events-none animate-pulse duration-[6000ms]"></div>
-        <div className="absolute bottom-12 right-1/4 w-96 h-96 rounded-full bg-amber-500/5 blur-[120px] pointer-events-none animate-pulse duration-[8000ms]"></div>
+      {/* ========================================================
+          1. HERO SECTION (2026 LUXURY CLINICAL DESIGN)
+      ======================================================== */}
+      <section className="relative pt-12 pb-20 lg:pt-16 lg:pb-28 overflow-hidden bg-gradient-to-b from-teal-950/5 via-[#fafafb] to-[#fafafb]">
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        {/* Soft Ambient Glows */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[450px] bg-gradient-to-tr from-teal-500/10 to-emerald-500/5 blur-[120px] rounded-full pointer-events-none -z-10" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          {/* Top Bar Badges */}
+          <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 mb-6">
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 bg-teal-900 text-teal-100 rounded-full text-xs font-black uppercase tracking-widest shadow-sm">
+              <Sparkles className="w-3.5 h-3.5 text-teal-300" />
+              Nizamabad’s #1 Home Healthcare Platform
+            </span>
+            <div className="flex items-center gap-1.5 text-xs font-bold text-slate-600 bg-white px-3 py-1 rounded-full border border-slate-200/80 shadow-xs">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Standby Response Active</span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center text-center lg:text-left">
             
-            {/* Left Column: Typography Block */}
-            <div className="lg:col-span-6 flex flex-col gap-6 text-center lg:text-left">
-              
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.1 }}
-                className="w-fit self-center lg:self-start flex flex-wrap gap-2 justify-center lg:justify-start"
-              >
-                <Badge variant="teal" pulse={true}>
-                  {isTe ? "📍 నిజామాబాద్‌లో మాత్రమే సేవలు" : "📍 Serving Exclusively in Nizamabad"}
-                </Badge>
-                <Badge variant="orange">
-                  {isTe ? "ప్రస్తుతం అందుబాటులో ఉంది" : "Now Active"}
-                </Badge>
-              </motion.div>
+            {/* Left Column: Headlines & Call to Action */}
+            <div className="lg:col-span-7 space-y-6">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.12]">
+                Hospital-Grade <span className="text-teal-800 underline decoration-teal-500/30 decoration-wavy decoration-2">Intensive Care</span> Directly in Your Home.
+              </h1>
 
-              <motion.h1 
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="text-3xl sm:text-4xl lg:text-5xl font-serif-editorial font-bold text-slate-900 leading-[1.2] tracking-tight"
-              >
-                {heroHeading}
-              </motion.h1>
+              <p className="text-slate-600 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed font-medium">
+                Emergency ICU ambulances, 24/7 bedside nursing, home doctor visits, and complete ICU setups installed in patient bedrooms across Nizamabad.
+              </p>
 
-              {/* Mobile Hero Image Card (Instant visual context on mobile, hidden on desktop) */}
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.25 }}
-                className="block lg:hidden w-full max-w-[340px] mx-auto my-2 bg-white p-2 rounded-[28px] border border-slate-200/50 shadow-md shadow-slate-100"
-              >
-                <div className="h-44 rounded-[20px] overflow-hidden relative">
-                  <img 
-                    src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&q=80&w=600" 
-                    alt="Clinician patient care Nizamabad" 
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/30 via-transparent to-transparent"></div>
-                  
-                  {/* Clinical Excellence Badge Overlay */}
-                  <div className="absolute bottom-3 left-3 bg-slate-900/90 backdrop-blur-md text-white px-3 py-1 rounded-full border border-white/5 text-[9px] font-extrabold uppercase tracking-widest flex items-center gap-1">
-                    <ShieldCheck className="w-3.5 h-3.5 text-teal-400" />
-                    <span>{isTe ? "క్లినికల్ ఎక్సలెన్స్" : "Clinical Excellence"}</span>
-                  </div>
+              {/* Action Buttons */}
+              <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                <Link
+                  to="/book"
+                  className="w-full sm:w-auto px-8 py-4 bg-teal-900 hover:bg-teal-950 active:scale-[0.98] text-white text-xs font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2.5 shadow-xl shadow-teal-950/20 transition-all hover:-translate-y-0.5"
+                >
+                  <HeartPulse className="w-4 h-4 text-teal-300" />
+                  <span>Book Appointment Now</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+
+                <a
+                  href={`tel:${phone}`}
+                  className="w-full sm:w-auto px-7 py-4 bg-white hover:bg-slate-50 text-slate-900 text-xs font-black uppercase tracking-widest rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5"
+                >
+                  <Phone className="w-4 h-4 text-emerald-600" />
+                  <span>24/7 Emergency: {phone}</span>
+                </a>
+              </div>
+
+              {/* Highlights Micro-Strip */}
+              <div className="pt-4 grid grid-cols-2 sm:grid-cols-4 gap-3 text-left">
+                <div className="bg-white/80 backdrop-blur-sm p-3 rounded-2xl border border-slate-200/60 shadow-xs">
+                  <span className="text-lg font-black text-slate-900 block">15 Min</span>
+                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Fast Triage</span>
                 </div>
-              </motion.div>
+                <div className="bg-white/80 backdrop-blur-sm p-3 rounded-2xl border border-slate-200/60 shadow-xs">
+                  <span className="text-lg font-black text-emerald-700 block">100%</span>
+                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Certified Staff</span>
+                </div>
+                <div className="bg-white/80 backdrop-blur-sm p-3 rounded-2xl border border-slate-200/60 shadow-xs">
+                  <span className="text-lg font-black text-teal-800 block">₹0</span>
+                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Zero Advance</span>
+                </div>
+                <div className="bg-white/80 backdrop-blur-sm p-3 rounded-2xl border border-slate-200/60 shadow-xs">
+                  <span className="text-lg font-black text-amber-600 block">4.9 ★</span>
+                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Patient Rating</span>
+                </div>
+              </div>
 
-              <motion.p 
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="text-slate-500 text-sm sm:text-base leading-relaxed max-w-xl mx-auto lg:mx-0 font-semibold"
-              >
-                {heroDescription}
-              </motion.p>
-
-              {/* CTAs */}
-              <motion.div 
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-2"
-              >
-                <Button 
-                  variant="primary" 
-                  size="lg" 
-                  onClick={() => navigate('/services')}
-                  icon={<ArrowRight className="w-4 h-4" />}
-                >
-                  {isTe ? "వైద్య సేవల జాబితా" : "Explore Medical Catalog"}
-                </Button>
-                <Button 
-                  variant="secondary" 
-                  size="lg" 
-                  onClick={() => window.location.href = `tel:${cleanPhone}`}
-                  icon={<Phone className="w-4 h-4 text-slate-500" />}
-                >
-                  {isTe ? "అత్యవసర సమాచారం" : "Emergency Coordinates"}
-                </Button>
-              </motion.div>
-
-              {/* Trust coordinate list */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.5 }}
-                className="flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-2.5 text-[11px] sm:text-xs text-slate-450 uppercase font-extrabold tracking-wider border-t border-slate-100 pt-5 mt-2"
-              >
-                <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-teal-800" /> {isTe ? "ఐసీయూ గ్రేడ్ పరికరాలు" : "ICU Grade Equipment"}</span>
-                <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-teal-800" /> {isTe ? "ధృవీకరించబడిన నర్సులు" : "Certified Care Nurses"}</span>
-                <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-teal-800" /> {isTe ? "నిజామాబాద్ కవరేజ్ మాత్రమే" : "Nizamabad Only Coverage"}</span>
-              </motion.div>
             </div>
 
-            {/* Right Column: Layered Bento Collage (Light theme, welcoming & elegant - Desktop Only) */}
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="lg:col-span-6 relative lg:flex hidden items-center justify-center min-h-[450px] px-4 w-full"
-            >
-              {/* Organic background shapes */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] sm:w-[380px] h-[280px] sm:h-[380px] bg-gradient-to-tr from-teal-500/10 to-amber-500/5 rounded-full blur-[80px] -z-10 animate-pulse duration-[8000ms]"></div>
-              
-              <div className="relative w-full max-w-[340px] sm:max-w-[400px] h-[300px] sm:h-[380px] z-10">
+            {/* Right Column: Interactive Clinical Status Card */}
+            <div className="lg:col-span-5">
+              <div className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_20px_50px_rgba(15,23,42,0.08)] p-6 sm:p-8 text-left relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-teal-500/5 rounded-full blur-2xl" />
                 
-                {/* 1. Main Base Card - Premium lifestyle/clinical photo with shadow */}
-                <div className="absolute inset-0 bg-white p-3 rounded-[32px] border border-slate-200/60 shadow-[0_20px_50px_rgba(15,23,42,0.06)] transform -rotate-2 hover:rotate-0 transition-transform duration-500">
-                  <div className="w-full h-full rounded-[24px] overflow-hidden relative">
-                    <img 
-                      src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&q=80&w=600" 
-                      alt="Professional medical clinician consulting patient" 
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/25 via-transparent to-transparent"></div>
+                <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
+                  <div>
+                    <span className="text-[10px] font-black text-teal-700 uppercase tracking-widest">Live Clinical Desk</span>
+                    <h3 className="text-base font-black text-slate-900">Nizamabad Emergency Hub</h3>
                   </div>
+                  <span className="px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full text-[10px] font-bold flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
+                    Available 24/7
+                  </span>
                 </div>
 
-                {/* 2. Floating Card 1: Live Dispatch Status (Top-Right) */}
-                <motion.div 
-                  initial={{ y: -10, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.5 }}
-                  className="absolute top-2 right-2 md:-top-6 md:-right-4 bg-white/95 backdrop-blur-md p-3.5 rounded-2xl border border-slate-150 shadow-[0_15px_30px_rgba(0,0,0,0.05)] flex items-center gap-3 z-20 text-left"
-                >
-                  <div className="p-2 bg-teal-50 text-teal-800 rounded-xl shrink-0">
-                    <Clock className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <span className="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-wider block">{isTe ? "సమన్వయం" : "Coordination"}</span>
-                    <span className="text-xs sm:text-sm font-extrabold text-slate-900 block mt-0.5">{isTe ? "15-నిమిషాల స్పందన" : "15-Min Response"}</span>
-                    <span className="text-[10px] sm:text-xs text-teal-700 font-semibold block mt-0.5">{isTe ? "యాక్టివ్ డాక్టర్ డిస్పాచ్" : "Active Doctor Dispatch"}</span>
-                  </div>
-                </motion.div>
-
-                {/* 3. Floating Card 2: Specialized Nurses (Bottom-Left) */}
-                <motion.div 
-                  initial={{ x: -10, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.6 }}
-                  className="absolute bottom-2 left-2 md:-bottom-6 md:-left-6 bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-slate-150 shadow-[0_15px_35px_rgba(0,0,0,0.06)] flex items-center gap-3.5 z-20 text-left"
-                >
-                  <div className="p-2 bg-amber-50 text-amber-800 rounded-xl shrink-0">
-                    <Award className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <span className="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-wider block">{isTe ? "ధృవీకరించబడిన నాణ్యత" : "Vetted Quality"}</span>
-                    <span className="text-xs sm:text-sm font-extrabold text-slate-900 block mt-0.5">{isTe ? "ఐసీయూ గ్రేడ్ ప్రమాణం" : "ICU Grade Standard"}</span>
-                    <div className="flex items-center gap-1 mt-0.5">
-                      <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping shrink-0"></span>
-                      <span className="text-[10px] sm:text-xs text-slate-500 font-bold">{isTe ? "100% నేపథ్య ధృవీకరణ" : "100% Background Verified"}</span>
+                <div className="space-y-3.5 mb-6">
+                  <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center font-bold text-xs">
+                        🩺
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-slate-900">Physician Home Visit</div>
+                        <div className="text-[10px] text-slate-500">Same-day bedside consultation</div>
+                      </div>
                     </div>
+                    <span className="text-xs font-black text-teal-900">₹1,500</span>
                   </div>
-                </motion.div>
 
-                {/* 4. Floating Badge: Verified seal (Bottom-Right, overlapping card border) */}
-                <div className="absolute bottom-2 right-2 md:bottom-6 md:-right-6 bg-slate-900 text-white px-3.5 py-1.5 rounded-full border border-slate-800 shadow-md text-[10px] sm:text-xs font-bold uppercase tracking-wider z-20 flex items-center gap-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5 text-teal-400" />
-                  <span>{isTe ? "క్లినికల్ ఎక్సలెన్స్" : "Clinical Excellence"}</span>
+                  <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-xl bg-rose-100 text-rose-800 flex items-center justify-center font-bold text-xs">
+                        🚑
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-slate-900">Emergency Ambulance</div>
+                        <div className="text-[10px] text-slate-500">Oxygen & paramedic on board</div>
+                      </div>
+                    </div>
+                    <span className="text-xs font-black text-teal-900">₹3,000</span>
+                  </div>
+
+                  <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-xl bg-blue-100 text-blue-800 flex items-center justify-center font-bold text-xs">
+                        👩‍⚕️
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-slate-900">12h Bedside Nursing</div>
+                        <div className="text-[10px] text-slate-500">Vitals, IV, medication protocol</div>
+                      </div>
+                    </div>
+                    <span className="text-xs font-black text-teal-900">₹2,500</span>
+                  </div>
                 </div>
+
+                <Link
+                  to="/book"
+                  className="w-full py-3 bg-slate-900 hover:bg-slate-950 text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors"
+                >
+                  <span>Select & Schedule Appointment</span>
+                  <ChevronRight className="w-4 h-4" />
+                </Link>
 
               </div>
-            </motion.div>
+            </div>
 
           </div>
+
         </div>
       </section>
 
-      {/* 2. FEATURED SERVICES (CLEAN EDITORIAL CARDS) */}
-      <section className="py-12 bg-white border-y border-slate-100">
+      {/* ========================================================
+          2. CORE SERVICES SECTION
+      ======================================================== */}
+      <section className="py-20 bg-white border-y border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center max-w-3xl mx-auto mb-10 flex flex-col gap-3">
-            <span className="text-xs font-bold text-teal-800 uppercase tracking-widest">
-              {isTe ? "వైద్య సేవల జాబితా" : "Medical Catalog"}
+          <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-teal-50 text-teal-800 rounded-full text-xs font-black uppercase tracking-widest border border-teal-100">
+              <Stethoscope className="w-3.5 h-3.5 text-teal-600" />
+              Comprehensive Care Offerings
             </span>
-            <h2 className="text-xl sm:text-2xl font-serif-editorial font-bold text-slate-900">
-              {isTe ? "మీ ఇంటి వద్దే ఆసుపత్రి సేవలు" : "Hospital Services at Bedside"}
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+              Hospital Services in Your Bedroom
             </h2>
-            <p className="text-slate-500 text-sm max-w-xl mx-auto leading-relaxed">
-              {isTe 
-                ? "మేము మీ బెడ్‌రూమ్‌కే క్లిష్టమైన ఐసీయూ సెటప్‌లు, వైద్యుల సంప్రదింపులు, నర్సింగ్ సేవలు మరియు డయాగ్నస్టిక్స్ సేవలను సమన్వయం చేసి అందిస్తాము."
-                : "We coordinate and deliver complex ICU setups, physician consults, registered nurses, and diagnostics tests straight to your bedroom."}
+            <p className="text-slate-600 text-sm sm:text-base">
+              Standard transparent pricing. Choose a service below to book certified clinicians in Nizamabad.
             </p>
           </div>
 
-          {/* Live Search & Category Filter Console */}
-          <div className="mb-8 flex flex-col md:flex-row gap-4 items-center justify-between bg-slate-50 p-4 rounded-2xl border border-slate-200/60 shadow-sm no-print">
-            {/* Category Filter Pills */}
-            <div className="flex flex-wrap gap-1.5 justify-start w-full md:w-auto">
-              {['All', 'Critical Care', 'Home Nursing', 'Physiotherapy', 'Diagnostics'].map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`px-3.5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                    activeCategory === cat
-                      ? 'bg-teal-850 text-white shadow-sm'
-                      : 'bg-white hover:bg-slate-100 text-slate-655 border border-slate-200'
-                  }`}
-                >
-                  {cat === 'All' ? (isTe ? 'అన్నీ' : 'All') :
-                   cat === 'Critical Care' ? (isTe ? 'అత్యవసర చికిత్స' : 'Critical Care') :
-                   cat === 'Home Nursing' ? (isTe ? 'హోమ్ నర్సింగ్' : 'Home Nursing') :
-                   cat === 'Physiotherapy' ? (isTe ? 'ఫిజియోథెరపీ' : 'Physiotherapy') :
-                   cat === 'Diagnostics' ? (isTe ? 'ల్యాబ్ టెస్టులు' : 'Diagnostics') : cat}
-                </button>
-              ))}
-            </div>
-
-            {/* Search Bar Input */}
-            <div className="relative w-full md:w-64">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                <Icons.Search className="w-4 h-4" />
-              </span>
-              <input
-                type="text"
-                placeholder={isTe ? "చికిత్సల కోసం వెతకండి..." : "Search treatments..."}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 bg-white text-slate-800 text-sm border border-slate-200 rounded-xl focus:ring-1 focus:ring-teal-700 focus:border-teal-700 placeholder-slate-400"
-              />
-              {searchQuery && (
-                <button 
-                  onClick={() => setSearchQuery('')}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600"
-                >
-                  <Icons.X className="w-3.5 h-3.5" />
-                </button>
-              )}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {filteredServices.length > 0 ? (
-              filteredServices.map((service, index) => {
-                const img = service.galleryImages?.[0] || 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&q=80&w=400';
-                const resolvedImg = resolveImageUrl(img);
-                
-                return (
-                  <motion.div 
-                    key={service._id} 
-                    initial={{ opacity: 0, y: 15 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.45, delay: index * 0.08 }}
-                    whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                    className="card-premium flex flex-col h-full overflow-hidden group text-left"
-                  >
-                    <div className="h-40 overflow-hidden relative">
-                      <img 
-                        src={resolvedImg} 
-                        alt={service.title} 
-                        className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 to-transparent"></div>
-                      
-                      {/* Index header */}
-                      <div className="absolute top-2.5 left-2.5 bg-white/95 backdrop-blur-sm border border-slate-200 py-1 px-2.5 rounded-lg text-slate-600 text-xs font-bold">
-                        0{index + 1}
-                      </div>
-
-                      <div className="absolute top-2.5 right-2.5 bg-white/95 backdrop-blur-sm p-1.5 rounded-lg text-teal-850 border border-slate-200 flex items-center justify-center">
-                        <DynamicIcon name={service.icon} className="w-4 h-4" />
-                      </div>
-                    </div>
-                    
-                    <div className="p-5 flex flex-col grow justify-between">
-                      <div>
-                        <h4 className="text-base font-bold text-slate-900 mb-1.5 group-hover:text-teal-800 transition-colors">{translateServiceTitle(service.title, isTe)}</h4>
-                        <p className="text-sm text-slate-500 leading-relaxed font-semibold line-clamp-3">{translateServiceDesc(service.title, service.shortDescription, isTe)}</p>
-                      </div>
-
-                      <div className="pt-4 border-t border-slate-100 mt-5 flex items-center justify-between gap-2">
-                        <Link 
-                          to={`/services/${service.slug}`} 
-                          className="text-xs font-bold uppercase tracking-wider text-teal-800 hover:text-teal-950 transition-colors inline-flex items-center gap-1 py-1.5"
-                        >
-                          <span>{isTe ? "వివరాలు చూడండి" : "Explore Details"}</span>
-                          <ChevronRight className="w-3.5 h-3.5" />
-                        </Link>
-                        <Link 
-                          to="/book"
-                          state={{ selectService: service.title }}
-                          className="bg-teal-800 hover:bg-teal-900 text-white text-xs font-extrabold uppercase py-2 px-4 rounded-full transition-all duration-300 shadow-sm hover:shadow active:scale-98"
-                        >
-                          {isTe ? "బుకింగ్" : "Book Care"}
-                        </Link>
-                      </div>
-                    </div>
-                  </motion.div>
-                );
-              })
-            ) : (
-              <div className="col-span-full py-12 text-center text-slate-405 font-semibold text-sm bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
-                {isTe ? "సరిపోలే వైద్య సేవలు ఏవీ కనుగొనబడలేదు." : "No matching clinical specialities found."}
-              </div>
-            )}
-          </div>
-
-          <div className="text-center mt-10">
-            <Link 
-              to="/services" 
-              className="btn-secondary inline-flex px-6 py-2.5 rounded-xl text-slate-800 hover:text-teal-800 text-xs"
-            >
-              <span>{isTe ? "అన్ని సేవలను చూడండి" : "View All Specialities"}</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. SIMPLIFIED PROCESS PATH (MINIMALIST 4-STEP GRID) */}
-      <section className="py-12 bg-slate-50/40 border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="text-center max-w-2xl mx-auto mb-10 flex flex-col gap-2">
-            <span className="text-xs font-bold text-teal-800 uppercase tracking-widest">{isTe ? "పనిచేసే విధానం" : "How It Works"}</span>
-            <h3 className="text-2xl font-serif-editorial font-bold text-slate-900 leading-tight">{isTe ? "సరళమైన ఏర్పాటు విధానం" : "Simple Setup Sequence"}</h3>
-            <p className="text-slate-500 text-sm font-semibold">{isTe ? "అత్యుత్తమ గృహ సంరక్షణను ప్రారంభించడం నాలుగు సులభమైన దశల్లో పూర్తవుతుంది." : "Getting started with premium home care takes four simple coordinates."}</p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {howItWorks.map((item, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {HOME_SERVICES.map((serv) => (
               <div 
-                key={index}
-                className="flex flex-col text-left justify-between h-full bg-white relative p-5 hover:shadow-sm rounded-2xl border border-slate-100"
+                key={serv.id}
+                className="bg-[#fafafb] hover:bg-white rounded-3xl border border-slate-200/80 hover:border-teal-700/30 p-6 sm:p-7 flex flex-col justify-between shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group text-left"
               >
-                <div className="space-y-4">
-                  <div className="w-9 h-9 bg-teal-50 border border-teal-200/50 text-teal-800 text-xs font-bold rounded-xl flex items-center justify-center shadow-sm">
-                    0{index + 1}
+                <div>
+                  <div className="flex items-start justify-between gap-3 mb-4">
+                    <span className="text-3xl p-3 bg-white rounded-2xl border border-slate-200/60 shadow-xs group-hover:scale-110 transition-transform">
+                      {serv.icon}
+                    </span>
+                    <span className={`text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full border ${
+                      serv.emergency 
+                        ? 'bg-rose-50 text-rose-800 border-rose-200' 
+                        : 'bg-teal-50 text-teal-800 border-teal-200'
+                    }`}>
+                      {serv.badge}
+                    </span>
                   </div>
+
+                  <h3 className="text-lg font-black text-slate-900 group-hover:text-teal-900 transition-colors">
+                    {serv.title}
+                  </h3>
+
+                  <p className="text-slate-600 text-xs mt-2 line-clamp-3 leading-relaxed font-normal">
+                    {serv.desc}
+                  </p>
+
+                  <div className="flex flex-wrap gap-1.5 mt-4">
+                    {serv.tags.map(tag => (
+                      <span key={tag} className="text-[10px] font-bold bg-white text-slate-600 px-2 py-0.5 rounded-md border border-slate-200/60">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pt-6 mt-6 border-t border-slate-200/60 flex items-center justify-between">
                   <div>
-                    <h4 className="text-sm font-bold text-slate-950 uppercase tracking-wider">{item.title}</h4>
-                    <p className="text-xs text-slate-500 leading-relaxed font-semibold mt-1.5">{item.desc}</p>
+                    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Standard Fee</span>
+                    <span className="text-lg font-black text-slate-900">₹{serv.price.toLocaleString()}</span>
                   </div>
+
+                  <Link
+                    to="/book"
+                    state={{ selectService: serv.title }}
+                    className="px-4 py-2.5 bg-teal-900 group-hover:bg-teal-950 text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-sm transition-all"
+                  >
+                    <span>Book Now</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
                 </div>
               </div>
             ))}
           </div>
+
         </div>
       </section>
 
-      {/* 4. CONTACT BANNER CTA */}
-      <section className="py-16 bg-gradient-to-br from-teal-900 to-slate-900 text-white relative">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,_transparent_1px),_linear-gradient(90deg,_rgba(255,255,255,0.015)_1px,_transparent_1px)] bg-[size:20px_20px] pointer-events-none opacity-10"></div>
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 flex flex-col gap-4">
-          <h3 className="text-xl sm:text-2xl font-serif-editorial font-bold tracking-tight text-white">{isTe ? "మీ ఇంటి వద్దే ప్రత్యేక గృహ సంరక్షణ ఏర్పాటుకు సిద్ధంగా ఉన్నారా?" : "Ready to Set Up Your Specialized Home Care?"}</h3>
-          <p className="text-slate-200 text-sm max-w-xl mx-auto leading-relaxed font-semibold">
-            {isTe 
-              ? "అనుకూలీకరించిన రోగి కోలుకునే ప్రణాళికను పొందడానికి ఈ రోజు మమ్మల్ని సంప్రదించండి. మేము 24 గంటల్లో వైద్య పరికరాల సరఫరా, నర్సు షెడ్యూల్స్ మరియు వైద్యుల సందర్శనలను ఏర్పాటు చేస్తాము."
-              : "Contact us today to receive a customized patient recovery plan. We arrange medical equipment delivery, nurse schedules, and physician visits within 24 hours."}
+      {/* ========================================================
+          3. CLINICAL RIGOR & STANDARDS
+      ======================================================== */}
+      <section className="py-20 bg-[#fafafb]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-800 rounded-full text-xs font-black uppercase tracking-widest border border-emerald-100">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+              Patient Safety & Quality Guarantee
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+              Why Nizamabad Families Trust Nest Cares
+            </h2>
+            <p className="text-slate-600 text-sm sm:text-base">
+              Every detail is engineered to match the safety standards of a modern multispecialty hospital.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
+            {CLINICAL_STANDARDS.map((std) => {
+              const Icon = std.icon;
+              return (
+                <div 
+                  key={std.title}
+                  className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs hover:shadow-md transition-shadow"
+                >
+                  <div className="w-12 h-12 rounded-2xl bg-teal-50 text-teal-800 flex items-center justify-center mb-4">
+                    <Icon className="w-6 h-6" />
+                  </div>
+                  <h4 className="text-sm font-black text-slate-900 mb-2">
+                    {std.title}
+                  </h4>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    {std.desc}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ========================================================
+          4. HOW IT WORKS (SIMPLE 4-STEP PROCESS)
+      ======================================================== */}
+      <section className="py-20 bg-white border-y border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-teal-50 text-teal-800 rounded-full text-xs font-black uppercase tracking-widest border border-teal-100">
+              <Activity className="w-3.5 h-3.5 text-teal-600" />
+              Streamlined Clinical Workflow
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+              How Home Healthcare Works
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-left relative">
+            {PROCESS_STEPS.map((step) => (
+              <div 
+                key={step.step}
+                className="bg-[#fafafb] p-6 rounded-3xl border border-slate-200/60 relative group hover:bg-white hover:shadow-lg transition-all"
+              >
+                <span className="text-3xl font-black text-teal-200 group-hover:text-teal-600 transition-colors block mb-3">
+                  {step.step}
+                </span>
+                <h4 className="text-sm font-black text-slate-900 mb-1.5">
+                  {step.title}
+                </h4>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  {step.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ========================================================
+          5. CALL TO ACTION FOOTER BANNER
+      ======================================================== */}
+      <section className="py-16 bg-gradient-to-r from-teal-950 via-slate-900 to-teal-950 text-white relative overflow-hidden">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 relative z-10">
+          <span className="inline-flex items-center gap-1.5 px-3.5 py-1 bg-white/10 text-teal-300 rounded-full text-xs font-bold uppercase tracking-widest">
+            24/7 Standby Support Across Nizamabad
+          </span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
+            Need Medical Assistance Right Now?
+          </h2>
+          <p className="text-slate-300 text-sm sm:text-base max-w-xl mx-auto">
+            Book online in under 60 seconds or contact our medical desk directly on WhatsApp.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-4 w-full">
-            <button 
-              onClick={() => navigate('/services')}
-              className="w-full sm:w-auto px-6 py-3 bg-teal-400 hover:bg-teal-350 text-slate-955 text-sm font-extrabold rounded-xl text-center transition-all duration-300 shadow-[0_4px_15px_rgba(45,212,191,0.25)] hover:shadow-[0_6px_20px_rgba(45,212,191,0.35)] active:scale-98 cursor-pointer"
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+            <Link
+              to="/book"
+              className="w-full sm:w-auto px-8 py-4 bg-teal-500 hover:bg-teal-400 text-slate-950 font-black text-xs uppercase tracking-widest rounded-2xl shadow-xl transition-all hover:-translate-y-0.5"
             >
-              {isTe ? "సేవలను అన్వేషించండి" : "Explore Services"}
-            </button>
-            <a 
-              href={`https://wa.me/${cleanWhatsapp}`} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="w-full sm:w-auto px-6 py-3 bg-white text-slate-900 hover:bg-slate-50 text-sm font-extrabold rounded-xl text-center transition-all duration-300 shadow-md active:scale-98 cursor-pointer"
+              Book Care Appointment
+            </Link>
+            <a
+              href={`https://wa.me/${whatsapp.replace(/\D/g, '')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-black text-xs uppercase tracking-widest rounded-2xl border border-white/20 transition-all flex items-center justify-center gap-2"
             >
-              <span>{isTe ? "వాట్సాప్ చాట్" : "Chat on WhatsApp"}</span>
+              <MessageSquare className="w-4 h-4 text-emerald-400" />
+              <span>Chat on WhatsApp</span>
             </a>
           </div>
         </div>
       </section>
-    </motion.div>
+
+    </div>
   );
 };
 

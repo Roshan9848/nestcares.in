@@ -59,11 +59,11 @@
 
   /* Editorial Translucent Card */
   .card-premium {
-    @apply bg-white rounded-2xl border border-slate-200/50 shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_15px_35px_-10px_rgba(15,118,110,0.04)] hover:border-zinc-800/10 hover:-translate-y-1 transition-all duration-300;
+    @apply bg-white rounded-3xl border border-slate-100/80 shadow-[0_10px_40px_-10px_rgba(15,118,110,0.02)] hover:shadow-[0_20px_50px_-10px_rgba(13,148,136,0.06)] hover:border-teal-700/10 hover:-translate-y-1.5 transition-all duration-500;
   }
 
   .glassmorphism {
-    @apply bg-white/90 backdrop-blur-md border border-slate-100 shadow-[0_6px_20px_rgb(0,0,0,0.01)];
+    @apply bg-white/70 backdrop-blur-xl border border-white/40 shadow-[0_10px_40px_rgba(15,118,110,0.03)];
   }
 
   /* Tactile Forms */
@@ -72,9 +72,16 @@
   }
 }
 
-/* Warm ambient medical backgrounds */
+/* Warm ambient medical backgrounds & grids */
 .bg-warm-ambient {
   background: radial-gradient(circle at 10% 20%, rgba(240, 249, 255, 0.4) 0%, rgba(253, 252, 251, 1) 90%);
+}
+
+.bg-grid-pattern {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(13, 148, 136, 0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(13, 148, 136, 0.025) 1px, transparent 1px);
 }
 
 /* Scrollbar customization */

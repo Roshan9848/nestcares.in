@@ -217,4 +217,22 @@ router.put('/:id/status', protect, async (req, res) => {
   }
 });
 
+// @desc    Delete a booking
+// @route   DELETE /api/bookings/:id
+// @access  Private/Admin
+router.delete('/:id', protect, async (req, res) => {
+  try {
+    const booking = await dbHelper.findById(Booking, req.params.id);
+    if (!booking) {
+      return res.status(404).json({ success: false, message: 'Booking not found' });
+    }
+
+    await dbHelper.findByIdAndDelete(Booking, req.params.id);
+    res.json({ success: true, message: 'Booking record removed successfully' });
+  } catch (error) {
+    console.error('Error deleting booking:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
 module.exports = router;

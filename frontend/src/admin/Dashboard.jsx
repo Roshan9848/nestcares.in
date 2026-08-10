@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import { apiClient, bookingsAPI, servicesAPI, settingsAPI, testimonialsAPI, faqsAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import InteractiveDragList from '../components/InteractiveDragList';
 import { resolveImageUrl } from '../utils/url';
@@ -9,7 +9,7 @@ import {
   LayoutDashboard, CalendarCheck, Activity, Home as HomeIcon, MessageSquare, 
   HelpCircle, MapPin, Settings as SettingsIcon, LogOut, ExternalLink, Plus, 
   Trash2, Edit, Check, X, ShieldAlert, Sparkles, Download, Printer, Save, Eye, EyeOff,
-  Clock, User, FileText, Image, FileImage, UploadCloud, Loader2, Images, Menu
+  Clock, User, FileText, Image, FileImage, UploadCloud, Loader2, Images, Menu, RefreshCw
 } from 'lucide-react';
 
 const Dashboard = ({ 
@@ -116,12 +116,12 @@ const Dashboard = ({
   const fetchStats = async () => {
     try {
       setStatsLoading(true);
-      const res = await axios.get('/bookings/stats');
-      if (res.data.success) {
-        setStats(res.data.data);
+      const res = await bookingsAPI.getBookingStats();
+      if (res.success) {
+        setStats(res.data);
       }
     } catch (err) {
-      console.error('Error fetching stats:', err);
+      console.error('[Dashboard] Error fetching stats:', err);
     } finally {
       setStatsLoading(false);
     }
@@ -132,23 +132,26 @@ const Dashboard = ({
     try {
       setBookingsLoading(true);
       const { search, service, status, dateStart, dateEnd } = bookingFilters;
-      const res = await axios.get('/bookings', {
-        params: { search, service, status, dateStart, dateEnd }
-      });
-      if (res.data.success) {
-        setBookings(res.data.data);
+      const res = await bookingsAPI.getBookings({ search, service, status, dateStart, dateEnd });
+      if (res.success) {
+        setBookings(res.data || []);
       }
     } catch (err) {
-      console.error('Error fetching bookings:', err);
+      console.error('[Dashboard] Error fetching bookings:', err);
     } finally {
       setBookingsLoading(false);
     }
   };
 
-  // Initial stats trigger
+  // Initial stats trigger & live auto-sync polling
   useEffect(() => {
     fetchStats();
-  }, []);
+    const interval = setInterval(() => {
+      if (activeTab === 'overview') fetchStats();
+      if (activeTab === 'bookings') fetchBookings();
+    }, 20000);
+    return () => clearInterval(interval);
+  }, [activeTab]);
 
   // Fetch tab-specific data on change
   useEffect(() => {
@@ -195,13 +198,13 @@ const Dashboard = ({
         accentColor: webSettings?.accentColor || '#3b82f6'
       });
       // Load email settings with credentials
-      axios.get('/settings/admin/email-config').then(res => {
+      apiClient.get('/settings/admin/email-config').then(res => {
         if (res.data.success) {
           setEmailCMS(res.data.data);
         }
       }).catch(err => console.error('Error fetching SMTP config:', err));
       // Load Cloudinary settings with secrets
-      axios.get('/settings/admin/cloudinary-config').then(res => {
+      apiClient.get('/settings/admin/cloudinary-config').then(res => {
         if (res.data.success) {
           setCloudinaryCMS(res.data.data);
         }
@@ -222,9 +225,9 @@ const Dashboard = ({
   // -- BOOKING OPERATIONS --
   const updateBookingStatus = async (id, status) => {
     try {
-      const res = await axios.put(`/bookings/${id}/status`, { status });
-      if (res.data.success) {
-        showToast(`Booking updated to ${status.toUpperCase()}!`);
+      const res = await bookingsAPI.updateBookingStatus(id, status);
+      if (res.success) {
+        showToast(`Booking marked as ${status.toUpperCase()}!`);
         fetchBookings();
         fetchStats();
         // Update detail modal
@@ -234,6 +237,23 @@ const Dashboard = ({
       }
     } catch (err) {
       showToast(err.response?.data?.message || 'Failed to update status', 'error');
+    }
+  };
+
+  const deleteBooking = async (id) => {
+    if (!window.confirm('Are you sure you want to permanently delete this booking record?')) return;
+    try {
+      const res = await bookingsAPI.deleteBooking(id);
+      if (res.success) {
+        showToast('Booking deleted successfully');
+        fetchBookings();
+        fetchStats();
+        if (selectedBooking && selectedBooking._id === id) {
+          setSelectedBooking(null);
+        }
+      }
+    } catch (err) {
+      showToast('Failed to delete booking', 'error');
     }
   };
 
@@ -290,7 +310,7 @@ const Dashboard = ({
     if (mode === 'settings' || mode === 'settings_favicon') setSettingsUploadLoading(true);
 
     try {
-      const res = await axios.post('/upload', formData, {
+      const res = await apiClient.post('/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       if (res.data.success) {
@@ -432,10 +452,10 @@ const Dashboard = ({
       let res;
       if (editingService._id) {
         // Edit Mode
-        res = await axios.put(`/services/${editingService._id}`, serviceForm);
+        res = await apiClient.put(`/services/${editingService._id}`, serviceForm);
       } else {
         // Create Mode
-        res = await axios.post('/services', serviceForm);
+        res = await apiClient.post('/services', serviceForm);
       }
 
       if (res.data.success) {
@@ -451,7 +471,7 @@ const Dashboard = ({
   const deleteService = async (id) => {
     if (!window.confirm('Are you sure you want to delete this service speciality?')) return;
     try {
-      const res = await axios.delete(`/services/${id}`);
+      const res = await apiClient.delete(`/services/${id}`);
       if (res.data.success) {
         showToast('Service deleted successfully.');
         refreshServices();
@@ -463,7 +483,7 @@ const Dashboard = ({
 
   const toggleServiceVisibility = async (service) => {
     try {
-      const res = await axios.put(`/services/${service._id}`, { active: !service.active });
+      const res = await apiClient.put(`/services/${service._id}`, { active: !service.active });
       if (res.data.success) {
         showToast(`Service is now ${!service.active ? 'VISIBLE' : 'HIDDEN'}`);
         refreshServices();
@@ -477,7 +497,7 @@ const Dashboard = ({
   const handleServiceReorder = async (reorderedList) => {
     const orderedIds = reorderedList.map(s => s._id);
     try {
-      const res = await axios.put('/services/reorder/list', { orderedIds });
+      const res = await apiClient.put('/services/reorder/list', { orderedIds });
       if (res.data.success) {
         showToast('Catalog order saved!');
         refreshServices();
@@ -492,7 +512,7 @@ const Dashboard = ({
     e.preventDefault();
     setHomepageCMSLoading(true);
     try {
-      const res = await axios.put('/settings/homepage', { value: homepageCMS });
+      const res = await apiClient.put('/settings/homepage', { value: homepageCMS });
       if (res.data.success) {
         showToast('Homepage contents saved!');
         refreshWebSettings();
@@ -520,9 +540,9 @@ const Dashboard = ({
     try {
       let res;
       if (editingTestimonial._id) {
-        res = await axios.put(`/testimonials/${editingTestimonial._id}`, testimonialForm);
+        res = await apiClient.put(`/testimonials/${editingTestimonial._id}`, testimonialForm);
       } else {
-        res = await axios.post('/testimonials', testimonialForm);
+        res = await apiClient.post('/testimonials', testimonialForm);
       }
 
       if (res.data.success) {
@@ -538,7 +558,7 @@ const Dashboard = ({
   const deleteTestimonial = async (id) => {
     if (!window.confirm('Remove testimonial?')) return;
     try {
-      const res = await axios.delete(`/testimonials/${id}`);
+      const res = await apiClient.delete(`/testimonials/${id}`);
       if (res.data.success) {
         showToast('Testimonial removed.');
         refreshTestimonials();
@@ -564,9 +584,9 @@ const Dashboard = ({
     try {
       let res;
       if (editingFaq._id) {
-        res = await axios.put(`/faqs/${editingFaq._id}`, faqForm);
+        res = await apiClient.put(`/faqs/${editingFaq._id}`, faqForm);
       } else {
-        res = await axios.post('/faqs', faqForm);
+        res = await apiClient.post('/faqs', faqForm);
       }
 
       if (res.data.success) {
@@ -582,7 +602,7 @@ const Dashboard = ({
   const deleteFaq = async (id) => {
     if (!window.confirm('Delete FAQ?')) return;
     try {
-      const res = await axios.delete(`/faqs/${id}`);
+      const res = await apiClient.delete(`/faqs/${id}`);
       if (res.data.success) {
         showToast('FAQ deleted.');
         refreshFaqs();
@@ -596,7 +616,7 @@ const Dashboard = ({
   const saveContactCMS = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.put('/settings/contact', { value: contactCMS });
+      const res = await apiClient.put('/settings/contact', { value: contactCMS });
       if (res.data.success) {
         showToast('Contact channels saved!');
         refreshContactSettings();
@@ -612,13 +632,13 @@ const Dashboard = ({
     try {
       setCloudinaryLoading(true);
       // 1. Save general settings
-      const resWeb = await axios.put('/settings/web', { value: webCMS });
+      const resWeb = await apiClient.put('/settings/web', { value: webCMS });
       
       // 2. Save SMTP settings
-      const resMail = await axios.put('/settings/email', { value: emailCMS });
+      const resMail = await apiClient.put('/settings/email', { value: emailCMS });
 
       // 3. Save Cloudinary settings
-      const resCloud = await axios.put('/settings/cloudinary', { value: cloudinaryCMS });
+      const resCloud = await apiClient.put('/settings/cloudinary', { value: cloudinaryCMS });
 
       if (resWeb.data.success && resMail.data.success && resCloud.data.success) {
         showToast('All global settings saved successfully!');
@@ -2397,22 +2417,24 @@ const Dashboard = ({
             <div className="bg-slate-50 border-b border-slate-100 px-6 py-4 flex items-center justify-between shrink-0 no-print">
               <div>
                 <h3 className="text-sm font-extrabold text-slate-900 uppercase">Appointment Detail Sheet</h3>
-                <p className="text-[10px] text-slate-400 font-semibold uppercase">ID: {selectedBooking._id}</p>
+                <p className="text-[10px] text-teal-700 font-bold uppercase tracking-wider">
+                  Reference ID: {selectedBooking.bookingId || selectedBooking._id}
+                </p>
               </div>
               <button 
                 onClick={() => setSelectedBooking(null)}
-                className="p-1 hover:bg-slate-200 rounded-full text-slate-500"
+                className="p-1.5 hover:bg-slate-200 rounded-full text-slate-500 transition-colors"
               >
-                <X className="w-6 h-6" />
+                <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Print Header (Only visible on physical paper print) */}
             <div className="hidden print:block p-8 border-b border-slate-200">
-              <h2 className="text-2xl font-black text-slate-955">{webSettings?.companyName || "Home Healthcare Services"}</h2>
+              <h2 className="text-2xl font-black text-slate-900">{webSettings?.companyName || "Nest Cares Home Healthcare"}</h2>
               <p className="text-xs text-slate-500 mt-1">Hospital-grade care directly in patients' homes.</p>
               <div className="text-xs text-slate-600 mt-4">
-                <strong>Booking ID:</strong> {selectedBooking._id} | <strong>Submitted:</strong> {new Date(selectedBooking.createdAt).toLocaleString()}
+                <strong>Booking ID:</strong> {selectedBooking.bookingId || selectedBooking._id} | <strong>Submitted:</strong> {new Date(selectedBooking.createdAt).toLocaleString()}
               </div>
             </div>
 
@@ -2422,27 +2444,32 @@ const Dashboard = ({
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Patient Name</div>
-                  <div className="text-sm font-bold text-slate-900 mt-0.5">{selectedBooking.name}</div>
+                  <div className="text-sm font-black text-slate-900 mt-0.5">{selectedBooking.name}</div>
                 </div>
                 <div>
                   <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Mobile Number</div>
-                  <div className="text-sm font-bold text-slate-900 mt-0.5">{selectedBooking.mobile}</div>
+                  <div className="text-sm font-bold text-slate-900 mt-0.5 flex items-center gap-2">
+                    <span>{selectedBooking.mobile}</span>
+                    <a 
+                      href={`tel:${selectedBooking.mobile}`} 
+                      className="p-1 bg-teal-50 hover:bg-teal-100 text-teal-700 rounded text-[10px] font-bold"
+                    >
+                      Call
+                    </a>
+                  </div>
                 </div>
                 <div>
                   <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Email Address</div>
-                  <div className="text-sm font-semibold text-slate-600 mt-0.5 truncate">{selectedBooking.email}</div>
+                  <div className="text-xs font-semibold text-slate-600 mt-0.5 truncate">{selectedBooking.email || 'None'}</div>
                 </div>
                 <div>
                   <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Request Status</div>
                   <div className="mt-1">
-                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
-                      selectedBooking.status === 'pending' && 'bg-amber-50 text-amber-600'
-                    } ${
-                      selectedBooking.status === 'approved' && 'bg-brand-blue-50 text-brand-blue'
-                    } ${
-                      selectedBooking.status === 'completed' && 'bg-emerald-50 text-emerald-600'
-                    } ${
-                      selectedBooking.status === 'rejected' && 'bg-red-50 text-red-600'
+                    <span className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${
+                      selectedBooking.status === 'pending' ? 'bg-amber-100 text-amber-800' :
+                      selectedBooking.status === 'approved' ? 'bg-blue-100 text-blue-800' :
+                      selectedBooking.status === 'completed' ? 'bg-emerald-100 text-emerald-800' :
+                      'bg-rose-100 text-rose-800'
                     }`}>
                       {selectedBooking.status}
                     </span>
@@ -2451,68 +2478,85 @@ const Dashboard = ({
               </div>
 
               <div className="border-t border-slate-100 pt-4">
-                <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Service Spec</div>
-                <div className="text-sm font-bold text-brand-blue mt-0.5">{selectedBooking.serviceName}</div>
+                <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Requested Service & Treatment</div>
+                <div className="text-sm font-bold text-teal-900 mt-0.5">
+                  {selectedBooking.serviceName} {selectedBooking.subServiceName ? `(${selectedBooking.subServiceName})` : ''}
+                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4 border-t border-slate-100 pt-4">
                 <div>
                   <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Preferred Date</div>
-                  <div className="text-sm font-semibold text-slate-800 mt-0.5">{selectedBooking.preferredDate}</div>
+                  <div className="text-xs font-bold text-slate-800 mt-0.5">{selectedBooking.preferredDate}</div>
                 </div>
                 <div>
                   <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Preferred Slot</div>
-                  <div className="text-sm font-semibold text-slate-800 mt-0.5">{selectedBooking.preferredTime}</div>
+                  <div className="text-xs font-bold text-slate-800 mt-0.5">{selectedBooking.preferredTime}</div>
                 </div>
               </div>
 
               <div className="border-t border-slate-100 pt-4">
-                <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Delivery Address</div>
-                <div className="text-xs text-slate-600 leading-relaxed mt-1 font-medium">{selectedBooking.address}</div>
+                <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Service Delivery Address</div>
+                <div className="text-xs text-slate-700 leading-relaxed mt-1 font-medium bg-slate-50 p-3 rounded-xl border border-slate-100">
+                  {selectedBooking.address}
+                </div>
               </div>
 
               {selectedBooking.notes && (
-                <div className="border-t border-slate-100 pt-4 bg-slate-50/50 p-3 rounded-xl">
-                  <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Medical Notes</div>
-                  <div className="text-xs text-slate-500 leading-relaxed mt-1 font-semibold">{selectedBooking.notes}</div>
+                <div className="border-t border-slate-100 pt-4 bg-amber-50/50 p-3 rounded-xl border border-amber-100/50">
+                  <div className="text-[10px] text-amber-800 font-bold uppercase tracking-wider">Patient Notes / Instructions</div>
+                  <div className="text-xs text-slate-700 leading-relaxed mt-1">{selectedBooking.notes}</div>
                 </div>
               )}
 
-              {/* Logged Doctor Advisory Notes */}
-              {selectedBooking.doctorNotes && (
-                <div className="border-t border-slate-100 pt-4 bg-teal-50/30 p-3 rounded-xl border border-teal-100/50 text-left">
-                  <div className="text-[10px] text-teal-800 font-bold uppercase tracking-wider">Clinical Advisory Logged</div>
-                  <div className="text-xs text-teal-900 leading-relaxed mt-1 font-semibold whitespace-pre-line">
-                    {selectedBooking.doctorNotes}
-                  </div>
-                </div>
-              )}
+              {/* Direct WhatsApp Patient Communication */}
+              <div className="pt-2">
+                <a
+                  href={`https://wa.me/${selectedBooking.mobile?.replace(/\D/g, '')}?text=${encodeURIComponent(`Hello ${selectedBooking.name}, this is Nest Cares Nizamabad regarding your booking (${selectedBooking.bookingId || selectedBooking._id}) for ${selectedBooking.serviceName}.`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-colors"
+                >
+                  <MessageSquare className="w-4 h-4 text-emerald-600" />
+                  <span>Chat with Patient on WhatsApp</span>
+                </a>
+              </div>
 
             </div>
 
             {/* Modal Footer */}
-            <div className="bg-slate-50 border-t border-slate-100 px-6 py-4 flex items-center justify-between shrink-0 no-print">
-              <button
-                onClick={printBookingDetail}
-                className="btn-secondary py-1.5 px-4 text-xs flex items-center gap-1.5 border-slate-200"
-              >
-                <Printer className="w-3.5 h-3.5" />
-                <span>Print Record (PDF)</span>
-              </button>
+            <div className="bg-slate-50 border-t border-slate-100 px-6 py-4 flex flex-wrap items-center justify-between gap-3 shrink-0 no-print">
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={printBookingDetail}
+                  className="px-3 py-2 bg-white hover:bg-slate-100 text-slate-700 rounded-xl border border-slate-200 text-xs font-bold flex items-center gap-1.5 shadow-sm"
+                >
+                  <Printer className="w-3.5 h-3.5" />
+                  <span>Print</span>
+                </button>
+
+                <button
+                  onClick={() => deleteBooking(selectedBooking._id)}
+                  className="px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-xl border border-rose-200 text-xs font-bold flex items-center gap-1.5"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  <span>Delete</span>
+                </button>
+              </div>
               
-              {/* Quick status controls inside details overlay */}
-              <div className="flex gap-2">
+              {/* Status Controls */}
+              <div className="flex items-center gap-2">
                 {selectedBooking.status === 'pending' && (
                   <>
                     <button
                       onClick={() => updateBookingStatus(selectedBooking._id, 'approved')}
-                      className="px-3.5 py-1.5 bg-brand-blue hover:bg-brand-blue-700 text-white text-xs font-semibold rounded-lg"
+                      className="px-4 py-2 bg-teal-800 hover:bg-teal-900 text-white text-xs font-bold rounded-xl shadow-sm"
                     >
                       Approve
                     </button>
                     <button
                       onClick={() => updateBookingStatus(selectedBooking._id, 'rejected')}
-                      className="px-3.5 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-lg"
+                      className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl"
                     >
                       Reject
                     </button>
@@ -2521,7 +2565,7 @@ const Dashboard = ({
                 {selectedBooking.status === 'approved' && (
                   <button
                     onClick={() => updateBookingStatus(selectedBooking._id, 'completed')}
-                    className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg"
+                    className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl"
                   >
                     Mark Completed
                   </button>

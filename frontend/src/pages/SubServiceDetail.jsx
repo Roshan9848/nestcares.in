@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  ChevronLeft, ArrowRight, ShieldCheck, HeartPulse, 
+  ChevronLeft, ChevronRight, ArrowRight, ShieldCheck, HeartPulse, 
   Clock, Phone, MessageSquare, CheckCircle2, ListPlus, Activity, HelpCircle, ChevronDown, Star, Users, Sliders
 } from 'lucide-react';
 

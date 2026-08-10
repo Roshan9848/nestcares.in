@@ -1,15 +1,18 @@
 import axios from 'axios';
 
+const BASE_URL = import.meta.env.VITE_API_URL || 'https://nestcares-api.vercel.app/api';
+
 export const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'https://nestcares-in.onrender.com/api',
+  baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json'
-  }
+  },
+  timeout: 15000
 });
 
-// Request interceptor to dynamically inject authorization tokens if they exist
+// Request interceptor to dynamically inject authorization tokens
 apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem('healthcare_admin_token');
+  const token = localStorage.getItem('token') || localStorage.getItem('healthcare_admin_token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -17,6 +20,17 @@ apiClient.interceptors.request.use((config) => {
 }, (error) => {
   return Promise.reject(error);
 });
+
+// Response interceptor for clear error handling
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      console.warn('[API] Authorization expired or invalid token.');
+    }
+    return Promise.reject(error);
+  }
+);
 
 // 1. SETTINGS SERVICES
 export const settingsAPI = {
@@ -27,10 +41,14 @@ export const settingsAPI = {
   updateSettings: async (key, value) => {
     const res = await apiClient.put(`/settings/${key}`, { value });
     return res.data;
+  },
+  getEmailConfig: async () => {
+    const res = await apiClient.get('/settings/admin/email-config');
+    return res.data;
   }
 };
 
-// 2. HEALTHCARE SERVICES SERVICES
+// 2. HEALTHCARE SERVICES
 export const servicesAPI = {
   getServices: async (includeHidden = false) => {
     const res = await apiClient.get('/services', {
@@ -56,7 +74,7 @@ export const servicesAPI = {
   }
 };
 
-// 3. BOOKINGS & TRIAGE SERVICES
+// 3. UNIFIED BOOKINGS SERVICES
 export const bookingsAPI = {
   createBooking: async (formData) => {
     const res = await apiClient.post('/bookings', formData);
@@ -74,8 +92,8 @@ export const bookingsAPI = {
     const res = await apiClient.put(`/bookings/${id}/status`, { status });
     return res.data;
   },
-  submitCallback: async (payload) => {
-    const res = await apiClient.post('/bookings/callback', payload);
+  deleteBooking: async (id) => {
+    const res = await apiClient.delete(`/bookings/${id}`);
     return res.data;
   }
 };
@@ -116,6 +134,14 @@ export const faqsAPI = {
   },
   deleteFaq: async (id) => {
     const res = await apiClient.delete(`/faqs/${id}`);
+    return res.data;
+  }
+};
+
+// 6. DOCTORS API
+export const doctorsAPI = {
+  getDoctors: async () => {
+    const res = await apiClient.get('/doctors');
     return res.data;
   }
 };
