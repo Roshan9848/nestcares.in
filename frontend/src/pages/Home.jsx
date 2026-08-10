@@ -121,39 +121,37 @@ const Home = ({
   };
 
   return (
-    <div className="bg-[#0b1319] min-h-screen text-slate-100 font-sans selection:bg-teal-500 selection:text-slate-950">
+    <div className="bg-[#fafafb] min-h-screen text-slate-800 font-sans selection:bg-teal-100 selection:text-teal-900">
       
       {/* ========================================================
-          1. HERO SECTION (FOCUSED, CLEAN, LUXURY MOBILE STRUCTURE)
+          1. HERO SECTION (CLEAN LIGHT THEME WITH FOCUSED MOBILE STRUCTURE)
       ======================================================== */}
-      <section className="relative min-h-[92vh] flex flex-col justify-between pt-10 pb-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center overflow-hidden">
+      <section className="relative min-h-[85vh] flex flex-col justify-between pt-10 pb-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center overflow-hidden">
         
         {/* Soft Ambient Radial Background Glow */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[600px] h-[350px] sm:h-[600px] bg-gradient-to-b from-teal-500/15 to-emerald-500/5 blur-[120px] rounded-full pointer-events-none -z-10" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[600px] h-[350px] sm:h-[600px] bg-gradient-to-b from-teal-500/10 via-emerald-500/5 to-transparent blur-[120px] rounded-full pointer-events-none -z-10" />
 
         {/* Top Content Block */}
-        <div className="space-y-6 sm:space-y-8 my-auto">
+        <div className="space-y-5 sm:space-y-7 my-auto">
           
           {/* Top Pill Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-teal-500/30 bg-teal-950/40 backdrop-blur-md shadow-lg shadow-teal-950/40">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-teal-300">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-slate-200/90 bg-white shadow-xs">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-slate-700">
               10,000+ Patients Cared • Nizamabad Healthcare
             </span>
           </div>
 
           {/* Bold Impact Headline */}
-          <div className="space-y-1 sm:space-y-2">
-            <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight uppercase leading-[1.08] text-white">
-              Hospital-Grade Care
-            </h1>
-            <h2 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight uppercase leading-[1.08] text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-emerald-300 to-teal-200">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.12] text-slate-900 max-w-3xl mx-auto">
+            Hospital-Grade Care <br className="hidden sm:inline" />
+            <span className="text-teal-800 underline decoration-teal-500/30 decoration-wavy decoration-2">
               Directly in Your Home
-            </h2>
-          </div>
+            </span>
+          </h1>
 
           {/* Clean Subtitle for Patient/Family */}
-          <p className="text-slate-300 text-xs sm:text-base max-w-xl mx-auto leading-relaxed font-normal px-2">
+          <p className="text-slate-600 text-xs sm:text-base max-w-xl mx-auto leading-relaxed font-normal px-2">
             Emergency ICU ambulances, 24/7 bedside nursing, home doctor visits, and complete hospital ICU setups delivered to your doorstep in Nizamabad.
           </p>
 
@@ -161,35 +159,35 @@ const Home = ({
           <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3.5 max-w-md mx-auto">
             <Link
               to="/book"
-              className="w-full py-4 px-8 bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-400 hover:to-emerald-400 active:scale-[0.98] text-slate-950 text-xs sm:text-sm font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-teal-500/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
+              className="w-full py-4 px-8 bg-teal-900 hover:bg-teal-950 active:scale-[0.98] text-white text-xs sm:text-sm font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-teal-950/15 flex items-center justify-center gap-2 transition-all cursor-pointer"
             >
-              <HeartPulse className="w-4 h-4 text-slate-950" />
+              <HeartPulse className="w-4 h-4 text-teal-300" />
               <span>Book Healthcare Service</span>
             </Link>
 
             <button
               type="button"
               onClick={scrollToServices}
-              className="w-full py-4 px-8 bg-white/5 hover:bg-white/10 active:scale-[0.98] text-white text-xs sm:text-sm font-bold uppercase tracking-widest rounded-2xl border border-white/15 backdrop-blur-md flex items-center justify-center gap-2 transition-all cursor-pointer"
+              className="w-full py-4 px-8 bg-white hover:bg-slate-50 active:scale-[0.98] text-slate-800 text-xs sm:text-sm font-bold uppercase tracking-widest rounded-2xl border border-slate-200 shadow-xs flex items-center justify-center gap-2 transition-all cursor-pointer"
             >
               <span>Explore All Treatments</span>
             </button>
           </div>
 
           {/* Unified 3-Column Stats Container */}
-          <div className="pt-4 max-w-lg mx-auto">
-            <div className="grid grid-cols-3 divide-x divide-white/10 bg-white/[0.04] border border-white/10 rounded-2xl p-4 sm:p-5 backdrop-blur-md shadow-lg">
+          <div className="pt-3 max-w-lg mx-auto">
+            <div className="grid grid-cols-3 divide-x divide-slate-200/80 bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-xs">
               <div className="px-2 text-center">
-                <span className="text-xl sm:text-2xl font-black text-teal-400 block leading-tight">15 Min</span>
-                <span className="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-wider block mt-0.5">Fast Response</span>
+                <span className="text-xl sm:text-2xl font-black text-teal-800 block leading-tight">15 Min</span>
+                <span className="text-[9px] sm:text-[10px] text-slate-500 font-bold uppercase tracking-wider block mt-0.5">Fast Response</span>
               </div>
               <div className="px-2 text-center">
-                <span className="text-xl sm:text-2xl font-black text-emerald-400 block leading-tight">100%</span>
-                <span className="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-wider block mt-0.5">Verified Staff</span>
+                <span className="text-xl sm:text-2xl font-black text-emerald-700 block leading-tight">100%</span>
+                <span className="text-[9px] sm:text-[10px] text-slate-500 font-bold uppercase tracking-wider block mt-0.5">Verified Staff</span>
               </div>
               <div className="px-2 text-center">
-                <span className="text-xl sm:text-2xl font-black text-amber-400 block leading-tight">4.9 ★</span>
-                <span className="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-wider block mt-0.5">Patient Rating</span>
+                <span className="text-xl sm:text-2xl font-black text-amber-600 block leading-tight">4.9 ★</span>
+                <span className="text-[9px] sm:text-[10px] text-slate-500 font-bold uppercase tracking-wider block mt-0.5">Patient Rating</span>
               </div>
             </div>
           </div>
@@ -197,29 +195,32 @@ const Home = ({
         </div>
 
         {/* Bottom Scroll Indicator */}
-        <div className="pt-6 flex flex-col items-center justify-center gap-1.5 opacity-60 hover:opacity-100 transition-opacity">
-          <span className="text-[10px] font-black tracking-widest uppercase text-slate-400">Scroll Down</span>
-          <div className="w-5 h-8 rounded-full border-2 border-slate-500 flex items-start justify-center p-1">
-            <div className="w-1 h-2 bg-teal-400 rounded-full animate-bounce" />
+        <div 
+          onClick={scrollToServices}
+          className="pt-6 flex flex-col items-center justify-center gap-1.5 opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
+        >
+          <span className="text-[10px] font-black tracking-widest uppercase text-slate-500">Scroll Down</span>
+          <div className="w-5 h-8 rounded-full border-2 border-slate-300 flex items-start justify-center p-1">
+            <div className="w-1 h-2 bg-teal-700 rounded-full animate-bounce" />
           </div>
         </div>
 
       </section>
 
       {/* ========================================================
-          2. CORE SERVICES SECTION (CLEAN VISUAL TOUCH CARDS)
+          2. CORE SERVICES SECTION (CLEAN LIGHT THEME WITH TOUCH CARDS)
       ======================================================== */}
-      <section id="services-section" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/5">
+      <section id="services-section" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-slate-100">
         
         <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-teal-500/20 bg-teal-950/30 text-teal-300 text-xs font-black uppercase tracking-widest">
-            <Stethoscope className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-teal-100 bg-teal-50 text-teal-800 text-xs font-black uppercase tracking-widest">
+            <Stethoscope className="w-3.5 h-3.5 text-teal-600" />
             Specialized Home Medical Services
           </div>
-          <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight uppercase">
+          <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
             Services Available in Nizamabad
           </h2>
-          <p className="text-slate-400 text-xs sm:text-sm">
+          <p className="text-slate-600 text-xs sm:text-sm">
             Select what you need. Our clinical team will contact you back immediately to coordinate setup.
           </p>
         </div>
@@ -229,29 +230,29 @@ const Home = ({
           {HOME_SERVICES.map((serv) => (
             <div 
               key={serv.id}
-              className="group relative rounded-3xl overflow-hidden bg-slate-900/80 border border-white/10 hover:border-teal-500/50 shadow-xl transition-all duration-300 flex flex-col justify-between min-h-[340px] sm:min-h-[380px] p-5 sm:p-6"
+              className="group relative rounded-3xl overflow-hidden bg-slate-900 border border-slate-800 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between min-h-[340px] sm:min-h-[380px] p-5 sm:p-6"
             >
               {/* Background Photo */}
               <img 
                 src={serv.image} 
                 alt={serv.title}
                 loading="lazy"
-                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 z-0 opacity-60"
+                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 z-0 opacity-75"
               />
 
-              {/* Dark Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0b1319] via-[#0b1319]/80 to-[#0b1319]/30 z-10" />
+              {/* Dark Gradient Overlay for Readability */}
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/75 to-slate-950/40 z-10" />
 
               {/* Top Badge Overlay */}
               <div className="relative z-20 flex items-center justify-between">
                 <span className={`text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full backdrop-blur-md border ${
                   serv.emergency 
-                    ? 'bg-rose-500/20 text-rose-300 border-rose-400/30' 
-                    : 'bg-teal-500/20 text-teal-300 border-teal-400/30'
+                    ? 'bg-rose-500/20 text-rose-200 border-rose-400/30' 
+                    : 'bg-teal-500/20 text-teal-200 border-teal-400/30'
                 }`}>
                   {serv.badge}
                 </span>
-                <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest bg-black/40 backdrop-blur-md px-2.5 py-0.5 rounded-md border border-white/10">
+                <span className="text-[10px] font-bold text-white/80 uppercase tracking-widest bg-white/10 backdrop-blur-md px-2.5 py-0.5 rounded-md border border-white/15">
                   Nizamabad
                 </span>
               </div>
@@ -269,7 +270,7 @@ const Home = ({
 
                 <div className="flex flex-wrap gap-1.5 pt-1">
                   {serv.tags.map(tag => (
-                    <span key={tag} className="text-[9px] font-bold bg-white/10 backdrop-blur-md text-slate-300 px-2 py-0.5 rounded border border-white/10">
+                    <span key={tag} className="text-[9px] font-bold bg-white/15 backdrop-blur-md text-slate-200 px-2 py-0.5 rounded border border-white/15">
                       {tag}
                     </span>
                   ))}
@@ -278,7 +279,7 @@ const Home = ({
                 <Link
                   to="/book"
                   state={{ selectService: serv.title }}
-                  className="w-full py-3.5 bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-400 hover:to-emerald-400 text-slate-950 font-black text-xs uppercase tracking-widest rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer mt-3"
+                  className="w-full py-3.5 bg-teal-500 hover:bg-teal-400 text-slate-950 font-black text-xs uppercase tracking-widest rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer mt-3"
                 >
                   <span>Request Care</span>
                   <ArrowRight className="w-4 h-4" />
@@ -293,17 +294,17 @@ const Home = ({
       {/* ========================================================
           3. CLINICAL RIGOR & QUALITY STANDARDS
       ======================================================== */}
-      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/5">
+      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-slate-100">
         
         <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-emerald-500/20 bg-emerald-950/30 text-emerald-300 text-xs font-black uppercase tracking-widest">
-            <ShieldCheck className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-emerald-100 bg-emerald-50 text-emerald-800 text-xs font-black uppercase tracking-widest">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
             Safety & Quality Standards
           </div>
-          <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight uppercase">
+          <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
             Why Nizamabad Trusts Us
           </h2>
-          <p className="text-slate-400 text-xs sm:text-sm">
+          <p className="text-slate-600 text-xs sm:text-sm">
             Hospital-grade sterile protocols engineered for patient safety in home environments.
           </p>
         </div>
@@ -314,15 +315,15 @@ const Home = ({
             return (
               <div 
                 key={std.title}
-                className="bg-white/[0.03] hover:bg-white/[0.06] p-6 rounded-3xl border border-white/10 transition-all text-left"
+                className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs hover:shadow-md transition-all text-left"
               >
-                <div className="w-12 h-12 rounded-2xl bg-teal-500/10 text-teal-400 flex items-center justify-center mb-4 border border-teal-500/20">
+                <div className="w-12 h-12 rounded-2xl bg-teal-50 text-teal-800 flex items-center justify-center mb-4 border border-teal-100">
                   <Icon className="w-6 h-6" />
                 </div>
-                <h4 className="text-sm font-black text-white mb-1.5">
+                <h4 className="text-sm font-black text-slate-900 mb-1.5">
                   {std.title}
                 </h4>
-                <p className="text-xs text-slate-400 leading-relaxed">
+                <p className="text-xs text-slate-600 leading-relaxed">
                   {std.desc}
                 </p>
               </div>
@@ -335,14 +336,14 @@ const Home = ({
       {/* ========================================================
           4. HOW IT WORKS (4 SIMPLE STEPS)
       ======================================================== */}
-      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/5">
+      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-slate-100">
         
         <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-teal-500/20 bg-teal-950/30 text-teal-300 text-xs font-black uppercase tracking-widest">
-            <Activity className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-teal-100 bg-teal-50 text-teal-800 text-xs font-black uppercase tracking-widest">
+            <Activity className="w-3.5 h-3.5 text-teal-600" />
             Simple 4-Step Process
           </div>
-          <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight uppercase">
+          <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
             How Home Healthcare Works
           </h2>
         </div>
@@ -351,15 +352,15 @@ const Home = ({
           {PROCESS_STEPS.map((step) => (
             <div 
               key={step.step}
-              className="bg-white/[0.03] p-6 rounded-3xl border border-white/10 relative group hover:border-teal-500/40 transition-all"
+              className="bg-white p-6 rounded-3xl border border-slate-200/70 relative group hover:border-teal-700/30 transition-all shadow-xs"
             >
-              <span className="text-3xl font-black text-teal-500/40 group-hover:text-teal-400 transition-colors block mb-2">
+              <span className="text-3xl font-black text-teal-200 group-hover:text-teal-700 transition-colors block mb-2">
                 {step.step}
               </span>
-              <h4 className="text-sm font-black text-white mb-1">
+              <h4 className="text-sm font-black text-slate-900 mb-1">
                 {step.title}
               </h4>
-              <p className="text-xs text-slate-400 leading-relaxed">
+              <p className="text-xs text-slate-600 leading-relaxed">
                 {step.desc}
               </p>
             </div>
@@ -371,33 +372,35 @@ const Home = ({
       {/* ========================================================
           5. CALL TO ACTION FOOTER BANNER
       ======================================================== */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center space-y-6 border-t border-white/5">
-        <span className="inline-flex items-center gap-1.5 px-3.5 py-1 bg-white/10 text-teal-300 rounded-full text-xs font-bold uppercase tracking-widest">
-          24/7 Standby Support Across Nizamabad
-        </span>
-        <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight uppercase">
-          Need Medical Assistance Right Now?
-        </h2>
-        <p className="text-slate-400 text-xs sm:text-base max-w-xl mx-auto">
-          Submit your care request online or speak with our medical coordination desk directly on WhatsApp.
-        </p>
+      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center space-y-6">
+        <div className="bg-gradient-to-r from-teal-950 via-slate-900 to-teal-950 text-white rounded-3xl p-8 sm:p-12 shadow-xl space-y-6">
+          <span className="inline-flex items-center gap-1.5 px-3.5 py-1 bg-white/10 text-teal-300 rounded-full text-xs font-bold uppercase tracking-widest">
+            24/7 Standby Support Across Nizamabad
+          </span>
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
+            Need Medical Assistance Right Now?
+          </h2>
+          <p className="text-slate-300 text-xs sm:text-base max-w-xl mx-auto">
+            Submit your care request online or speak with our medical coordination desk directly on WhatsApp.
+          </p>
 
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3.5 max-w-md mx-auto pt-2">
-          <Link
-            to="/book"
-            className="w-full py-4 px-8 bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-400 hover:to-emerald-400 text-slate-950 font-black text-xs uppercase tracking-widest rounded-2xl shadow-xl transition-all"
-          >
-            Request Care Appointment
-          </Link>
-          <a
-            href={`https://wa.me/${whatsapp.replace(/\D/g, '')}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full py-4 px-8 bg-white/10 hover:bg-white/15 text-white font-black text-xs uppercase tracking-widest rounded-2xl border border-white/20 transition-all flex items-center justify-center gap-2"
-          >
-            <MessageSquare className="w-4 h-4 text-emerald-400" />
-            <span>Chat on WhatsApp</span>
-          </a>
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3.5 max-w-md mx-auto pt-2">
+            <Link
+              to="/book"
+              className="w-full py-4 px-8 bg-teal-500 hover:bg-teal-400 text-slate-950 font-black text-xs uppercase tracking-widest rounded-2xl shadow-xl transition-all"
+            >
+              Request Care Appointment
+            </Link>
+            <a
+              href={`https://wa.me/${whatsapp.replace(/\D/g, '')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-4 px-8 bg-white/10 hover:bg-white/20 text-white font-black text-xs uppercase tracking-widest rounded-2xl border border-white/20 transition-all flex items-center justify-center gap-2"
+            >
+              <MessageSquare className="w-4 h-4 text-emerald-400" />
+              <span>Chat on WhatsApp</span>
+            </a>
+          </div>
         </div>
       </section>
 
