@@ -22,7 +22,6 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Connect to Database
 connectDB().then(() => {
-  // If not connected, the dbHelper automatically reads from local JSON files!
   console.log('Database initialization check complete.');
 });
 
@@ -44,6 +43,16 @@ app.use('/api/faqs', faqRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/upload', uploadRoutes);
 
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({
+    success: true,
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    dbConnected: global.dbConnected || false
+  });
+});
+
 // Root route
 app.get('/', (req, res) => {
   res.json({
@@ -58,29 +67,21 @@ app.use((req, res, next) => {
   res.status(404).json({ success: false, message: 'API endpoint not found' });
 });
 
-// Global error handler
+// Error handling middleware
 app.use((err, req, res, next) => {
-  console.error('Unhandled server error:', err.stack || err.message);
+  console.error(err.stack);
   res.status(500).json({
     success: false,
-    message: err.message || 'Internal server error occurred'
+    message: 'Something went wrong on the server!',
+    error: process.env.NODE_ENV === 'development' ? err.message : undefined
   });
 });
 
-// Only start listener if running locally/outside serverless environments
-if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
-  const PORT = process.env.PORT || 5000;
-  const server = app.listen(PORT, () => {
-    console.log(`🚀 CareHome Healthcare server running on port ${PORT}`);
-  });
+const PORT = process.env.PORT || 5000;
 
-  // Graceful shutdown (only applicable to standalone node processes)
-  process.on('SIGTERM', () => {
-    console.log('SIGTERM signal received. Shutting down gracefully...');
-    server.close(() => {
-      console.log('Http server closed.');
-      process.exit(0);
-    });
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
   });
 }
 
