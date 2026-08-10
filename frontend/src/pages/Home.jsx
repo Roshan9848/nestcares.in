@@ -14,7 +14,6 @@ const HOME_SERVICES = [
     id: 'doctor-consultation',
     title: 'Doctor Consultation',
     desc: 'Senior MBBS / MD physicians visit your home in Nizamabad for comprehensive bedside diagnostics and treatment protocols.',
-    price: 1500,
     icon: '🩺',
     badge: 'Same-Day Visit',
     popular: true,
@@ -24,7 +23,6 @@ const HOME_SERVICES = [
     id: 'ambulance-services',
     title: 'Ambulance Services',
     desc: '24/7 Basic Life Support (BLS) and Advanced ICU Ventilator ambulances with emergency paramedics on standby.',
-    price: 3000,
     icon: '🚑',
     badge: '15-Min Dispatch',
     emergency: true,
@@ -34,7 +32,6 @@ const HOME_SERVICES = [
     id: 'nursing-services',
     title: 'Professional Home Nursing',
     desc: 'Certified ICU and general bedside nurses for 12h / 24h continuous clinical care, wound dressing, and vitals tracking.',
-    price: 2500,
     icon: '👩‍⚕️',
     badge: '12h / 24h Shifts',
     popular: true,
@@ -44,7 +41,6 @@ const HOME_SERVICES = [
     id: 'icu-setup',
     title: 'ICU Setup at Home',
     desc: 'Complete hospital-grade intensive care unit installed in your bedroom: motorized bed, ventilator, 5-para monitor, and oxygen.',
-    price: 15000,
     icon: '🏥',
     badge: 'Hospital-Grade',
     tags: ['Motorized ICU Bed', 'BiPAP / CPAP', 'Multipara Monitor']
@@ -53,7 +49,6 @@ const HOME_SERVICES = [
     id: 'lab-services',
     title: 'Doorstep Lab Diagnostics',
     desc: 'Certified phlebotomists collect blood & urine samples at your home. NABL certified test reports delivered within 4-6 hours.',
-    price: 300,
     icon: '🔬',
     badge: 'NABL Certified',
     tags: ['Complete Health Panel', 'Cardiac Profile', 'Fast Reports']
@@ -62,7 +57,6 @@ const HOME_SERVICES = [
     id: 'physiotherapy',
     title: 'Home Physiotherapy',
     desc: 'Licensed physiotherapists for post-surgery joint rehabilitation, neuro-recovery, stroke rehab, and geriatric mobility.',
-    price: 1000,
     icon: '💪',
     badge: 'Targeted Rehab',
     tags: ['Stroke Recovery', 'Joint Mobility', 'Pain Relief']
@@ -86,8 +80,8 @@ const CLINICAL_STANDARDS = [
     icon: Clock
   },
   {
-    title: 'Zero Advance Required',
-    desc: 'Transparent pricing with no hidden charges. Review the clinical setup and pay after delivery.',
+    title: 'Custom Care Protocol',
+    desc: 'Individualized treatment plans tailored to each patient’s clinical conditions and doctor prescriptions.',
     icon: CheckCircle2
   }
 ];
@@ -95,23 +89,23 @@ const CLINICAL_STANDARDS = [
 const PROCESS_STEPS = [
   {
     step: '01',
-    title: 'Select Treatment',
-    desc: 'Choose your medical category online or phone our 24/7 coordinator helpline.'
+    title: 'Select Service Online',
+    desc: 'Choose your medical category and submit patient details in under 60 seconds.'
   },
   {
     step: '02',
-    title: 'Clinical Triage',
-    desc: 'Our senior physician reviews patient vitals and determines required equipment & nursing level.'
+    title: 'Coordinator Callback',
+    desc: 'Our senior healthcare team calls you immediately to understand patient requirements.'
   },
   {
     step: '03',
-    title: 'Bedside Setup',
-    desc: 'Certified clinicians and sterilized hospital-grade equipment arrive at your home promptly.'
+    title: 'Bedside Setup & Dispatch',
+    desc: 'Certified clinicians and sterilized hospital equipment arrive at your home promptly.'
   },
   {
     step: '04',
-    title: 'Continuous Care',
-    desc: 'Daily medical charts, physician check-ins, and 24/7 standby emergency backup.'
+    title: 'Continuous Monitoring',
+    desc: 'Daily medical logs, doctor check-ins, and 24/7 emergency standby support.'
   }
 ];
 
@@ -122,9 +116,6 @@ const Home = ({
   webSettings, 
   contactSettings 
 }) => {
-  const [lang, setLang] = useState('en');
-  const isTe = lang === 'te';
-
   const companyName = webSettings?.companyName || "Nest Cares Home Healthcare";
   const phone = contactSettings?.phoneNumbers?.[0] || "+91 92488 49388";
   const whatsapp = contactSettings?.whatsappNumber || "+91 92488 49388";
@@ -173,7 +164,7 @@ const Home = ({
                   className="w-full sm:w-auto px-8 py-4 bg-teal-900 hover:bg-teal-950 active:scale-[0.98] text-white text-xs font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2.5 shadow-xl shadow-teal-950/20 transition-all hover:-translate-y-0.5"
                 >
                   <HeartPulse className="w-4 h-4 text-teal-300" />
-                  <span>Book Appointment Now</span>
+                  <span>Request Healthcare Service</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
 
@@ -182,7 +173,7 @@ const Home = ({
                   className="w-full sm:w-auto px-7 py-4 bg-white hover:bg-slate-50 text-slate-900 text-xs font-black uppercase tracking-widest rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5"
                 >
                   <Phone className="w-4 h-4 text-emerald-600" />
-                  <span>24/7 Emergency: {phone}</span>
+                  <span>24/7 Helpline: {phone}</span>
                 </a>
               </div>
 
@@ -190,15 +181,15 @@ const Home = ({
               <div className="pt-4 grid grid-cols-2 sm:grid-cols-4 gap-3 text-left">
                 <div className="bg-white/80 backdrop-blur-sm p-3 rounded-2xl border border-slate-200/60 shadow-xs">
                   <span className="text-lg font-black text-slate-900 block">15 Min</span>
-                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Fast Triage</span>
+                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Fast Callback</span>
                 </div>
                 <div className="bg-white/80 backdrop-blur-sm p-3 rounded-2xl border border-slate-200/60 shadow-xs">
                   <span className="text-lg font-black text-emerald-700 block">100%</span>
-                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Certified Staff</span>
+                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Verified Doctors</span>
                 </div>
                 <div className="bg-white/80 backdrop-blur-sm p-3 rounded-2xl border border-slate-200/60 shadow-xs">
-                  <span className="text-lg font-black text-teal-800 block">₹0</span>
-                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Zero Advance</span>
+                  <span className="text-lg font-black text-teal-800 block">Hospital</span>
+                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Grade Equipment</span>
                 </div>
                 <div className="bg-white/80 backdrop-blur-sm p-3 rounded-2xl border border-slate-200/60 shadow-xs">
                   <span className="text-lg font-black text-amber-600 block">4.9 ★</span>
@@ -216,7 +207,7 @@ const Home = ({
                 <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
                   <div>
                     <span className="text-[10px] font-black text-teal-700 uppercase tracking-widest">Live Clinical Desk</span>
-                    <h3 className="text-base font-black text-slate-900">Nizamabad Emergency Hub</h3>
+                    <h3 className="text-base font-black text-slate-900">Nizamabad Care Hub</h3>
                   </div>
                   <span className="px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full text-[10px] font-bold flex items-center gap-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
@@ -232,10 +223,10 @@ const Home = ({
                       </div>
                       <div>
                         <div className="text-xs font-bold text-slate-900">Physician Home Visit</div>
-                        <div className="text-[10px] text-slate-500">Same-day bedside consultation</div>
+                        <div className="text-[10px] text-slate-500">Same-day bedside diagnosis</div>
                       </div>
                     </div>
-                    <span className="text-xs font-black text-teal-900">₹1,500</span>
+                    <span className="text-[10px] font-bold text-teal-800 bg-teal-50 px-2 py-0.5 rounded-md border border-teal-100">Verified MD</span>
                   </div>
 
                   <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-between">
@@ -248,7 +239,7 @@ const Home = ({
                         <div className="text-[10px] text-slate-500">Oxygen & paramedic on board</div>
                       </div>
                     </div>
-                    <span className="text-xs font-black text-teal-900">₹3,000</span>
+                    <span className="text-[10px] font-bold text-rose-800 bg-rose-50 px-2 py-0.5 rounded-md border border-rose-100">15-Min Fast</span>
                   </div>
 
                   <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-between">
@@ -261,7 +252,7 @@ const Home = ({
                         <div className="text-[10px] text-slate-500">Vitals, IV, medication protocol</div>
                       </div>
                     </div>
-                    <span className="text-xs font-black text-teal-900">₹2,500</span>
+                    <span className="text-[10px] font-bold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">ICU Trained</span>
                   </div>
                 </div>
 
@@ -269,7 +260,7 @@ const Home = ({
                   to="/book"
                   className="w-full py-3 bg-slate-900 hover:bg-slate-950 text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors"
                 >
-                  <span>Select & Schedule Appointment</span>
+                  <span>Select & Request Service</span>
                   <ChevronRight className="w-4 h-4" />
                 </Link>
 
@@ -296,7 +287,7 @@ const Home = ({
               Hospital Services in Your Bedroom
             </h2>
             <p className="text-slate-600 text-sm sm:text-base">
-              Standard transparent pricing. Choose a service below to book certified clinicians in Nizamabad.
+              Select what you need below. Our medical team will call you back to confirm details and dispatch clinicians.
             </p>
           </div>
 
@@ -339,8 +330,8 @@ const Home = ({
 
                 <div className="pt-6 mt-6 border-t border-slate-200/60 flex items-center justify-between">
                   <div>
-                    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Standard Fee</span>
-                    <span className="text-lg font-black text-slate-900">₹{serv.price.toLocaleString()}</span>
+                    <span className="text-[10px] text-teal-700 font-bold uppercase tracking-wider block">Requirement Type</span>
+                    <span className="text-xs font-bold text-slate-800">Home Dispatch</span>
                   </div>
 
                   <Link
@@ -348,7 +339,7 @@ const Home = ({
                     state={{ selectService: serv.title }}
                     className="px-4 py-2.5 bg-teal-900 group-hover:bg-teal-950 text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-sm transition-all"
                   >
-                    <span>Book Now</span>
+                    <span>Request Care</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
@@ -453,7 +444,7 @@ const Home = ({
             Need Medical Assistance Right Now?
           </h2>
           <p className="text-slate-300 text-sm sm:text-base max-w-xl mx-auto">
-            Book online in under 60 seconds or contact our medical desk directly on WhatsApp.
+            Submit your care request online or contact our medical desk directly on WhatsApp.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
@@ -461,7 +452,7 @@ const Home = ({
               to="/book"
               className="w-full sm:w-auto px-8 py-4 bg-teal-500 hover:bg-teal-400 text-slate-950 font-black text-xs uppercase tracking-widest rounded-2xl shadow-xl transition-all hover:-translate-y-0.5"
             >
-              Book Care Appointment
+              Request Care Appointment
             </Link>
             <a
               href={`https://wa.me/${whatsapp.replace(/\D/g, '')}`}

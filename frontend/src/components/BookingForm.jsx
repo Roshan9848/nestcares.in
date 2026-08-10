@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   Calendar, Clock, User, Phone, Mail, MapPin, 
   FileText, CheckCircle2, ArrowRight, ShieldCheck, HeartPulse, Sparkles,
-  AlertCircle, MessageSquare, Check, RefreshCw
+  AlertCircle, MessageSquare, Check, RefreshCw, Headphones
 } from 'lucide-react';
 import { bookingsAPI } from '../services/api';
 
@@ -11,66 +11,66 @@ const DEFAULT_SERVICES = [
     title: 'Doctor Consultation',
     icon: '🩺',
     sub: [
-      { name: 'Home Doctor Visit', price: 1500, desc: 'Senior MBBS / MD physician visits your home for full physical examination.' },
-      { name: 'Tele Consultation', price: 600, desc: 'Audio / Video triage consultation with certified general physician.' },
-      { name: 'Specialist Doctor Visit', price: 2500, desc: 'Specialist physician visit (Cardio, Neuro, Ortho, Pulmonology).' }
+      { name: 'Home Doctor Visit', desc: 'Senior MBBS / MD physician visits your home for full physical examination and diagnostics.' },
+      { name: 'Tele Consultation', desc: 'Audio / Video triage consultation with certified general physician.' },
+      { name: 'Specialist Doctor Visit', desc: 'Specialist physician visit (Cardiology, Neurology, Orthopedics, Pulmonology).' }
     ]
   },
   {
     title: 'Ambulance Services',
     icon: '🚑',
     sub: [
-      { name: 'Emergency Response Ambulance', price: 3000, desc: 'Basic Life Support (BLS) rapid dispatch ambulance with oxygen and paramedic.' },
-      { name: 'ICU Ventilator Ambulance', price: 6500, desc: 'Advanced Life Support (ALS) with ventilator, multipara monitor, and emergency doctor.' },
-      { name: 'Inter-City Patient Transport', price: 8000, desc: 'Long-distance patient transfer with continuous clinical monitoring.' }
+      { name: 'Emergency Response Ambulance', desc: 'Basic Life Support (BLS) rapid dispatch ambulance with oxygen and paramedic.' },
+      { name: 'ICU Ventilator Ambulance', desc: 'Advanced Life Support (ALS) with ventilator, multipara monitor, and emergency clinician.' },
+      { name: 'Inter-City Patient Transport', desc: 'Long-distance patient transfer with continuous clinical monitoring.' }
     ]
   },
   {
     title: 'Nursing Services',
     icon: '👩‍⚕️',
     sub: [
-      { name: 'General Nursing Care (12h Shift)', price: 2500, desc: 'Bedside nurse for vitals monitoring, hygiene, and daily medication logs.' },
-      { name: '24/7 Live-in Home Nursing', price: 4500, desc: 'Round-the-clock intensive clinical nursing care at home.' },
-      { name: 'Wound Dressing & Stitch Removal', price: 800, desc: 'Aseptic dressing changes for surgical, diabetic, or trauma wounds.' },
-      { name: 'Bed Sore Care & Management', price: 1200, desc: 'Specialized sore dressings, positioning protocol, and air bed setup.' },
-      { name: 'Tracheostomy / Ryle\'s Tube Care', price: 1500, desc: 'Suctioning, cannula cleaning, and stoma site care.' }
+      { name: 'General Nursing Care (12h / 24h Shift)', desc: 'Bedside nurse for vitals monitoring, patient hygiene, and daily medication logs.' },
+      { name: '24/7 Live-in Home Nursing', desc: 'Round-the-clock intensive clinical nursing care for critical recovery.' },
+      { name: 'Wound Dressing & Stitch Removal', desc: 'Aseptic dressing changes for surgical, diabetic, or trauma wounds.' },
+      { name: 'Bed Sore Care & Management', desc: 'Specialized sore dressings, positioning protocol, and air bed setup.' },
+      { name: 'Tracheostomy / Ryle\'s Tube Care', desc: 'Suctioning, cannula cleaning, and stoma site clinical care.' }
     ]
   },
   {
     title: 'ICU Setup at Home',
     icon: '🏥',
     sub: [
-      { name: 'Complete Home ICU Setup', price: 15000, desc: 'Hospital bed, ventilator, monitor, suction, oxygen, and 24/7 ICU nurse.' },
-      { name: 'ICU Hospital Bed Rental', price: 4000, desc: 'Motorized 5-function / 3-function hospital bed with remote controls.' },
-      { name: 'Multipara Patient Monitor', price: 3000, desc: '5-para monitor for ECG, SpO2, NIBP, respiration, and temperature.' },
-      { name: 'BiPAP / CPAP Machine Setup', price: 5000, desc: 'Non-invasive ventilator setup with mask fitting and pressure titration.' },
-      { name: 'Oxygen Concentrator (10L / 5L)', price: 4500, desc: 'Medical-grade continuous oxygen flow generator.' }
+      { name: 'Complete Home ICU Setup', desc: 'Hospital bed, ventilator, monitor, suction, oxygen, and 24/7 ICU nurse.' },
+      { name: 'ICU Hospital Bed Rental', desc: 'Motorized 5-function / 3-function hospital bed with remote controls.' },
+      { name: 'Multipara Patient Monitor', desc: '5-para monitor for ECG, SpO2, NIBP, respiration, and temperature.' },
+      { name: 'BiPAP / CPAP Machine Setup', desc: 'Non-invasive ventilator setup with mask fitting and pressure titration.' },
+      { name: 'Oxygen Concentrator (10L / 5L)', desc: 'Medical-grade continuous oxygen flow generator.' }
     ]
   },
   {
     title: 'Laboratory Services',
     icon: '🔬',
     sub: [
-      { name: 'Home Blood Sample Collection', price: 300, desc: 'Certified phlebotomist collects blood samples right at your doorstep.' },
-      { name: 'Complete Health Package (60+ Tests)', price: 1999, desc: 'CBC, Lipid, LFT, KFT, Thyroid, Blood Sugar, and Urine routine.' },
-      { name: 'Cardiac & Diabetic Profile', price: 1499, desc: 'HbA1c, Fasting Sugar, Lipid Panel, Serum Creatinine, and Electrolytes.' }
+      { name: 'Home Blood Sample Collection', desc: 'Certified phlebotomist collects blood samples right at your doorstep.' },
+      { name: 'Complete Health Package (60+ Tests)', desc: 'CBC, Lipid, LFT, KFT, Thyroid, Blood Sugar, and Urine routine.' },
+      { name: 'Cardiac & Diabetic Profile', desc: 'HbA1c, Fasting Sugar, Lipid Panel, Serum Creatinine, and Electrolytes.' }
     ]
   },
   {
     title: 'Physiotherapy',
     icon: '💪',
     sub: [
-      { name: 'Home Physiotherapy Session', price: 1000, desc: 'Certified physiotherapist delivers 45-min targeted mobility therapy.' },
-      { name: 'Post-Surgery Joint Rehabilitation', price: 1200, desc: 'Knee / hip replacement post-op mobility and gait recovery.' },
-      { name: 'Neurological & Stroke Recovery', price: 1500, desc: 'Neuro-rehabilitation for stroke, Parkinson\'s, or paralysis recovery.' }
+      { name: 'Home Physiotherapy Session', desc: 'Certified physiotherapist delivers 45-min targeted mobility therapy.' },
+      { name: 'Post-Surgery Joint Rehabilitation', desc: 'Knee / hip replacement post-op mobility and gait recovery.' },
+      { name: 'Neurological & Stroke Recovery', desc: 'Neuro-rehabilitation for stroke, Parkinson\'s, or paralysis recovery.' }
     ]
   },
   {
     title: 'Dietician Advisory',
     icon: '🍎',
     sub: [
-      { name: 'Personalized Clinical Diet Plan', price: 1200, desc: 'Custom nutrition chart formulated based on medical reports & lifestyle.' },
-      { name: 'Diabetes & Renal Diet Consultation', price: 1500, desc: 'Specialized glycemic-control and renal-friendly nutrition counseling.' }
+      { name: 'Personalized Clinical Diet Plan', desc: 'Custom nutrition chart formulated based on medical reports & lifestyle.' },
+      { name: 'Diabetes & Renal Diet Consultation', desc: 'Specialized glycemic-control and renal-friendly nutrition counseling.' }
     ]
   }
 ];
@@ -81,7 +81,7 @@ const NIZAMABAD_LOCALITIES = [
 ];
 
 const TIME_SLOTS = [
-  { id: 'Immediate', label: '⚡ Immediate (Within 15-30 Mins)', desc: 'Priority clinical response' },
+  { id: 'Immediate', label: '⚡ Immediate (Within 15-30 Mins)', desc: 'Priority emergency response' },
   { id: 'Morning (08:00 AM - 12:00 PM)', label: '🌅 Morning', desc: '08:00 AM - 12:00 PM' },
   { id: 'Afternoon (12:00 PM - 04:00 PM)', label: '☀️ Afternoon', desc: '12:00 PM - 04:00 PM' },
   { id: 'Evening (04:00 PM - 08:00 PM)', label: '🌙 Evening', desc: '04:00 PM - 08:00 PM' }
@@ -93,7 +93,6 @@ const BookingForm = ({
   preSelectedSubService = '',
   onSuccess = null 
 }) => {
-  // Combine CMS services with default rich subservice data
   const activeServicesList = DEFAULT_SERVICES;
 
   const [formData, setFormData] = useState({
@@ -126,7 +125,6 @@ const BookingForm = ({
     }
   }, [preSelectedCategory, preSelectedSubService]);
 
-  // Current selected category and subservice objects
   const selectedCategoryObj = activeServicesList.find(s => s.title === formData.serviceName) || activeServicesList[0];
   const selectedSubServiceObj = selectedCategoryObj?.sub.find(sub => sub.name === formData.subServiceName) || selectedCategoryObj?.sub[0];
 
@@ -162,7 +160,6 @@ const BookingForm = ({
     e.preventDefault();
     setError('');
 
-    // Validations
     if (!formData.name.trim()) {
       setError('Please enter the patient’s full name.');
       return;
@@ -228,7 +225,6 @@ const BookingForm = ({
     });
   };
 
-  // WhatsApp Share URL Generator
   const getWhatsAppBookingUrl = (booking) => {
     const text = `*New Booking Request - Nest Cares Nizamabad*\n` +
       `• *Booking ID:* ${booking.bookingId}\n` +
@@ -239,7 +235,7 @@ const BookingForm = ({
       `• *Date:* ${booking.preferredDate}\n` +
       `• *Time Slot:* ${booking.preferredTime}\n` +
       `• *Address:* ${booking.address}\n\n` +
-      `_Please confirm availability and dispatch coordinator._`;
+      `_Please confirm clinical availability and dispatch coordinator._`;
     return `https://wa.me/919248849388?text=${encodeURIComponent(text)}`;
   };
 
@@ -253,7 +249,7 @@ const BookingForm = ({
 
         <span className="inline-flex items-center gap-1.5 px-3.5 py-1 bg-emerald-100/80 text-emerald-800 rounded-full text-xs font-black uppercase tracking-widest mb-3">
           <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
-          Appointment Confirmed
+          Request Registered
         </span>
 
         <h3 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
@@ -261,12 +257,12 @@ const BookingForm = ({
         </h3>
         
         <p className="text-slate-600 text-sm mt-2 max-w-md mx-auto leading-relaxed">
-          Your booking request has been registered under reference ID:
+          Your care request has been saved under reference ID:
         </p>
 
         <div className="my-6 p-4 bg-slate-900 text-white rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4 max-w-lg mx-auto shadow-xl">
           <div className="text-left">
-            <span className="text-[10px] text-teal-400 font-bold uppercase tracking-wider block">Official Booking ID</span>
+            <span className="text-[10px] text-teal-400 font-bold uppercase tracking-wider block">Reference Booking ID</span>
             <span className="text-2xl font-black tracking-wider text-white">{confirmedBooking.bookingId}</span>
           </div>
           <div className="flex items-center gap-2 text-xs font-semibold bg-white/10 px-3.5 py-2 rounded-xl text-teal-200">
@@ -294,9 +290,12 @@ const BookingForm = ({
           </div>
         </div>
 
-        <p className="text-xs text-slate-500 mt-6 leading-relaxed">
-          📞 Our senior healthcare coordinator is reviewing your request and will call you on <strong className="text-slate-800">{confirmedBooking.mobile}</strong> within 15 minutes to confirm logistics.
-        </p>
+        <div className="mt-6 p-4 bg-teal-50 border border-teal-100 rounded-2xl text-left flex items-start gap-3 max-w-lg mx-auto">
+          <Headphones className="w-5 h-5 text-teal-700 shrink-0 mt-0.5" />
+          <p className="text-xs text-teal-900 leading-relaxed font-medium">
+            Our medical coordinator will call you on <strong className="text-slate-900">{confirmedBooking.mobile}</strong> within 15 minutes to review patient requirements, explain the setup details, and confirm clinician dispatch.
+          </p>
+        </div>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
           <a
@@ -329,13 +328,13 @@ const BookingForm = ({
         <div>
           <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-teal-50 text-teal-800 rounded-full text-[10px] font-black uppercase tracking-widest mb-2 border border-teal-100">
             <HeartPulse className="w-3.5 h-3.5 text-teal-600" />
-            Standard Care Booking
+            Service Selection & Care Booking
           </span>
           <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-            Schedule Home Healthcare
+            Schedule Healthcare Service
           </h2>
           <p className="text-slate-500 text-xs mt-1">
-            Choose your treatment, select your time, and certified clinicians will arrive at your home.
+            Choose what you need. Our clinical team will contact you back immediately to understand the patient details and arrange certified clinicians.
           </p>
         </div>
 
@@ -388,7 +387,7 @@ const BookingForm = ({
       <div className="mb-8 p-5 bg-slate-50 border border-slate-200/80 rounded-2xl">
         <div className="flex items-center justify-between mb-3">
           <label className="text-xs font-black text-slate-900 uppercase tracking-wider">
-            2. Choose Specific Treatment / Equipment
+            2. Choose Specific Clinical Requirement
           </label>
           <span className="text-[10px] font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-full border border-teal-100">
             {selectedCategoryObj.sub.length} Options Available
@@ -420,10 +419,9 @@ const BookingForm = ({
                   </div>
                 </div>
 
-                <div className="text-right shrink-0">
-                  <span className="text-xs font-black text-emerald-700">₹{sub.price.toLocaleString()}</span>
-                  <span className="text-[9px] text-slate-400 block font-medium">Standard Fee</span>
-                </div>
+                <span className="text-[11px] font-bold text-teal-800 bg-teal-50 px-2.5 py-1 rounded-lg border border-teal-100 shrink-0">
+                  Select
+                </span>
               </div>
             );
           })}
@@ -473,13 +471,13 @@ const BookingForm = ({
 
           <div className="sm:col-span-2">
             <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider block mb-1">
-              Email Address (For Booking Copy & Receipts)
+              Email Address (Optional)
             </label>
             <div className="relative">
               <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="email"
-                placeholder="e.g. name@example.com (Optional)"
+                placeholder="e.g. name@example.com"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200/80 rounded-xl text-xs font-semibold text-slate-900 focus:bg-white focus:border-teal-700 focus:outline-none focus:ring-1 focus:ring-teal-700"
@@ -600,7 +598,7 @@ const BookingForm = ({
           </label>
           <input
             type="text"
-            placeholder="e.g. Patient requires oxygen setup, elderly with limited mobility, doctor prescription attached"
+            placeholder="e.g. Patient requires oxygen setup, elderly with limited mobility"
             value={formData.notes}
             onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
             className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200/80 rounded-xl text-xs font-semibold text-slate-900 focus:bg-white focus:border-teal-700 focus:outline-none focus:ring-1 focus:ring-teal-700"
@@ -611,12 +609,11 @@ const BookingForm = ({
       {/* SUMMARY & SUBMIT BUTTON */}
       <div className="pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-6">
         <div className="text-left">
-          <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider block">Estimated Fee</span>
-          <div className="flex items-baseline gap-1.5">
-            <span className="text-2xl font-black text-slate-900">₹{selectedSubServiceObj.price.toLocaleString()}</span>
-            <span className="text-xs text-slate-500 font-medium">({selectedSubServiceObj.name})</span>
+          <span className="text-[10px] text-teal-700 font-bold uppercase tracking-wider block">Selected Requirement</span>
+          <div className="font-black text-slate-900 text-sm">
+            {selectedCategoryObj.title} — <span className="text-teal-800">{selectedSubServiceObj.name}</span>
           </div>
-          <span className="text-[10px] text-emerald-600 font-bold block mt-0.5">✓ Pay after treatment / equipment installation</span>
+          <span className="text-[10px] text-slate-500 font-medium block mt-0.5">📞 Our medical team will contact you back immediately with setup details.</span>
         </div>
 
         <button
@@ -627,11 +624,11 @@ const BookingForm = ({
           {loading ? (
             <>
               <RefreshCw className="w-4 h-4 animate-spin" />
-              <span>Registering Booking...</span>
+              <span>Registering Care Request...</span>
             </>
           ) : (
             <>
-              <span>Confirm & Book Appointment</span>
+              <span>Submit Care Request</span>
               <ArrowRight className="w-4 h-4" />
             </>
           )}
