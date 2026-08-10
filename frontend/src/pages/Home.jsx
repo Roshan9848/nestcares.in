@@ -124,7 +124,7 @@ const Home = ({
     <div className="bg-[#fafafb] min-h-screen text-slate-800 font-sans selection:bg-teal-100 selection:text-teal-900">
       
       {/* ========================================================
-          1. HERO SECTION (DESKTOP & MOBILE STRUCTURED)
+          1. HERO SECTION (3-ROW CENTERED IMPACT HEADLINE)
       ======================================================== */}
       <section className="relative min-h-[88vh] flex flex-col justify-between pt-12 pb-16 lg:pt-20 lg:pb-24 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center overflow-hidden">
         
@@ -142,11 +142,12 @@ const Home = ({
             </span>
           </div>
 
-          {/* 2. Bold Impact Headline */}
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.08] text-slate-900 uppercase max-w-4xl mx-auto">
-            Hospital-Grade Care <br />
-            <span className="text-teal-800 underline decoration-teal-500/30 decoration-wavy decoration-2">
-              Directly in Your Home
+          {/* 2. 3-Row Centered Impact Headline */}
+          <h1 className="text-3xl sm:text-5xl lg:text-7xl font-black tracking-tight leading-[1.1] text-slate-900 uppercase max-w-4xl mx-auto flex flex-col items-center gap-1 sm:gap-2">
+            <span className="block">Hospital-Grade</span>
+            <span className="block">Intensive Care</span>
+            <span className="block text-teal-800 underline decoration-teal-500/30 decoration-wavy decoration-2">
+              In Your Home
             </span>
           </h1>
 
