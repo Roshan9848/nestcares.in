@@ -1,13 +1,13 @@
 import axios from 'axios';
 
-const BASE_URL = import.meta.env.VITE_API_URL || 'https://nestcares-api.vercel.app/api';
+const BASE_URL = import.meta.env.VITE_API_URL || 'https://nestcares-in.onrender.com/api';
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json'
   },
-  timeout: 15000
+  timeout: 20000
 });
 
 // Request interceptor to dynamically inject authorization tokens
@@ -32,116 +32,100 @@ apiClient.interceptors.response.use(
   }
 );
 
-// 1. SETTINGS SERVICES
-export const settingsAPI = {
-  getSettings: async () => {
-    const res = await apiClient.get('/settings');
-    return res.data;
-  },
-  updateSettings: async (key, value) => {
-    const res = await apiClient.put(`/settings/${key}`, { value });
-    return res.data;
-  },
-  getEmailConfig: async () => {
-    const res = await apiClient.get('/settings/admin/email-config');
-    return res.data;
-  }
-};
-
-// 2. HEALTHCARE SERVICES
-export const servicesAPI = {
-  getServices: async (includeHidden = false) => {
-    const res = await apiClient.get('/services', {
-      params: { includeHidden: includeHidden ? 'true' : 'false' }
-    });
-    return res.data;
-  },
-  createService: async (data) => {
-    const res = await apiClient.post('/services', data);
-    return res.data;
-  },
-  updateService: async (id, data) => {
-    const res = await apiClient.put(`/services/${id}`, data);
-    return res.data;
-  },
-  deleteService: async (id) => {
-    const res = await apiClient.delete(`/services/${id}`);
-    return res.data;
-  },
-  reorderServices: async (orderedIds) => {
-    const res = await apiClient.put('/services/reorder/list', { orderedIds });
-    return res.data;
-  }
-};
-
-// 3. UNIFIED BOOKINGS SERVICES
+// BOOKINGS API
 export const bookingsAPI = {
-  createBooking: async (formData) => {
-    const res = await apiClient.post('/bookings', formData);
+  createBooking: async (data) => {
+    const res = await apiClient.post('/bookings', data);
     return res.data;
   },
-  getBookings: async (params = {}) => {
+  getAllBookings: async (params = {}) => {
     const res = await apiClient.get('/bookings', { params });
     return res.data;
   },
-  getBookingStats: async () => {
-    const res = await apiClient.get('/bookings/stats');
+  getBookingById: async (id) => {
+    const res = await apiClient.get(`/bookings/${id}`);
     return res.data;
   },
-  updateBookingStatus: async (id, status) => {
-    const res = await apiClient.put(`/bookings/${id}/status`, { status });
+  updateBookingStatus: async (id, status, notes = '') => {
+    const res = await apiClient.put(`/bookings/${id}/status`, { status, notes });
     return res.data;
   },
   deleteBooking: async (id) => {
     const res = await apiClient.delete(`/bookings/${id}`);
     return res.data;
+  },
+  getStats: async () => {
+    const res = await apiClient.get('/bookings/stats');
+    return res.data;
   }
 };
 
-// 4. TESTIMONIALS SERVICES
+// SERVICES API
+export const servicesAPI = {
+  getAll: async () => {
+    const res = await apiClient.get('/services');
+    return res.data;
+  },
+  getBySlug: async (slug) => {
+    const res = await apiClient.get(`/services/${slug}`);
+    return res.data;
+  },
+  create: async (data) => {
+    const res = await apiClient.post('/services', data);
+    return res.data;
+  },
+  update: async (id, data) => {
+    const res = await apiClient.put(`/services/${id}`, data);
+    return res.data;
+  },
+  delete: async (id) => {
+    const res = await apiClient.delete(`/services/${id}`);
+    return res.data;
+  }
+};
+
+// SETTINGS API
+export const settingsAPI = {
+  getWebSettings: async () => {
+    const res = await apiClient.get('/settings/web');
+    return res.data;
+  },
+  updateWebSettings: async (data) => {
+    const res = await apiClient.put('/settings/web', data);
+    return res.data;
+  },
+  getContactSettings: async () => {
+    const res = await apiClient.get('/settings/contact');
+    return res.data;
+  },
+  updateContactSettings: async (data) => {
+    const res = await apiClient.put('/settings/contact', data);
+    return res.data;
+  }
+};
+
+// TESTIMONIALS API
 export const testimonialsAPI = {
-  getTestimonials: async () => {
+  getAll: async () => {
     const res = await apiClient.get('/testimonials');
     return res.data;
-  },
-  createTestimonial: async (data) => {
-    const res = await apiClient.post('/testimonials', data);
-    return res.data;
-  },
-  updateTestimonial: async (id, data) => {
-    const res = await apiClient.put(`/testimonials/${id}`, data);
-    return res.data;
-  },
-  deleteTestimonial: async (id) => {
-    const res = await apiClient.delete(`/testimonials/${id}`);
-    return res.data;
   }
 };
 
-// 5. FAQ SERVICES
+// FAQS API
 export const faqsAPI = {
-  getFaqs: async () => {
+  getAll: async () => {
     const res = await apiClient.get('/faqs');
     return res.data;
-  },
-  createFaq: async (data) => {
-    const res = await apiClient.post('/faqs', data);
-    return res.data;
-  },
-  updateFaq: async (id, data) => {
-    const res = await apiClient.put(`/faqs/${id}`, data);
-    return res.data;
-  },
-  deleteFaq: async (id) => {
-    const res = await apiClient.delete(`/faqs/${id}`);
-    return res.data;
   }
 };
 
-// 6. DOCTORS API
+// DOCTORS / CLINICIANS API
 export const doctorsAPI = {
-  getDoctors: async () => {
+  getAll: async () => {
     const res = await apiClient.get('/doctors');
     return res.data;
   }
 };
+
+export default apiClient;
