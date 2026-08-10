@@ -177,10 +177,11 @@ const Navbar = ({ webSettings }) => {
           {/* Standardized Book Appointment CTA */}
           <Link
             to="/book"
-            className="bg-teal-900 hover:bg-teal-950 text-white px-5 py-2.5 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-wider flex items-center gap-1.5 transition-all duration-300 shadow-md shadow-teal-950/15 active:scale-95 text-center whitespace-nowrap"
+            style={{ color: '#ffffff', backgroundColor: '#134e4a' }}
+            className="hover:!bg-teal-950 !text-white px-5 py-2.5 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-wider flex items-center gap-1.5 transition-all duration-300 shadow-md shadow-teal-950/15 active:scale-95 text-center whitespace-nowrap"
           >
-            <span>{currentLang === 'english' ? 'Book Appointment' : 'అపాయింట్‌మెంట్ బుక్ చేయండి'}</span>
-            <ArrowRight className="w-3.5 h-3.5 text-teal-300" />
+            <span style={{ color: '#ffffff' }} className="!text-white font-black">{currentLang === 'english' ? 'Book Appointment' : 'అపాయింట్‌మెంట్ బుక్ చేయండి'}</span>
+            <ArrowRight className="w-3.5 h-3.5 !text-teal-300" />
           </Link>
         </div>
       </header>
