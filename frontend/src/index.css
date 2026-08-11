@@ -27,6 +27,40 @@
   .bg-brand-accent { background-color: var(--brand-accent); }
   .text-brand-accent { color: var(--brand-accent); }
   .border-brand-accent { border-color: var(--brand-accent); }
+
+  .text-hollow {
+    color: transparent;
+    -webkit-text-stroke: 1.5px #134e4a;
+  }
+
+  .text-hollow-light {
+    color: transparent;
+    -webkit-text-stroke: 1px #cbd5e1;
+  }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.anim-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+
+.anim-marquee:hover {
+  animation-play-state: paused;
+}
+
+.anim-float {
+  animation: float 4s ease-in-out infinite;
 }
 
 @layer components {
@@ -58,205 +92,7 @@
   }
 
   /* Editorial Translucent Card */
-  .card-premium {
-    @apply bg-white rounded-3xl border border-slate-100/80 shadow-[0_10px_40px_-10px_rgba(15,118,110,0.02)] hover:shadow-[0_20px_50px_-10px_rgba(13,148,136,0.06)] hover:border-teal-700/10 hover:-translate-y-1.5 transition-all duration-500;
-  }
-
-  .glassmorphism {
-    @apply bg-white/70 backdrop-blur-xl border border-white/40 shadow-[0_10px_40px_rgba(15,118,110,0.03)];
-  }
-
-  /* Tactile Forms */
-  .form-input {
-    @apply w-full px-4 py-2.5 bg-slate-50 border border-slate-200/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-zinc-800/5 focus:border-zinc-800 focus:bg-white transition-all duration-300 text-xs text-slate-800 placeholder-slate-400 font-sans;
+  .editorial-card {
+    @apply bg-white border border-slate-200/60 rounded-3xl p-6 transition-all duration-300;
   }
 }
-
-/* Warm ambient medical backgrounds & grids */
-.bg-warm-ambient {
-  background: radial-gradient(circle at 10% 20%, rgba(240, 249, 255, 0.4) 0%, rgba(253, 252, 251, 1) 90%);
-}
-
-.bg-grid-pattern {
-  background-size: 40px 40px;
-  background-image: 
-    linear-gradient(to right, rgba(13, 148, 136, 0.025) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(13, 148, 136, 0.025) 1px, transparent 1px);
-}
-
-/* Scrollbar customization */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-slate-50;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-slate-300 rounded-full hover:bg-slate-400 transition-colors border-2 border-slate-50;
-}
-
-/* Print CSS */
-@media print {
-  body {
-    background: white;
-    color: black;
-    font-size: 12pt;
-  }
-  
-  header, footer, nav, aside, .no-print, button, .btn-primary, .btn-secondary, #whatsapp-floating, #call-floating, #back-to-top {
-    display: none !important;
-  }
-
-  main, .print-container {
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: none !important;
-    box-shadow: none !important;
-  }
-}
-
-/* Premium Glassmorphism & Heartbeat animations */
-.glass-premium {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.02);
-}
-
-.card-premium {
-  position: relative;
-  overflow: hidden;
-}
-
-.card-premium::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -60%;
-  width: 220%;
-  height: 220%;
-  background: linear-gradient(
-    45deg,
-    transparent 45%,
-    rgba(255, 255, 255, 0.15) 50%,
-    transparent 55%
-  );
-  transform: rotate(45deg);
-  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  pointer-events: none;
-}
-
-.card-premium:hover::after {
-  transform: translate(65%, 65%) rotate(45deg);
-}
-
-/* Heartbeat line animation */
-@keyframes heartbeatDraw {
-  0% {
-    stroke-dashoffset: 800;
-  }
-  50% {
-    stroke-dashoffset: 0;
-  }
-  100% {
-    stroke-dashoffset: -800;
-  }
-}
-
-.heartbeat-line-path {
-  stroke-dasharray: 800;
-  stroke-dashoffset: 800;
-  animation: heartbeatDraw 3s ease-in-out infinite;
-}
-
-/* Pulse Glow */
-@keyframes heartbeatPulse {
-  0%, 100% {
-    filter: drop-shadow(0 0 2px rgba(13, 148, 136, 0.3));
-    opacity: 0.8;
-  }
-  50% {
-    filter: drop-shadow(0 0 8px rgba(13, 148, 136, 0.6));
-    opacity: 1;
-  }
-}
-
-.heartbeat-glow {
-  animation: heartbeatPulse 1.8s ease-in-out infinite;
-}
-
-/* EKG live waveform animation */
-@keyframes heartbeatWave {
-  0% {
-    stroke-dashoffset: 160;
-  }
-  100% {
-    stroke-dashoffset: 0;
-  }
-}
-
-.heartbeat-wave-path {
-  stroke-dasharray: 160;
-  stroke-dashoffset: 160;
-  animation: heartbeatWave 1.8s linear infinite;
-}
-
-/* Stethoscope sketch draw effect */
-@keyframes stethoscopeDraw {
-  0% {
-    stroke-dasharray: 1000;
-    stroke-dashoffset: 1000;
-  }
-  100% {
-    stroke-dasharray: 1000;
-    stroke-dashoffset: 0;
-  }
-}
-
-.stethoscope-sketch-path {
-  animation: stethoscopeDraw 4s ease-out forwards;
-}
-
-/* ==========================================
-   FLOATING NAVBAR CAPSULE STYLING (Reference Style)
-   ========================================== */
-header .bg-white\/95 {
-  background-color: rgba(255, 255, 255, 0.6) !important;
-  border-color: rgba(255, 255, 255, 0.3) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
-}
-
-header a, header span {
-  color: #334155 !important; /* slate-750 */
-}
-
-header a:hover {
-  color: #0f172a !important; /* slate-900 */
-}
-
-header .bg-slate-100 {
-  background-color: #ffffff !important;
-  color: #0f172a !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.02) !important;
-}
-
-header .bg-black {
-  background-color: #000000 !important;
-}
-
-header .bg-black span {
-  color: #ffffff !important;
-}
-
-header .text-slate-900 {
-  color: #0f172a !important;
-}
-
-
-
