@@ -125,9 +125,9 @@ const Home = ({
     <div className="bg-[#fafafb] min-h-screen text-slate-800 font-sans selection:bg-teal-100 selection:text-teal-900 relative">
       
       {/* ========================================================
-          1. HERO SECTION (INSPIRED BY REFERENCE DESIGN)
+          1. HERO SECTION (CLEAN 3-ROW HEADLINE + SUBTLE GRID)
       ======================================================== */}
-      <section className="min-h-[82vh] flex flex-col items-center justify-center pt-8 pb-12 sm:pb-14 px-4 sm:px-6 relative overflow-hidden text-center">
+      <section className="relative min-h-[82vh] flex flex-col justify-between pt-8 pb-10 lg:pt-12 lg:pb-14 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center overflow-hidden">
         
         {/* Subtle Tech Grid Texture */}
         <div 
@@ -138,49 +138,39 @@ const Home = ({
           }} 
         />
 
-        {/* Ambient Glowing Floating Orbs */}
-        <div className="absolute top-[15%] left-[10%] w-64 h-64 rounded-full bg-teal-500/10 blur-[100px] anim-float pointer-events-none" />
-        <div className="absolute bottom-[20%] right-[10%] w-64 h-64 rounded-full bg-slate-900/5 blur-[100px] anim-float pointer-events-none" style={{ animationDelay: '-3s' }} />
+        {/* Soft Ambient Radial Background Glow */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[600px] h-[350px] sm:h-[500px] bg-gradient-to-b from-teal-500/10 via-emerald-500/5 to-transparent blur-[120px] rounded-full pointer-events-none -z-10" />
 
-        <div className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center my-auto">
+        {/* Centered Content Container */}
+        <div className="relative z-10 space-y-4 sm:space-y-5 my-auto">
           
-          {/* Top Pill Badges */}
-          <div className="flex flex-col items-center gap-2 mb-6 sm:mb-8">
-            <div className="flex items-center gap-2 bg-slate-900/[0.04] border border-slate-900/10 rounded-full px-4 py-1.5 shadow-2xs">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="font-mono font-bold text-[10px] sm:text-xs uppercase tracking-widest text-slate-800">
-                Nest Cares Home Healthcare
-              </span>
-            </div>
-            <div className="flex items-center gap-1.5 text-slate-500 font-mono text-[10px] sm:text-xs uppercase tracking-widest">
-              <MapPin className="w-3.5 h-3.5 text-teal-700" />
-              <span>Nizamabad, Telangana • 24/7 Standby Active</span>
-            </div>
+          {/* 1. Top Pill Badge */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-slate-200/90 bg-white/90 backdrop-blur-sm shadow-2xs">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-700">
+              10,000+ Patients Cared • Nizamabad's #1 Home Healthcare
+            </span>
           </div>
 
-          {/* Hero Headline with Solid + Hollow Display Font */}
-          <div className="relative inline-block mx-auto mb-2">
-            <h1 className="font-anton text-4xl sm:text-6xl md:text-7xl lg:text-[5.5rem] uppercase tracking-wide leading-[0.88] text-slate-900 m-0 flex flex-col items-center select-none">
-              <span className="inline-block">Hospital-Grade</span>
-              <span className="text-hollow inline-block">Home Care.</span>
-            </h1>
-            
-            {/* Floating 24/7 Standby Badge */}
-            <div className="absolute -top-3 -right-2 sm:-right-8 bg-teal-50 border border-teal-200 text-teal-800 text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full rotate-12 shadow-xs pointer-events-none">
-              24/7 Care
-            </div>
-          </div>
+          {/* 2. Balanced 3-Row Centered Headline */}
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-extrabold tracking-tight leading-[1.12] text-slate-900 uppercase max-w-3xl mx-auto flex flex-col items-center gap-0.5 sm:gap-1">
+            <span className="block text-slate-900">Hospital-Grade</span>
+            <span className="block text-slate-900">Intensive Care</span>
+            <span className="block text-teal-800">
+              In Your Home
+            </span>
+          </h1>
 
-          {/* Subtitle */}
-          <p className="mt-4 sm:mt-6 max-w-xl text-xs sm:text-sm md:text-base font-mono text-slate-600 px-2 leading-relaxed">
+          {/* 3. Refined Descriptive Subtitle */}
+          <p className="text-slate-600 text-xs sm:text-sm md:text-base max-w-xl mx-auto leading-relaxed font-normal px-2">
             Emergency ICU ambulances, 24/7 bedside nursing, home doctor visits, and complete hospital ICU setups delivered across Nizamabad.
           </p>
 
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 mt-6 sm:mt-8 mb-6 max-w-md w-full sm:w-auto">
+          {/* 4. Sleek Action Buttons */}
+          <div className="pt-1.5 flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
             <Link
               to="/book"
-              className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 font-mono font-bold text-white bg-teal-900 hover:bg-teal-950 uppercase tracking-widest transition-all hover:scale-105 rounded-xl gap-2 text-xs sm:text-sm shadow-md"
+              className="w-full sm:w-auto px-7 py-3.5 bg-teal-900 hover:bg-teal-950 active:scale-[0.98] text-white text-xs sm:text-sm font-bold uppercase tracking-wider rounded-xl shadow-lg shadow-teal-950/15 flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5 cursor-pointer whitespace-nowrap"
             >
               <span>Book Appointment</span>
               <ArrowRight className="w-4 h-4 text-teal-300" />
@@ -189,15 +179,14 @@ const Home = ({
             <button
               type="button"
               onClick={scrollToServices}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 font-mono font-bold text-slate-800 uppercase tracking-widest text-xs sm:text-sm rounded-xl border border-slate-300 hover:border-teal-700 hover:text-teal-800 bg-white transition-all"
+              className="w-full sm:w-auto px-7 py-3.5 bg-white hover:bg-slate-50 active:scale-[0.98] text-slate-800 text-xs sm:text-sm font-bold uppercase tracking-wider rounded-xl border border-slate-200 shadow-2xs flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5 cursor-pointer whitespace-nowrap"
             >
               <span>Explore Services</span>
-              <ArrowRight className="w-4 h-4" />
             </button>
           </div>
 
-          {/* 3-Column Stats Container */}
-          <div className="max-w-lg mx-auto w-full">
+          {/* 5. Compact 3-Column Stats Container */}
+          <div className="pt-2 max-w-lg mx-auto">
             <div className="grid grid-cols-3 divide-x divide-slate-200/90 bg-white/90 backdrop-blur-sm border border-slate-200/90 rounded-2xl p-3 sm:p-4 shadow-2xs">
               <div className="px-2 sm:px-4 text-center">
                 <span className="text-lg sm:text-2xl font-black text-teal-800 block leading-tight">15 Min</span>
@@ -216,10 +205,10 @@ const Home = ({
 
         </div>
 
-        {/* Scroll Down Indicator */}
+        {/* 6. Scroll Down Indicator */}
         <div 
           onClick={scrollToServices}
-          className="pt-4 flex flex-col items-center justify-center gap-1 opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
+          className="relative z-10 pt-4 flex flex-col items-center justify-center gap-1 opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
         >
           <span className="text-[9px] font-bold tracking-widest uppercase text-slate-400">Scroll Down</span>
           <div className="w-4 h-7 rounded-full border-2 border-slate-300 flex items-start justify-center p-0.5">
