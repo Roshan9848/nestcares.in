@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   ShieldCheck, HeartPulse, Clock, Phone, Award, 
@@ -6,6 +6,13 @@ import {
   Activity, Stethoscope, ChevronRight, HelpCircle,
   Truck, Microscope, UserCheck, Check, MessageSquare, ChevronDown
 } from 'lucide-react';
+
+const ROTATING_CARE_TEXTS = [
+  'In Your Home.',
+  '24/7 In Nizamabad.',
+  'At Your Doorstep.',
+  'With ICU Setup.'
+];
 
 const HOME_SERVICES = [
   {
@@ -115,19 +122,20 @@ const Home = ({
   const phone = contactSettings?.phoneNumbers?.[0] || "+91 92488 49388";
   const whatsapp = contactSettings?.whatsappNumber || "+91 92488 49388";
 
-  // 3D Interactive Mouse Tilt Physics
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  // Dynamic rotating animated text
+  const [textIndex, setTextIndex] = useState(0);
+  const [fade, setFade] = useState(true);
 
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 16;
-    const y = ((e.clientY - rect.top) / rect.height - 0.5) * -16;
-    setTilt({ x, y });
-  };
-
-  const handleMouseLeave = () => {
-    setTilt({ x: 0, y: 0 });
-  };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFade(false);
+      setTimeout(() => {
+        setTextIndex((prev) => (prev + 1) % ROTATING_CARE_TEXTS.length);
+        setFade(true);
+      }, 250);
+    }, 2800);
+    return () => clearInterval(interval);
+  }, []);
 
   const scrollToServices = () => {
     const el = document.getElementById('services-section');
@@ -138,25 +146,15 @@ const Home = ({
     <div className="bg-[#fafafb] min-h-screen text-slate-800 font-sans selection:bg-teal-100 selection:text-teal-900">
       
       {/* ========================================================
-          1. HERO SECTION (ANTON DISPLAY TYPOGRAPHY + 3D MOUSE TILT)
+          1. HERO SECTION (CLEAN MODERN FONT + TEXT ANIMATION)
       ======================================================== */}
-      <section 
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        className="relative min-h-[82vh] flex flex-col justify-between pt-8 pb-10 lg:pt-12 lg:pb-14 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center overflow-hidden cursor-default"
-      >
+      <section className="relative min-h-[82vh] flex flex-col justify-between pt-8 pb-10 lg:pt-12 lg:pb-14 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center overflow-hidden">
         
         {/* Soft Ambient Radial Background Glow */}
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[600px] h-[350px] sm:h-[500px] bg-gradient-to-b from-teal-500/10 via-emerald-500/5 to-transparent blur-[120px] rounded-full pointer-events-none -z-10" />
 
-        {/* Centered Content Container with 3D Tilt */}
-        <div 
-          style={{
-            transform: `perspective(1000px) rotateX(${tilt.y}deg) rotateY(${tilt.x}deg)`,
-            transition: 'transform 0.15s ease-out'
-          }}
-          className="space-y-4 sm:space-y-5 my-auto"
-        >
+        {/* Centered Content Container */}
+        <div className="space-y-4 sm:space-y-5 my-auto">
           
           {/* 1. Top Pill Badge */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-slate-200/90 bg-white shadow-2xs">
@@ -166,16 +164,22 @@ const Home = ({
             </span>
           </div>
 
-          {/* 2. Anton Display Typography with Clean Hollow Stroke */}
-          <div className="relative inline-block mx-auto">
-            <h1 className="font-anton text-4xl sm:text-6xl md:text-7xl lg:text-[5rem] uppercase tracking-wide leading-[0.92] text-slate-900 m-0 flex flex-col items-center select-none">
+          {/* 2. Premium Geometric Headline with Animated Dynamic Cycling Phrase */}
+          <div className="space-y-1 sm:space-y-1.5">
+            <h1 className="text-3xl sm:text-5xl lg:text-[3.5rem] font-extrabold tracking-tight leading-[1.12] text-slate-900 uppercase max-w-3xl mx-auto">
               <span className="block text-slate-900">Hospital-Grade</span>
-              <span className="block text-hollow-anton">Intensive Care.</span>
+              <span className="block text-slate-900">Intensive Care</span>
             </h1>
-            
-            {/* Floating 24/7 Standby Badge */}
-            <div className="absolute -top-3 -right-2 sm:-right-8 bg-teal-50 border border-teal-200 text-teal-800 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full anim-badge shadow-xs pointer-events-none">
-              24/7 Care
+
+            {/* Smooth Animated Highlight Text with Gradient */}
+            <div className="h-10 sm:h-14 flex items-center justify-center">
+              <span 
+                className={`text-2xl sm:text-4xl lg:text-[2.75rem] font-black uppercase tracking-tight text-teal-800 transition-all duration-300 transform ${
+                  fade ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-2 scale-95'
+                }`}
+              >
+                {ROTATING_CARE_TEXTS[textIndex]}
+              </span>
             </div>
           </div>
 
