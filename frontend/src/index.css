@@ -27,40 +27,6 @@
   .bg-brand-accent { background-color: var(--brand-accent); }
   .text-brand-accent { color: var(--brand-accent); }
   .border-brand-accent { border-color: var(--brand-accent); }
-
-  .text-hollow {
-    color: transparent;
-    -webkit-text-stroke: 1.5px #134e4a;
-  }
-
-  .text-hollow-light {
-    color: transparent;
-    -webkit-text-stroke: 1px #cbd5e1;
-  }
-}
-
-@keyframes marquee {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-50%); }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-}
-
-.anim-marquee {
-  display: flex;
-  width: max-content;
-  animation: marquee 25s linear infinite;
-}
-
-.anim-marquee:hover {
-  animation-play-state: paused;
-}
-
-.anim-float {
-  animation: float 4s ease-in-out infinite;
 }
 
 @layer components {
