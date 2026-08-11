@@ -31,16 +31,38 @@
   .bg-brand-accent { background-color: var(--brand-accent); }
   .text-brand-accent { color: var(--brand-accent); }
   .border-brand-accent { border-color: var(--brand-accent); }
+
+  .font-anton {
+    font-family: 'Anton', 'Impact', sans-serif;
+    letter-spacing: 0.04em;
+  }
+
+  .text-hollow {
+    -webkit-text-stroke: 1.5px #0f172a;
+    color: transparent;
+    display: inline-block;
+  }
+
+  .text-hollow-teal {
+    -webkit-text-stroke: 1.5px #134e4a;
+    color: transparent;
+    display: inline-block;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.anim-float {
+  animation: float 5s ease-in-out infinite;
 }
 
 @layer components {
   /* Font Families Helpers */
   .font-display {
-    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
-  }
-
-  .font-syne {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Anton', 'Plus Jakarta Sans', sans-serif;
   }
 
   /* Human-designed organic buttons mapped to dynamic CSS variables */

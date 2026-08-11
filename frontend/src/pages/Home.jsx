@@ -1,18 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   ShieldCheck, HeartPulse, Clock, Phone, Award, 
   ArrowRight, CheckCircle2, Sparkles, Star, Users, 
   Activity, Stethoscope, ChevronRight, HelpCircle,
-  Truck, Microscope, UserCheck, Check, MessageSquare, ChevronDown
+  Truck, Microscope, UserCheck, Check, MessageSquare, ChevronDown,
+  MapPin
 } from 'lucide-react';
-
-const ROTATING_CARE_TEXTS = [
-  'In Your Home.',
-  '24/7 In Nizamabad.',
-  'At Your Doorstep.',
-  'With ICU Setup.'
-];
 
 const HOME_SERVICES = [
   {
@@ -122,77 +116,71 @@ const Home = ({
   const phone = contactSettings?.phoneNumbers?.[0] || "+91 92488 49388";
   const whatsapp = contactSettings?.whatsappNumber || "+91 92488 49388";
 
-  // Dynamic rotating animated text
-  const [textIndex, setTextIndex] = useState(0);
-  const [fade, setFade] = useState(true);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setFade(false);
-      setTimeout(() => {
-        setTextIndex((prev) => (prev + 1) % ROTATING_CARE_TEXTS.length);
-        setFade(true);
-      }, 250);
-    }, 2800);
-    return () => clearInterval(interval);
-  }, []);
-
   const scrollToServices = () => {
     const el = document.getElementById('services-section');
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <div className="bg-[#fafafb] min-h-screen text-slate-800 font-sans selection:bg-teal-100 selection:text-teal-900">
+    <div className="bg-[#fafafb] min-h-screen text-slate-800 font-sans selection:bg-teal-100 selection:text-teal-900 relative">
       
       {/* ========================================================
-          1. HERO SECTION (CLEAN MODERN FONT + TEXT ANIMATION)
+          1. HERO SECTION (INSPIRED BY REFERENCE DESIGN)
       ======================================================== */}
-      <section className="relative min-h-[82vh] flex flex-col justify-between pt-8 pb-10 lg:pt-12 lg:pb-14 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center overflow-hidden">
+      <section className="min-h-[82vh] flex flex-col items-center justify-center pt-8 pb-12 sm:pb-14 px-4 sm:px-6 relative overflow-hidden text-center">
         
-        {/* Soft Ambient Radial Background Glow */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[600px] h-[350px] sm:h-[500px] bg-gradient-to-b from-teal-500/10 via-emerald-500/5 to-transparent blur-[120px] rounded-full pointer-events-none -z-10" />
+        {/* Subtle Tech Grid Texture */}
+        <div 
+          className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" 
+          style={{
+            backgroundImage: 'linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)',
+            backgroundSize: '50px 50px'
+          }} 
+        />
 
-        {/* Centered Content Container */}
-        <div className="space-y-4 sm:space-y-5 my-auto">
+        {/* Ambient Glowing Floating Orbs */}
+        <div className="absolute top-[15%] left-[10%] w-64 h-64 rounded-full bg-teal-500/10 blur-[100px] anim-float pointer-events-none" />
+        <div className="absolute bottom-[20%] right-[10%] w-64 h-64 rounded-full bg-slate-900/5 blur-[100px] anim-float pointer-events-none" style={{ animationDelay: '-3s' }} />
+
+        <div className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center my-auto">
           
-          {/* 1. Top Pill Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-slate-200/90 bg-white shadow-2xs">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-700">
-              10,000+ Patients Cared • Nizamabad's #1 Home Healthcare
-            </span>
-          </div>
-
-          {/* 2. Premium Geometric Headline with Animated Dynamic Cycling Phrase */}
-          <div className="space-y-1 sm:space-y-1.5">
-            <h1 className="text-3xl sm:text-5xl lg:text-[3.5rem] font-extrabold tracking-tight leading-[1.12] text-slate-900 uppercase max-w-3xl mx-auto">
-              <span className="block text-slate-900">Hospital-Grade</span>
-              <span className="block text-slate-900">Intensive Care</span>
-            </h1>
-
-            {/* Smooth Animated Highlight Text with Gradient */}
-            <div className="h-10 sm:h-14 flex items-center justify-center">
-              <span 
-                className={`text-2xl sm:text-4xl lg:text-[2.75rem] font-black uppercase tracking-tight text-teal-800 transition-all duration-300 transform ${
-                  fade ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-2 scale-95'
-                }`}
-              >
-                {ROTATING_CARE_TEXTS[textIndex]}
+          {/* Top Pill Badges */}
+          <div className="flex flex-col items-center gap-2 mb-6 sm:mb-8">
+            <div className="flex items-center gap-2 bg-slate-900/[0.04] border border-slate-900/10 rounded-full px-4 py-1.5 shadow-2xs">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="font-mono font-bold text-[10px] sm:text-xs uppercase tracking-widest text-slate-800">
+                Nest Cares Home Healthcare
               </span>
+            </div>
+            <div className="flex items-center gap-1.5 text-slate-500 font-mono text-[10px] sm:text-xs uppercase tracking-widest">
+              <MapPin className="w-3.5 h-3.5 text-teal-700" />
+              <span>Nizamabad, Telangana • 24/7 Standby Active</span>
             </div>
           </div>
 
-          {/* 3. Refined Descriptive Subtitle */}
-          <p className="text-slate-600 text-xs sm:text-sm md:text-base max-w-xl mx-auto leading-relaxed font-normal px-2">
+          {/* Hero Headline with Solid + Hollow Display Font */}
+          <div className="relative inline-block mx-auto mb-2">
+            <h1 className="font-anton text-4xl sm:text-6xl md:text-7xl lg:text-[5.5rem] uppercase tracking-wide leading-[0.88] text-slate-900 m-0 flex flex-col items-center select-none">
+              <span className="inline-block">Hospital-Grade</span>
+              <span className="text-hollow inline-block">Home Care.</span>
+            </h1>
+            
+            {/* Floating 24/7 Standby Badge */}
+            <div className="absolute -top-3 -right-2 sm:-right-8 bg-teal-50 border border-teal-200 text-teal-800 text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full rotate-12 shadow-xs pointer-events-none">
+              24/7 Care
+            </div>
+          </div>
+
+          {/* Subtitle */}
+          <p className="mt-4 sm:mt-6 max-w-xl text-xs sm:text-sm md:text-base font-mono text-slate-600 px-2 leading-relaxed">
             Emergency ICU ambulances, 24/7 bedside nursing, home doctor visits, and complete hospital ICU setups delivered across Nizamabad.
           </p>
 
-          {/* 4. Sleek Action Buttons */}
-          <div className="pt-1.5 flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 mt-6 sm:mt-8 mb-6 max-w-md w-full sm:w-auto">
             <Link
               to="/book"
-              className="w-full sm:w-auto px-7 py-3.5 bg-teal-900 hover:bg-teal-950 active:scale-[0.98] text-white text-xs sm:text-sm font-bold uppercase tracking-wider rounded-xl shadow-lg shadow-teal-950/15 flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5 cursor-pointer whitespace-nowrap"
+              className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 font-mono font-bold text-white bg-teal-900 hover:bg-teal-950 uppercase tracking-widest transition-all hover:scale-105 rounded-xl gap-2 text-xs sm:text-sm shadow-md"
             >
               <span>Book Appointment</span>
               <ArrowRight className="w-4 h-4 text-teal-300" />
@@ -201,15 +189,16 @@ const Home = ({
             <button
               type="button"
               onClick={scrollToServices}
-              className="w-full sm:w-auto px-7 py-3.5 bg-white hover:bg-slate-50 active:scale-[0.98] text-slate-800 text-xs sm:text-sm font-bold uppercase tracking-wider rounded-xl border border-slate-200 shadow-2xs flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5 cursor-pointer whitespace-nowrap"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 font-mono font-bold text-slate-800 uppercase tracking-widest text-xs sm:text-sm rounded-xl border border-slate-300 hover:border-teal-700 hover:text-teal-800 bg-white transition-all"
             >
               <span>Explore Services</span>
+              <ArrowRight className="w-4 h-4" />
             </button>
           </div>
 
-          {/* 5. Compact 3-Column Stats Container */}
-          <div className="pt-2 max-w-lg mx-auto">
-            <div className="grid grid-cols-3 divide-x divide-slate-200/90 bg-white border border-slate-200/90 rounded-2xl p-3 sm:p-4 shadow-2xs">
+          {/* 3-Column Stats Container */}
+          <div className="max-w-lg mx-auto w-full">
+            <div className="grid grid-cols-3 divide-x divide-slate-200/90 bg-white/90 backdrop-blur-sm border border-slate-200/90 rounded-2xl p-3 sm:p-4 shadow-2xs">
               <div className="px-2 sm:px-4 text-center">
                 <span className="text-lg sm:text-2xl font-black text-teal-800 block leading-tight">15 Min</span>
                 <span className="text-[9px] sm:text-[10px] text-slate-500 font-bold uppercase tracking-wider block mt-0.5">Fast Response</span>
@@ -227,7 +216,7 @@ const Home = ({
 
         </div>
 
-        {/* 6. Scroll Down Indicator */}
+        {/* Scroll Down Indicator */}
         <div 
           onClick={scrollToServices}
           className="pt-4 flex flex-col items-center justify-center gap-1 opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
