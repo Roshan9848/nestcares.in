@@ -5,17 +5,13 @@
 @layer base {
   body {
     @apply bg-[#fafafb] text-slate-700 antialiased selection:bg-teal-100 selection:text-teal-900;
-    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
+    font-family: 'Outfit', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     scroll-behavior: smooth;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+    font-family: 'Outfit', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     @apply text-slate-900 font-extrabold tracking-tight;
-    -webkit-font-smoothing: antialiased;
   }
 }
 
@@ -31,23 +27,6 @@
   .bg-brand-accent { background-color: var(--brand-accent); }
   .text-brand-accent { color: var(--brand-accent); }
   .border-brand-accent { border-color: var(--brand-accent); }
-
-  .font-anton {
-    font-family: 'Anton', 'Impact', sans-serif;
-    letter-spacing: 0.04em;
-  }
-
-  .text-hollow {
-    -webkit-text-stroke: 1.5px #0f172a;
-    color: transparent;
-    display: inline-block;
-  }
-
-  .text-hollow-teal {
-    -webkit-text-stroke: 1.5px #134e4a;
-    color: transparent;
-    display: inline-block;
-  }
 }
 
 @keyframes float {
@@ -61,8 +40,12 @@
 
 @layer components {
   /* Font Families Helpers */
-  .font-display {
-    font-family: 'Anton', 'Plus Jakarta Sans', sans-serif;
+  .font-serif-editorial {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+  
+  .font-sans-editorial {
+    font-family: 'Outfit', system-ui, sans-serif;
   }
 
   /* Human-designed organic buttons mapped to dynamic CSS variables */
