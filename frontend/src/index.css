@@ -27,6 +27,34 @@
   .bg-brand-accent { background-color: var(--brand-accent); }
   .text-brand-accent { color: var(--brand-accent); }
   .border-brand-accent { border-color: var(--brand-accent); }
+
+  .font-anton {
+    font-family: 'Anton', 'Impact', sans-serif;
+    letter-spacing: 0.03em;
+  }
+
+  .text-hollow-anton {
+    font-family: 'Anton', 'Impact', sans-serif;
+    letter-spacing: 0.03em;
+    color: transparent;
+    -webkit-text-stroke: 1.8px #0f172a;
+  }
+
+  .text-hollow-teal {
+    font-family: 'Anton', 'Impact', sans-serif;
+    letter-spacing: 0.03em;
+    color: transparent;
+    -webkit-text-stroke: 1.8px #134e4a;
+  }
+}
+
+@keyframes float-badge {
+  0%, 100% { transform: translateY(0px) rotate(12deg); }
+  50% { transform: translateY(-6px) rotate(14deg); }
+}
+
+.anim-badge {
+  animation: float-badge 3.5s ease-in-out infinite;
 }
 
 @layer components {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   ShieldCheck, HeartPulse, Clock, Phone, Award, 
@@ -115,6 +115,20 @@ const Home = ({
   const phone = contactSettings?.phoneNumbers?.[0] || "+91 92488 49388";
   const whatsapp = contactSettings?.whatsappNumber || "+91 92488 49388";
 
+  // 3D Interactive Mouse Tilt Physics
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 16;
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * -16;
+    setTilt({ x, y });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
+  };
+
   const scrollToServices = () => {
     const el = document.getElementById('services-section');
     if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -124,15 +138,25 @@ const Home = ({
     <div className="bg-[#fafafb] min-h-screen text-slate-800 font-sans selection:bg-teal-100 selection:text-teal-900">
       
       {/* ========================================================
-          1. HERO SECTION (ATTRACTIVE & BALANCED PROPORTIONS)
+          1. HERO SECTION (ANTON DISPLAY TYPOGRAPHY + 3D MOUSE TILT)
       ======================================================== */}
-      <section className="relative min-h-[82vh] flex flex-col justify-between pt-8 pb-10 lg:pt-12 lg:pb-14 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center overflow-hidden">
+      <section 
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        className="relative min-h-[82vh] flex flex-col justify-between pt-8 pb-10 lg:pt-12 lg:pb-14 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center overflow-hidden cursor-default"
+      >
         
         {/* Soft Ambient Radial Background Glow */}
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[600px] h-[350px] sm:h-[500px] bg-gradient-to-b from-teal-500/10 via-emerald-500/5 to-transparent blur-[120px] rounded-full pointer-events-none -z-10" />
 
-        {/* Centered Content Container */}
-        <div className="space-y-4 sm:space-y-5 my-auto">
+        {/* Centered Content Container with 3D Tilt */}
+        <div 
+          style={{
+            transform: `perspective(1000px) rotateX(${tilt.y}deg) rotateY(${tilt.x}deg)`,
+            transition: 'transform 0.15s ease-out'
+          }}
+          className="space-y-4 sm:space-y-5 my-auto"
+        >
           
           {/* 1. Top Pill Badge */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-slate-200/90 bg-white shadow-2xs">
@@ -142,21 +166,25 @@ const Home = ({
             </span>
           </div>
 
-          {/* 2. Balanced 3-Row Centered Headline */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-extrabold tracking-tight leading-[1.12] text-slate-900 uppercase max-w-3xl mx-auto flex flex-col items-center gap-0.5 sm:gap-1">
-            <span className="block text-slate-900">Hospital-Grade</span>
-            <span className="block text-slate-900">Intensive Care</span>
-            <span className="block text-teal-800">
-              In Your Home
-            </span>
-          </h1>
+          {/* 2. Anton Display Typography with Clean Hollow Stroke */}
+          <div className="relative inline-block mx-auto">
+            <h1 className="font-anton text-4xl sm:text-6xl md:text-7xl lg:text-[5rem] uppercase tracking-wide leading-[0.92] text-slate-900 m-0 flex flex-col items-center select-none">
+              <span className="block text-slate-900">Hospital-Grade</span>
+              <span className="block text-hollow-anton">Intensive Care.</span>
+            </h1>
+            
+            {/* Floating 24/7 Standby Badge */}
+            <div className="absolute -top-3 -right-2 sm:-right-8 bg-teal-50 border border-teal-200 text-teal-800 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full anim-badge shadow-xs pointer-events-none">
+              24/7 Care
+            </div>
+          </div>
 
           {/* 3. Refined Descriptive Subtitle */}
           <p className="text-slate-600 text-xs sm:text-sm md:text-base max-w-xl mx-auto leading-relaxed font-normal px-2">
             Emergency ICU ambulances, 24/7 bedside nursing, home doctor visits, and complete hospital ICU setups delivered across Nizamabad.
           </p>
 
-          {/* 4. Sleek Action Buttons (Side-by-side with comfortable padding) */}
+          {/* 4. Sleek Action Buttons */}
           <div className="pt-1.5 flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
             <Link
               to="/book"
