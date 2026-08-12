@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Shield, Heart, Award, HeartHandshake, CheckCircle2, Star, Users, ShieldAlert, BadgeCheck, Network, ClipboardCheck, ShieldCheck } from 'lucide-react';
+import { Shield, Heart, Award, HeartHandshake, CheckCircle2, Star, Users, ShieldAlert, BadgeCheck, Network, ClipboardCheck, ShieldCheck, Stethoscope, Clock } from 'lucide-react';
 
 import Card from '../components/common/Card';
 import Badge from '../components/common/Badge';
 import { SectionHeading } from '../components/common/Typography';
 import PageLayout from '../components/common/PageLayout';
 import { translations } from '../utils/translations';
+import { resolveImageUrl } from '../utils/url';
 
 const About = ({ doctors, founders }) => {
   const [currentLang, setCurrentLang] = useState(localStorage.getItem('preferred_language') || 'english');
@@ -42,33 +43,36 @@ const About = ({ doctors, founders }) => {
     }
   ];
 
-  const displayDoctors = doctors && doctors.length > 0 ? doctors.filter(d => d.active) : [
+  const displayDoctors = doctors && doctors.length > 0 ? doctors.filter(d => d.isActive !== false && d.active !== false) : [
     {
       _id: 'doc_1',
-      name: 'Dr. Anand Verma',
-      designation: 'Chief Consultant Cardiologist & Medical Director',
-      experience: '22 Years Experience',
-      bio: 'Founder & Chief Medical Director overseeing home clinical procedures, emergency triage audits, and bedside telemetry systems.',
-      img: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=300',
-      speciality: 'Cardiology & ICU Care'
+      name: 'Dr. K. Srinivas Reddy',
+      qualifications: 'MBBS, MD (General Medicine)',
+      experience: '14+ Years Experience',
+      regNumber: 'TSMC/2012/4819',
+      bio: 'Specializes in comprehensive home health evaluations, elderly patient monitoring, chronic disease management, and post-discharge recovery.',
+      image: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400',
+      specialty: 'Senior General Physician & Geriatrician'
     },
     {
       _id: 'doc_2',
-      name: 'Dr. Priya Naidu',
-      designation: 'Senior Consultant Pediatrist & Geriatrics Specialist',
-      experience: '15 Years Experience',
-      bio: 'Co-founder & Chief Clinical Strategist managing home pediatric setups, elderly recovery guidelines, and bedside nursing standards.',
-      img: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=300',
-      speciality: 'Geriatrics & Pediatrics'
+      name: 'Dr. Ananya Sharma',
+      qualifications: 'MBBS, DA, DNB (Critical Care)',
+      experience: '10+ Years Experience',
+      regNumber: 'TSMC/2015/6321',
+      bio: 'Lead intensive care specialist overseeing home ICU ventilator setups, tracheostomy tube management, and emergency clinical triage.',
+      image: 'https://images.unsplash.com/photo-1594824813689-53b9f4e2f9d6?auto=format&fit=crop&q=80&w=400',
+      specialty: 'Critical Care & ICU Consultant'
     },
     {
       _id: 'doc_3',
-      name: 'Dr. K. Srinivas',
-      designation: 'Consultant Pulmonologist & Critical Care Advisor',
-      experience: '18 Years Experience',
-      bio: 'Consulting Pulmonologist specialized in home respirator calibrations, BiPAP/CPAP settings audits, and clinical oxygen management.',
-      img: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=300',
-      speciality: 'Pulmonology & ICU Care'
+      name: 'Dr. M. Venkat Rao',
+      qualifications: 'MBBS, MD, DM (Cardiology)',
+      experience: '16+ Years Experience',
+      regNumber: 'TSMC/2009/2184',
+      bio: 'Expert in cardiovascular evaluations, bedside 12-lead ECG reviews, heart failure follow-ups, and cardiac rehabilitation at home.',
+      image: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=400',
+      specialty: 'Consultant Cardiologist & Physician'
     }
   ];
 
@@ -307,24 +311,49 @@ const About = ({ doctors, founders }) => {
         />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {displayDoctors.map((doc, idx) => (
-            <Card key={doc._id || idx} className="!p-0 overflow-hidden flex flex-col h-full hover:shadow-md transition-all duration-300 group rounded-2xl border border-slate-100">
-              <div className="h-60 overflow-hidden relative w-full bg-slate-100 border-b border-slate-100">
+            <Card key={doc._id || idx} className="!p-0 overflow-hidden flex flex-col h-full hover:shadow-lg transition-all duration-300 group rounded-3xl border border-slate-200/80 bg-white">
+              <div className="h-64 overflow-hidden relative w-full bg-slate-100 border-b border-slate-100">
                 <img 
-                  src={doc.img} 
+                  src={resolveImageUrl(doc.image || doc.img || 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400')} 
                   alt={doc.name} 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                  onError={(e) => {
+                    e.target.src = 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400';
+                  }}
                 />
-                <div className="absolute top-3 right-3 bg-teal-900 text-teal-200 text-[8px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full border border-teal-700/50 shadow">
-                  {doc.experience}
+                <div className="absolute top-3 right-3 bg-teal-900/90 backdrop-blur-xs text-teal-200 text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-teal-700/50 shadow">
+                  {doc.experience || '5+ Years Exp'}
                 </div>
               </div>
-              <div className="p-5 text-left grow flex flex-col justify-between">
-                <div>
-                  <span className="text-[9px] font-black text-teal-800 uppercase tracking-widest">{doc.speciality || 'General Medicine'}</span>
-                  <h4 className="text-sm font-bold text-slate-900 mt-1 leading-tight">{doc.name}</h4>
-                  <p className="text-[10px] text-slate-500 font-bold uppercase mt-1 leading-tight">{doc.designation}</p>
-                  <p className="text-[10px] text-slate-400 leading-relaxed font-semibold mt-3">{doc.bio}</p>
+              <div className="p-6 text-left grow flex flex-col justify-between space-y-4">
+                <div className="space-y-1">
+                  <span className="text-[10px] font-extrabold text-teal-800 uppercase tracking-widest block">
+                    {doc.specialty || doc.speciality || 'General Medicine'}
+                  </span>
+                  <h4 className="text-base font-extrabold text-slate-900 leading-tight">
+                    {doc.name}
+                  </h4>
+                  <p className="text-xs text-slate-600 font-bold">
+                    {doc.qualifications || doc.designation || 'MBBS'}
+                  </p>
+                  {doc.regNumber && (
+                    <p className="text-[10px] text-slate-400 font-mono">
+                      Reg: {doc.regNumber}
+                    </p>
+                  )}
+                  {doc.bio && (
+                    <p className="text-xs text-slate-500 leading-relaxed pt-2 line-clamp-3">
+                      "{doc.bio}"
+                    </p>
+                  )}
                 </div>
+
+                {doc.availability && (
+                  <div className="pt-2 border-t border-slate-100 flex items-center gap-1.5 text-[10px] font-semibold text-slate-500">
+                    <Clock className="w-3 h-3 text-teal-700 shrink-0" />
+                    <span className="truncate">{doc.availability}</span>
+                  </div>
+                )}
               </div>
             </Card>
           ))}

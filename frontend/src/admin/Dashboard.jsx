@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { apiClient, bookingsAPI, servicesAPI, settingsAPI, testimonialsAPI, faqsAPI } from '../services/api';
+import { apiClient, bookingsAPI, servicesAPI, settingsAPI, testimonialsAPI, faqsAPI, doctorsAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import InteractiveDragList from '../components/InteractiveDragList';
 import { resolveImageUrl } from '../utils/url';
@@ -9,13 +9,14 @@ import {
   LayoutDashboard, CalendarCheck, Activity, Home as HomeIcon, MessageSquare, 
   HelpCircle, MapPin, Settings as SettingsIcon, LogOut, ExternalLink, Plus, 
   Trash2, Edit, Check, X, ShieldAlert, Sparkles, Download, Printer, Save, Eye, EyeOff,
-  Clock, User, FileText, Image, FileImage, UploadCloud, Loader2, Images, Menu, RefreshCw
+  Clock, User, FileText, Image, FileImage, UploadCloud, Loader2, Images, Menu, RefreshCw,
+  UserCheck, Stethoscope, PhoneCall, Mail, Award, CheckCircle2, Search, Filter
 } from 'lucide-react';
 
 const Dashboard = ({ 
   services, refreshServices, testimonials, refreshTestimonials, 
   faqs, refreshFaqs, webSettings, refreshWebSettings, 
-  contactSettings, refreshContactSettings 
+  contactSettings, refreshContactSettings, doctors: parentDoctors, refreshDoctors 
 }) => {
   const { user, logout, token } = useAuth();
   const navigate = useNavigate();
@@ -88,6 +89,28 @@ const Dashboard = ({
   // Contact CMS State
   const [contactCMS, setContactCMS] = useState({ phoneNumbers: [], emailAddress: '', whatsappNumber: '', officeAddress: '', workingHours: '', emergencyContact: '', googleMapsLink: '' });
   
+  // Doctors CMS State
+  const [doctorsList, setDoctorsList] = useState([]);
+  const [doctorsLoading, setDoctorsLoading] = useState(false);
+  const [editingDoctor, setEditingDoctor] = useState(null); // null = list view, {} = new, { ...doc } = edit
+  const [doctorForm, setDoctorForm] = useState({
+    name: '',
+    specialty: '',
+    qualifications: '',
+    experience: '',
+    regNumber: '',
+    image: '',
+    phone: '',
+    email: '',
+    bio: '',
+    availability: 'Available for Home Visits',
+    displayOrder: 0,
+    isActive: true
+  });
+  const [doctorUploadLoading, setDoctorUploadLoading] = useState(false);
+  const [doctorSearch, setDoctorSearch] = useState('');
+  const [doctorSpecialtyFilter, setDoctorSpecialtyFilter] = useState('all');
+
   // Settings Tab State
   const [emailCMS, setEmailCMS] = useState({ smtpHost: '', smtpPort: '', smtpUser: '', smtpPass: '', businessEmail: '', senderName: '', templates: {} });
   const [webCMS, setWebCMS] = useState({ companyName: '', logoUrl: '', faviconUrl: '', footerContent: '', copyright: '', seoTitle: '', seoDescription: '', googleAnalyticsCode: '', primaryColor: '', secondaryColor: '', accentColor: '' });
@@ -159,6 +182,8 @@ const Dashboard = ({
       fetchStats();
     } else if (activeTab === 'bookings') {
       fetchBookings();
+    } else if (activeTab === 'doctors') {
+      fetchDoctors();
     } else if (activeTab === 'homepage') {
       // Sync homepage CMS input state
       setHomepageCMS({
@@ -307,6 +332,7 @@ const Dashboard = ({
     if (mode === 'service_banner') setBannerUploadLoading(true);
     if (mode === 'service_gallery') setServiceUploadLoading(true);
     if (mode === 'testimonial') setTestimonialUploadLoading(true);
+    if (mode === 'doctor') setDoctorUploadLoading(true);
     if (mode === 'settings' || mode === 'settings_favicon') setSettingsUploadLoading(true);
 
     try {
@@ -323,6 +349,8 @@ const Dashboard = ({
           setServiceForm(prev => ({ ...prev, galleryImages: [...prev.galleryImages, uploadedUrl] }));
         } else if (mode === 'testimonial') {
           setTestimonialForm(prev => ({ ...prev, image: uploadedUrl }));
+        } else if (mode === 'doctor') {
+          setDoctorForm(prev => ({ ...prev, image: uploadedUrl }));
         } else if (mode === 'settings') {
           setWebCMS(prev => ({ ...prev, logoUrl: uploadedUrl }));
         } else if (mode === 'settings_favicon') {
@@ -335,6 +363,7 @@ const Dashboard = ({
       if (mode === 'service_banner') setBannerUploadLoading(false);
       if (mode === 'service_gallery') setServiceUploadLoading(false);
       if (mode === 'testimonial') setTestimonialUploadLoading(false);
+      if (mode === 'doctor') setDoctorUploadLoading(false);
       if (mode === 'settings' || mode === 'settings_favicon') setSettingsUploadLoading(false);
     }
   };
@@ -612,6 +641,117 @@ const Dashboard = ({
     }
   };
 
+  // -- DOCTORS & CLINICIANS OPERATIONS --
+  const fetchDoctors = async () => {
+    try {
+      setDoctorsLoading(true);
+      const res = await doctorsAPI.getAll();
+      if (res.success) {
+        setDoctorsList(res.data || []);
+      }
+    } catch (err) {
+      console.error('[Dashboard] Error fetching doctors:', err);
+      if (parentDoctors && parentDoctors.length > 0) {
+        setDoctorsList(parentDoctors);
+      }
+    } finally {
+      setDoctorsLoading(false);
+    }
+  };
+
+  const openDoctorForm = (doc = null) => {
+    if (doc) {
+      setEditingDoctor(doc);
+      setDoctorForm({
+        name: doc.name || '',
+        specialty: doc.specialty || '',
+        qualifications: doc.qualifications || 'MBBS',
+        experience: doc.experience || '5+ Years',
+        regNumber: doc.regNumber || '',
+        image: doc.image || '',
+        phone: doc.phone || '',
+        email: doc.email || '',
+        bio: doc.bio || '',
+        availability: doc.availability || 'Available for Home Visits',
+        displayOrder: doc.displayOrder !== undefined ? doc.displayOrder : 0,
+        isActive: doc.isActive !== undefined ? doc.isActive : true
+      });
+    } else {
+      setEditingDoctor({});
+      setDoctorForm({
+        name: '',
+        specialty: 'General Physician & Home Care',
+        qualifications: 'MBBS, MD',
+        experience: '8+ Years Experience',
+        regNumber: '',
+        image: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400',
+        phone: '+91 92488 49388',
+        email: '',
+        bio: '',
+        availability: 'Available for Home Visits',
+        displayOrder: (doctorsList?.length || 0) + 1,
+        isActive: true
+      });
+    }
+  };
+
+  const saveDoctor = async (e) => {
+    e.preventDefault();
+    if (!doctorForm.name.trim()) {
+      showToast('Doctor name is required!', 'error');
+      return;
+    }
+    if (!doctorForm.specialty.trim()) {
+      showToast('Specialty is required!', 'error');
+      return;
+    }
+
+    try {
+      let res;
+      if (editingDoctor._id) {
+        res = await doctorsAPI.update(editingDoctor._id, doctorForm);
+      } else {
+        res = await doctorsAPI.create(doctorForm);
+      }
+
+      if (res.success) {
+        showToast(editingDoctor._id ? 'Doctor profile & image updated successfully!' : 'Doctor profile created successfully!');
+        setEditingDoctor(null);
+        fetchDoctors();
+        if (refreshDoctors) refreshDoctors();
+      }
+    } catch (err) {
+      showToast(err.response?.data?.message || 'Failed to save doctor profile.', 'error');
+    }
+  };
+
+  const deleteDoctor = async (id) => {
+    if (!window.confirm('Are you sure you want to permanently delete this doctor profile?')) return;
+    try {
+      const res = await doctorsAPI.delete(id);
+      if (res.success) {
+        showToast('Doctor profile removed.');
+        fetchDoctors();
+        if (refreshDoctors) refreshDoctors();
+      }
+    } catch (err) {
+      showToast('Failed to delete doctor profile.', 'error');
+    }
+  };
+
+  const toggleDoctorStatus = async (doc) => {
+    try {
+      const res = await doctorsAPI.update(doc._id, { isActive: !doc.isActive });
+      if (res.success) {
+        showToast(`Doctor marked as ${!doc.isActive ? 'Active' : 'Inactive'}!`);
+        fetchDoctors();
+        if (refreshDoctors) refreshDoctors();
+      }
+    } catch (err) {
+      showToast('Failed to update doctor status', 'error');
+    }
+  };
+
   // -- CONTACT SETTINGS OPERATIONS --
   const saveContactCMS = async (e) => {
     e.preventDefault();
@@ -691,6 +831,7 @@ const Dashboard = ({
           {[
             { id: 'overview', name: 'Stats Overview', icon: <LayoutDashboard className="w-4 h-4" /> },
             { id: 'bookings', name: 'Booking Manager', icon: <CalendarCheck className="w-4 h-4" /> },
+            { id: 'doctors', name: 'Doctors & Clinicians', icon: <UserCheck className="w-4 h-4" /> },
             { id: 'services', name: 'Service Catalog', icon: <Activity className="w-4 h-4" /> },
             { id: 'homepage', name: 'Homepage Content', icon: <HomeIcon className="w-4 h-4" /> },
             { id: 'testimonials', name: 'Testimonials', icon: <MessageSquare className="w-4 h-4" /> },
@@ -702,6 +843,7 @@ const Dashboard = ({
               key={tab.id}
               onClick={() => {
                 setActiveTab(tab.id);
+                setEditingDoctor(null);
                 setEditingService(null);
                 setEditingTestimonial(null);
                 setEditingFaq(null);
@@ -759,6 +901,7 @@ const Dashboard = ({
             <h1 className="text-sm sm:text-lg font-bold text-slate-800 uppercase tracking-tight truncate max-w-[150px] sm:max-w-none">
               {activeTab === 'overview' && 'Dashboard Overview'}
               {activeTab === 'bookings' && 'Booking Manager'}
+              {activeTab === 'doctors' && 'Doctors & Clinicians Management'}
               {activeTab === 'services' && 'Service catalog'}
               {activeTab === 'homepage' && 'Homepage content CMS'}
               {activeTab === 'testimonials' && 'Patient reviews'}
@@ -1675,6 +1818,548 @@ const Dashboard = ({
                   />
                 </div>
               )}
+            </div>
+          )}
+
+          {/* TAB: DOCTORS & CLINICIANS CMS */}
+          {activeTab === 'doctors' && (
+            <div className="space-y-6 text-left">
+              
+              {/* Header & Stats Banner */}
+              <div className="bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 rounded-3xl p-6 sm:p-8 text-white border border-teal-800/30 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
+                <div className="relative z-10 space-y-2">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 border border-teal-500/30 text-[10px] font-mono font-bold uppercase tracking-widest">
+                    <Stethoscope className="w-3.5 h-3.5 text-teal-400" />
+                    Verified Medical Staff Registry
+                  </div>
+                  <h2 className="text-xl sm:text-3xl font-extrabold tracking-tight text-white">
+                    Doctors & Clinicians Directory
+                  </h2>
+                  <p className="text-slate-300 text-xs sm:text-sm max-w-xl">
+                    Add new doctors, edit medical qualifications, change profile images, and configure home visit availability across Nizamabad.
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3 shrink-0 relative z-10">
+                  <button
+                    type="button"
+                    onClick={fetchDoctors}
+                    disabled={doctorsLoading}
+                    className="px-4 py-2.5 bg-slate-800/80 hover:bg-slate-700/80 text-slate-200 text-xs font-bold rounded-xl border border-slate-700/60 flex items-center gap-2 transition-all shadow-xs"
+                    title="Refresh Doctors List"
+                  >
+                    <RefreshCw className={`w-3.5 h-3.5 ${doctorsLoading ? 'animate-spin text-teal-400' : ''}`} />
+                    <span>Refresh</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => openDoctorForm(null)}
+                    className="px-5 py-2.5 bg-teal-500 hover:bg-teal-400 text-slate-950 text-xs font-extrabold rounded-xl flex items-center gap-2 transition-all hover:scale-105 shadow-lg shadow-teal-500/20 uppercase tracking-wider"
+                  >
+                    <Plus className="w-4 h-4 text-slate-950 stroke-[3]" />
+                    <span>Add New Doctor</span>
+                  </button>
+                </div>
+
+                {/* Subtle Background Lighting */}
+                <div className="absolute top-0 right-0 w-80 h-80 bg-teal-500/10 rounded-full blur-3xl pointer-events-none -z-0" />
+              </div>
+
+              {/* Filter & Search Bar + Quick Metrics */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                {/* Search & Specialty Filter */}
+                <div className="lg:col-span-8 bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-center gap-3">
+                  <div className="relative flex-1 w-full">
+                    <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      value={doctorSearch}
+                      onChange={(e) => setDoctorSearch(e.target.value)}
+                      placeholder="Search doctor by name, qualification, or council reg..."
+                      className="w-full pl-10 pr-4 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-100 transition-all"
+                    />
+                  </div>
+
+                  <div className="flex items-center gap-2 w-full sm:w-auto">
+                    <Filter className="w-4 h-4 text-slate-400 shrink-0" />
+                    <select
+                      value={doctorSpecialtyFilter}
+                      onChange={(e) => setDoctorSpecialtyFilter(e.target.value)}
+                      className="w-full sm:w-auto px-3 py-2 text-xs rounded-xl border border-slate-200 bg-white font-medium text-slate-700 focus:outline-none focus:border-teal-500"
+                    >
+                      <option value="all">All Specialities</option>
+                      <option value="physician">General Physician</option>
+                      <option value="critical">Critical Care / ICU</option>
+                      <option value="cardio">Cardiology</option>
+                      <option value="physio">Physiotherapy</option>
+                      <option value="nursing">Home Nursing</option>
+                      <option value="pulmono">Pulmonology</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Mini Stats Badges */}
+                <div className="lg:col-span-4 grid grid-cols-2 gap-3">
+                  <div className="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-2xs flex items-center justify-between">
+                    <div>
+                      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Clinicians</div>
+                      <div className="text-xl font-extrabold text-slate-900">{doctorsList?.length || 0}</div>
+                    </div>
+                    <div className="w-9 h-9 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center font-bold">
+                      <UserCheck className="w-5 h-5" />
+                    </div>
+                  </div>
+
+                  <div className="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-2xs flex items-center justify-between">
+                    <div>
+                      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Active On-Duty</div>
+                      <div className="text-xl font-extrabold text-emerald-600">
+                        {doctorsList?.filter(d => d.isActive !== false).length || 0}
+                      </div>
+                    </div>
+                    <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+                      <Activity className="w-5 h-5" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Doctors Directory Cards Grid */}
+              {doctorsLoading && doctorsList.length === 0 ? (
+                <div className="bg-white p-12 rounded-3xl border border-slate-200 text-center space-y-3">
+                  <Loader2 className="w-8 h-8 text-teal-600 animate-spin mx-auto" />
+                  <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Loading Doctors & Clinicians...</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {doctorsList
+                    .filter(doc => {
+                      const query = doctorSearch.toLowerCase().trim();
+                      const matchesSearch = !query || 
+                        doc.name?.toLowerCase().includes(query) ||
+                        doc.specialty?.toLowerCase().includes(query) ||
+                        doc.qualifications?.toLowerCase().includes(query) ||
+                        doc.regNumber?.toLowerCase().includes(query);
+                      const matchesFilter = doctorSpecialtyFilter === 'all' || 
+                        doc.specialty?.toLowerCase().includes(doctorSpecialtyFilter.toLowerCase());
+                      return matchesSearch && matchesFilter;
+                    })
+                    .map((doc) => (
+                      <div 
+                        key={doc._id || doc.name}
+                        className={`bg-white rounded-3xl border transition-all duration-300 p-5 flex flex-col justify-between shadow-2xs hover:shadow-lg relative group ${
+                          doc.isActive === false ? 'border-slate-200/60 opacity-60 bg-slate-50/50' : 'border-slate-200 hover:border-teal-400/80'
+                        }`}
+                      >
+                        {/* Card Top: Photo + Key Info */}
+                        <div className="space-y-4">
+                          <div className="flex items-start gap-4">
+                            {/* Doctor Avatar / Image with Quick Hover Edit */}
+                            <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shrink-0 shadow-inner group/photo">
+                              <img
+                                src={resolveImageUrl(doc.image || 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400')}
+                                alt={doc.name}
+                                className="w-full h-full object-cover group-hover/photo:scale-110 transition-transform duration-300"
+                                onError={(e) => {
+                                  e.target.src = 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400';
+                                }}
+                              />
+                              <button
+                                type="button"
+                                onClick={() => openDoctorForm(doc)}
+                                className="absolute inset-0 bg-black/50 text-white opacity-0 group-hover/photo:opacity-100 transition-opacity flex items-center justify-center text-[10px] font-bold"
+                                title="Change Photo"
+                              >
+                                Edit Image
+                              </button>
+                            </div>
+
+                            {/* Doctor Name, Reg, and Status */}
+                            <div className="min-w-0 flex-1 space-y-1">
+                              <div className="flex items-center justify-between gap-1">
+                                <span className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
+                                  doc.isActive !== false ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-200 text-slate-600'
+                                }`}>
+                                  {doc.isActive !== false ? 'Active On-Duty' : 'Inactive / Hidden'}
+                                </span>
+                                
+                                {doc.regNumber && (
+                                  <span className="text-[9px] font-mono text-slate-400 uppercase">
+                                    {doc.regNumber}
+                                  </span>
+                                )}
+                              </div>
+
+                              <h3 className="text-sm font-extrabold text-slate-900 leading-snug truncate">
+                                {doc.name}
+                              </h3>
+
+                              <p className="text-[11px] font-bold text-teal-800 line-clamp-1">
+                                {doc.specialty}
+                              </p>
+
+                              <div className="flex items-center gap-1.5 text-[10px] text-slate-500">
+                                <span className="font-semibold">{doc.qualifications || 'MBBS'}</span>
+                                <span>•</span>
+                                <span>{doc.experience || '5+ Yrs Exp'}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Availability Badge */}
+                          <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100 text-[10px] text-slate-600 space-y-1">
+                            <div className="flex items-center gap-1.5 font-bold text-slate-700 uppercase tracking-wide">
+                              <Clock className="w-3 h-3 text-teal-700" />
+                              <span>Home Availability</span>
+                            </div>
+                            <p className="line-clamp-1 text-slate-500 font-medium">
+                              {doc.availability || 'Available for daily home visits'}
+                            </p>
+                          </div>
+
+                          {/* Clinical Bio */}
+                          {doc.bio && (
+                            <p className="text-[11px] text-slate-500 line-clamp-2 leading-relaxed italic">
+                              "{doc.bio}"
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Card Bottom: Contact Quick Link & Actions */}
+                        <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2">
+                            {doc.phone && (
+                              <a
+                                href={`tel:${doc.phone.replace(/\s+/g, '')}`}
+                                className="p-1.5 rounded-lg bg-teal-50 hover:bg-teal-100 text-teal-800 transition-colors"
+                                title={`Call: ${doc.phone}`}
+                              >
+                                <PhoneCall className="w-3.5 h-3.5" />
+                              </a>
+                            )}
+                            {doc.email && (
+                              <a
+                                href={`mailto:${doc.email}`}
+                                className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
+                                title={`Email: ${doc.email}`}
+                              >
+                                <Mail className="w-3.5 h-3.5" />
+                              </a>
+                            )}
+                          </div>
+
+                          <div className="flex items-center gap-1.5">
+                            {/* Toggle active button */}
+                            <button
+                              type="button"
+                              onClick={() => toggleDoctorStatus(doc)}
+                              className={`p-1.5 rounded-lg border text-xs font-semibold transition-colors ${
+                                doc.isActive !== false
+                                  ? 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-amber-50 hover:text-amber-700 hover:border-amber-200'
+                                  : 'bg-emerald-50 border-emerald-200 text-emerald-700 hover:bg-emerald-100'
+                              }`}
+                              title={doc.isActive !== false ? 'Deactivate Doctor' : 'Activate Doctor'}
+                            >
+                              {doc.isActive !== false ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
+                            </button>
+
+                            {/* Edit Doctor Details & Image button */}
+                            <button
+                              type="button"
+                              onClick={() => openDoctorForm(doc)}
+                              className="px-3 py-1.5 rounded-lg bg-teal-50 hover:bg-teal-100 text-teal-900 border border-teal-200 text-xs font-bold flex items-center gap-1 transition-colors"
+                            >
+                              <Edit className="w-3.5 h-3.5" />
+                              <span>Edit</span>
+                            </button>
+
+                            {/* Delete Doctor button */}
+                            <button
+                              type="button"
+                              onClick={() => deleteDoctor(doc._id)}
+                              className="p-1.5 rounded-lg text-rose-500 hover:bg-rose-50 hover:text-rose-700 transition-colors"
+                              title="Delete Doctor"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+
+                      </div>
+                    ))}
+                </div>
+              )}
+
+              {/* Add / Edit Doctor Full Modal Form */}
+              {editingDoctor !== null && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs overflow-y-auto no-print">
+                  <div className="bg-white rounded-3xl border border-slate-200 shadow-2xl max-w-2xl w-full p-6 sm:p-8 space-y-6 text-left my-8 animate-in fade-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
+                    
+                    {/* Modal Header */}
+                    <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-2xl bg-teal-50 text-teal-800 border border-teal-100 flex items-center justify-center font-bold">
+                          <Stethoscope className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <h3 className="text-base sm:text-lg font-extrabold text-slate-900">
+                            {editingDoctor._id ? `Edit Doctor: ${editingDoctor.name}` : 'Register New Doctor / Clinician'}
+                          </h3>
+                          <p className="text-[11px] text-slate-500">
+                            Manage physician credentials, practice specialty, and profile photo.
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setEditingDoctor(null)}
+                        className="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+                      >
+                        <X className="w-5 h-5" />
+                      </button>
+                    </div>
+
+                    <form onSubmit={saveDoctor} className="space-y-5">
+                      
+                      {/* Section 1: Doctor Profile Image Upload & Preview */}
+                      <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-3">
+                        <label className="text-xs font-bold text-slate-800 uppercase tracking-wide flex items-center gap-2">
+                          <Image className="w-4 h-4 text-teal-700" />
+                          <span>Doctor Profile Image</span>
+                        </label>
+                        
+                        <div className="flex flex-col sm:flex-row items-center gap-4">
+                          {/* Image Live Preview */}
+                          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden bg-white border-2 border-slate-200 shadow-xs shrink-0 flex items-center justify-center">
+                            {doctorForm.image ? (
+                              <img
+                                src={resolveImageUrl(doctorForm.image)}
+                                alt="Doctor preview"
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  e.target.src = 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400';
+                                }}
+                              />
+                            ) : (
+                              <User className="w-8 h-8 text-slate-300" />
+                            )}
+                          </div>
+
+                          {/* Image Actions: Upload File & URL Input */}
+                          <div className="flex-1 w-full space-y-2.5">
+                            <div className="flex items-center gap-2">
+                              <label className="flex-1 flex items-center justify-center gap-2 border border-teal-200 bg-teal-50/60 hover:bg-teal-100/60 text-teal-900 rounded-xl px-4 py-2.5 cursor-pointer transition-all text-xs font-bold">
+                                <UploadCloud className="w-4 h-4 text-teal-700" />
+                                <span>Upload Photo from Device</span>
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={(e) => handleImageFileChange(e, 'doctor')}
+                                  className="hidden"
+                                />
+                              </label>
+                            </div>
+
+                            {doctorUploadLoading && (
+                              <div className="flex items-center gap-2 text-[10px] text-teal-700 font-bold animate-pulse">
+                                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                <span>Uploading profile image...</span>
+                              </div>
+                            )}
+
+                            {/* Or Direct Image URL input */}
+                            <div className="flex flex-col gap-1">
+                              <span className="text-[10px] font-bold text-slate-400 uppercase">Or Paste Direct Image URL:</span>
+                              <input
+                                type="text"
+                                value={doctorForm.image}
+                                onChange={(e) => setDoctorForm({ ...doctorForm, image: e.target.value })}
+                                placeholder="https://images.unsplash.com/... or /uploads/..."
+                                className="w-full px-3 py-1.5 text-xs rounded-xl border border-slate-200 bg-white font-mono text-slate-700 focus:outline-none focus:border-teal-500"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Section 2: Basic Doctor Credentials */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-xs font-bold text-slate-700 uppercase">
+                            Doctor Full Name *
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            value={doctorForm.name}
+                            onChange={(e) => setDoctorForm({ ...doctorForm, name: e.target.value })}
+                            placeholder="e.g. Dr. K. Srinivas Reddy"
+                            className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-100 font-semibold"
+                          />
+                        </div>
+
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-xs font-bold text-slate-700 uppercase">
+                            Speciality / Medical Designation *
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            value={doctorForm.specialty}
+                            onChange={(e) => setDoctorForm({ ...doctorForm, specialty: e.target.value })}
+                            placeholder="e.g. Senior General Physician & Geriatrician"
+                            className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-100 font-semibold"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Section 3: Qualifications, Experience, Council Reg */}
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-xs font-bold text-slate-700 uppercase">
+                            Qualifications & Degrees
+                          </label>
+                          <input
+                            type="text"
+                            value={doctorForm.qualifications}
+                            onChange={(e) => setDoctorForm({ ...doctorForm, qualifications: e.target.value })}
+                            placeholder="e.g. MBBS, MD (Gen Med)"
+                            className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-teal-500"
+                          />
+                        </div>
+
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-xs font-bold text-slate-700 uppercase">
+                            Years of Experience
+                          </label>
+                          <input
+                            type="text"
+                            value={doctorForm.experience}
+                            onChange={(e) => setDoctorForm({ ...doctorForm, experience: e.target.value })}
+                            placeholder="e.g. 14+ Years Experience"
+                            className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-teal-500"
+                          />
+                        </div>
+
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-xs font-bold text-slate-700 uppercase">
+                            Medical Reg Number (TSMC)
+                          </label>
+                          <input
+                            type="text"
+                            value={doctorForm.regNumber}
+                            onChange={(e) => setDoctorForm({ ...doctorForm, regNumber: e.target.value })}
+                            placeholder="e.g. TSMC/2012/4819"
+                            className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-teal-500 font-mono"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Section 4: Contact & Availability */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-xs font-bold text-slate-700 uppercase">
+                            Phone / WhatsApp Number
+                          </label>
+                          <input
+                            type="text"
+                            value={doctorForm.phone}
+                            onChange={(e) => setDoctorForm({ ...doctorForm, phone: e.target.value })}
+                            placeholder="+91 92488 49388"
+                            className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-teal-500"
+                          />
+                        </div>
+
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-xs font-bold text-slate-700 uppercase">
+                            Doctor Email Address
+                          </label>
+                          <input
+                            type="email"
+                            value={doctorForm.email}
+                            onChange={(e) => setDoctorForm({ ...doctorForm, email: e.target.value })}
+                            placeholder="dr.name@nestcares.in"
+                            className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-teal-500"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-xs font-bold text-slate-700 uppercase">
+                          Home Visit Availability & Working Hours
+                        </label>
+                        <input
+                          type="text"
+                          value={doctorForm.availability}
+                          onChange={(e) => setDoctorForm({ ...doctorForm, availability: e.target.value })}
+                          placeholder="e.g. Daily (9:00 AM - 1:00 PM & 4:00 PM - 8:00 PM) • 24/7 On-Call"
+                          className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-teal-500"
+                        />
+                      </div>
+
+                      {/* Section 5: Clinical Bio */}
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-xs font-bold text-slate-700 uppercase">
+                          Clinical Bio & Practice Scope
+                        </label>
+                        <textarea
+                          rows="3"
+                          value={doctorForm.bio}
+                          onChange={(e) => setDoctorForm({ ...doctorForm, bio: e.target.value })}
+                          placeholder="Brief summary of doctor's clinical background, hospital affiliations, and bedside expertise..."
+                          className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-teal-500 resize-none"
+                        ></textarea>
+                      </div>
+
+                      {/* Section 6: Display Settings & Toggle */}
+                      <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-slate-100">
+                        <div className="flex items-center gap-6">
+                          <label className="flex items-center gap-2 text-xs font-bold text-slate-700 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={doctorForm.isActive}
+                              onChange={(e) => setDoctorForm({ ...doctorForm, isActive: e.target.checked })}
+                              className="w-4 h-4 text-teal-800 rounded border-slate-300 focus:ring-teal-700"
+                            />
+                            <span>Active Profile (Visible in website)</span>
+                          </label>
+
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-bold text-slate-500">Display Order:</span>
+                            <input
+                              type="number"
+                              value={doctorForm.displayOrder}
+                              onChange={(e) => setDoctorForm({ ...doctorForm, displayOrder: Number(e.target.value) })}
+                              className="w-16 px-2 py-1 text-xs rounded-lg border border-slate-200 text-center"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => setEditingDoctor(null)}
+                            className="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-colors"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="submit"
+                            className="px-6 py-2.5 bg-teal-900 hover:bg-teal-950 text-white text-xs font-bold rounded-xl transition-all shadow-md flex items-center gap-2"
+                          >
+                            <Save className="w-4 h-4 text-teal-300" />
+                            <span>Save Doctor Profile</span>
+                          </button>
+                        </div>
+                      </div>
+
+                    </form>
+
+                  </div>
+                </div>
+              )}
+
             </div>
           )}
 

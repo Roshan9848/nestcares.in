@@ -29,6 +29,7 @@ connectDB().then(() => {
 const authRoutes = require('./routes/auth');
 const serviceRoutes = require('./routes/services');
 const bookingRoutes = require('./routes/bookings');
+const doctorRoutes = require('./routes/doctors');
 const testimonialRoutes = require('./routes/testimonials');
 const faqRoutes = require('./routes/faqs');
 const settingsRoutes = require('./routes/settings');
@@ -38,6 +39,7 @@ const uploadRoutes = require('./routes/upload');
 app.use('/api/auth', authRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/bookings', bookingRoutes);
+app.use('/api/doctors', doctorRoutes);
 app.use('/api/testimonials', testimonialRoutes);
 app.use('/api/faqs', faqRoutes);
 app.use('/api/settings', settingsRoutes);

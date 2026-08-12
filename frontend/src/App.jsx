@@ -184,6 +184,8 @@ const AppContent = () => {
             <Dashboard 
               services={services}
               refreshServices={fetchData}
+              doctors={doctors}
+              refreshDoctors={fetchData}
               testimonials={testimonials}
               refreshTestimonials={fetchData}
               faqs={faqs}

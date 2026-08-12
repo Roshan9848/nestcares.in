@@ -42,6 +42,10 @@ export const bookingsAPI = {
     const res = await apiClient.get('/bookings', { params });
     return res.data;
   },
+  getBookings: async (params = {}) => {
+    const res = await apiClient.get('/bookings', { params });
+    return res.data;
+  },
   getBookingById: async (id) => {
     const res = await apiClient.get(`/bookings/${id}`);
     return res.data;
@@ -55,6 +59,10 @@ export const bookingsAPI = {
     return res.data;
   },
   getStats: async () => {
+    const res = await apiClient.get('/bookings/stats');
+    return res.data;
+  },
+  getBookingStats: async () => {
     const res = await apiClient.get('/bookings/stats');
     return res.data;
   }
@@ -80,6 +88,30 @@ export const servicesAPI = {
   },
   delete: async (id) => {
     const res = await apiClient.delete(`/services/${id}`);
+    return res.data;
+  }
+};
+
+// DOCTORS / CLINICIANS API
+export const doctorsAPI = {
+  getAll: async (params = {}) => {
+    const res = await apiClient.get('/doctors', { params });
+    return res.data;
+  },
+  getById: async (id) => {
+    const res = await apiClient.get(`/doctors/${id}`);
+    return res.data;
+  },
+  create: async (data) => {
+    const res = await apiClient.post('/doctors', data);
+    return res.data;
+  },
+  update: async (id, data) => {
+    const res = await apiClient.put(`/doctors/${id}`, data);
+    return res.data;
+  },
+  delete: async (id) => {
+    const res = await apiClient.delete(`/doctors/${id}`);
     return res.data;
   }
 };
@@ -116,14 +148,6 @@ export const testimonialsAPI = {
 export const faqsAPI = {
   getAll: async () => {
     const res = await apiClient.get('/faqs');
-    return res.data;
-  }
-};
-
-// DOCTORS / CLINICIANS API
-export const doctorsAPI = {
-  getAll: async () => {
-    const res = await apiClient.get('/doctors');
     return res.data;
   }
 };
