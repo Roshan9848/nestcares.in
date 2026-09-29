@@ -53,6 +53,7 @@ router.post('/', async (req, res) => {
 
     // Send emails over direct SSL (port 465)
     const emailReplacements = {
+      bookingId,
       patientName: name,
       serviceName: `${serviceName} - ${subServiceName}`,
       date: preferredDate,
@@ -60,7 +61,8 @@ router.post('/', async (req, res) => {
       mobile,
       email: email || 'None',
       address,
-      notes: notes || 'None'
+      notes: notes || 'None',
+      status: 'Pending Confirmation'
     };
 
     try {
@@ -70,7 +72,7 @@ router.post('/', async (req, res) => {
         emailPromises.push(
           sendEmail({
             to: email,
-            subject: `Booking Confirmed - ${serviceName} (${subServiceName})`,
+            subject: `Booking Confirmed [${bookingId}] - ${serviceName} (${subServiceName})`,
             templateName: 'patientConfirmation',
             replacements: emailReplacements
           })
@@ -80,7 +82,7 @@ router.post('/', async (req, res) => {
       emailPromises.push(
         sendEmail({
           to: 'nestcares.in@gmail.com',
-          subject: `New Booking Request: ${serviceName} (${subServiceName}) - ${name}`,
+          subject: `New Booking Request [${bookingId}]: ${serviceName} (${subServiceName}) - ${name}`,
           templateName: 'adminNotification',
           replacements: emailReplacements
         })
@@ -210,6 +212,30 @@ router.put('/:id/status', protect, async (req, res) => {
     }
 
     const updatedBooking = await dbHelper.findByIdAndUpdate(Booking, req.params.id, { status });
+
+    // If booking has an email and status is changed to approved or completed, dispatch notification
+    if (booking.email && booking.email.trim() !== '') {
+      const emailReplacements = {
+        bookingId: booking.bookingId || `NEST-${req.params.id.slice(-4)}`,
+        patientName: booking.name,
+        serviceName: `${booking.serviceName} - ${booking.subServiceName}`,
+        date: booking.preferredDate,
+        time: booking.preferredTime,
+        mobile: booking.mobile,
+        email: booking.email,
+        address: booking.address,
+        notes: booking.notes || 'None',
+        status: status.toUpperCase()
+      };
+
+      sendEmail({
+        to: booking.email,
+        subject: `Booking Status Update [${emailReplacements.bookingId}] - ${status.toUpperCase()}`,
+        templateName: 'patientStatusUpdate',
+        replacements: emailReplacements
+      }).catch(e => console.error('Status update email failed:', e.message));
+    }
+
     res.json({ success: true, data: updatedBooking });
   } catch (error) {
     console.error('Error updating status:', error);
