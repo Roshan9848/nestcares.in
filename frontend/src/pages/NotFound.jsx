@@ -58,7 +58,7 @@ const NotFound = () => {
 
           <Link
             to="/services"
-            className="w-full py-3.5 px-6 bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 text-xs font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-2xs"
+            className="w-full py-3.5 px-6 bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 text-xs font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm"
           >
             <Stethoscope className="w-4 h-4 text-teal-700" />
             <span>Explore Services</span>

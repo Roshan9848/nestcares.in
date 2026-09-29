@@ -287,6 +287,7 @@ const sendEmail = async ({ to, subject, templateName, replacements }) => {
   </div>
 </body>
 </html>
+      `;
     } else if (templateName === 'doctorOtp') {
       htmlContent = `
 <!DOCTYPE html>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Sparkles } from 'lucide-react';
 
 export const SectionHeading = ({
   tag,
@@ -15,17 +15,18 @@ export const SectionHeading = ({
   return (
     <div className={`flex flex-col gap-2.5 max-w-3xl ${align === 'center' ? 'mx-auto' : ''} ${alignClasses} ${className}`} {...props}>
       {tag && (
-        <span className="text-[10px] font-bold text-teal-800 uppercase tracking-widest block">
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold tracking-widest uppercase bg-teal-500/10 text-teal-300 border border-teal-500/20">
+          <Sparkles className="w-3 h-3 text-teal-400 animate-pulse" />
           {tag}
         </span>
       )}
       {title && (
-        <h2 className="text-xl sm:text-2xl font-serif-editorial font-bold text-slate-900 tracking-tight leading-tight">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight leading-tight">
           {title}
         </h2>
       )}
       {description && (
-        <p className="text-slate-500 text-xs leading-relaxed font-semibold max-w-xl">
+        <p className="text-slate-400 text-sm leading-relaxed max-w-2xl font-normal">
           {description}
         </p>
       )}
@@ -42,25 +43,26 @@ export const PageBanner = ({
   ...props
 }) => {
   return (
-    <div className={`bg-gradient-to-r from-teal-900/5 via-teal-850/5 to-slate-900/5 rounded-3xl p-6 sm:p-8 border border-teal-800/10 mb-8 relative overflow-hidden text-left ${className}`} {...props}>
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(13,148,136,0.015)_1px,_transparent_1px),_linear-gradient(90deg,_rgba(13,148,136,0.015)_1px,_transparent_1px)] bg-[size:20px_20px] pointer-events-none"></div>
+    <div className={`glass-card-premium rounded-3xl p-6 sm:p-10 mb-8 relative overflow-hidden text-left border border-white/10 ${className}`} {...props}>
+      <div className="absolute top-0 right-0 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none -ml-20 -mb-20"></div>
       
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center w-full relative z-10">
         <div className={`flex flex-col gap-3 ${image ? 'md:col-span-8' : 'md:col-span-12'}`}>
           {breadcrumbs.length > 0 && (
-            <nav className="flex items-center gap-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+            <nav className="flex items-center gap-1.5 text-xs font-bold text-slate-400 uppercase tracking-wider">
               {breadcrumbs.map((crumb, idx) => {
                 const isLast = idx === breadcrumbs.length - 1;
                 return (
                   <React.Fragment key={idx}>
                     {crumb.path ? (
-                      <Link to={crumb.path} className="hover:text-teal-800 transition-colors">
+                      <Link to={crumb.path} className="text-teal-400 hover:text-teal-300 transition-colors">
                         {crumb.name}
                       </Link>
                     ) : (
-                      <span className="text-slate-500">{crumb.name}</span>
+                      <span className="text-slate-300">{crumb.name}</span>
                     )}
-                    {!isLast && <ChevronRight className="w-3.5 h-3.5 text-slate-350" />}
+                    {!isLast && <ChevronRight className="w-3.5 h-3.5 text-slate-500" />}
                   </React.Fragment>
                 );
               })}
@@ -68,11 +70,11 @@ export const PageBanner = ({
           )}
 
           <div>
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-serif-editorial font-bold text-slate-900 leading-tight">
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
               {title}
             </h1>
             {description && (
-              <p className="text-slate-500 text-xs mt-1.5 leading-relaxed font-semibold max-w-xl">
+              <p className="text-slate-300 text-sm sm:text-base mt-2 leading-relaxed max-w-2xl font-normal">
                 {description}
               </p>
             )}
@@ -80,12 +82,12 @@ export const PageBanner = ({
         </div>
 
         {image && (
-          <div className="md:col-span-4 hidden md:flex items-center justify-end relative h-[140px]">
-            <div className="relative w-80 h-[130px] rounded-2xl overflow-hidden border border-slate-200/50 shadow-sm p-1 bg-white">
+          <div className="md:col-span-4 hidden md:flex items-center justify-end relative">
+            <div className="relative w-80 h-36 rounded-2xl overflow-hidden border border-white/15 shadow-2xl p-1 bg-white/5 backdrop-blur-md">
               <img 
                 src={image} 
                 alt={title} 
-                className="w-full h-full object-cover rounded-[12px]"
+                className="w-full h-full object-cover rounded-xl"
               />
             </div>
           </div>

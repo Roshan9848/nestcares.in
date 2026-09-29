@@ -5,101 +5,123 @@ import {
   ArrowRight, CheckCircle2, Sparkles, Star, Users, 
   Activity, Stethoscope, ChevronRight, HelpCircle,
   Truck, Microscope, UserCheck, Check, MessageSquare, ChevronDown,
-  MapPin, PhoneCall, Calendar, ArrowUpRight
+  MapPin, PhoneCall, Calendar, Zap, ArrowUpRight
 } from 'lucide-react';
 import { resolveImageUrl } from '../utils/url';
 
-const HOME_SERVICES = [
+const LUXURY_SERVICES = [
   {
     id: 'doctor-consultation',
     title: 'Doctor Consultation',
-    desc: 'Senior MBBS / MD physicians visit your home in Nizamabad for complete physical examination and diagnosis.',
+    teluguTitle: 'డాక్టర్ హోమ్ విజిట్',
+    desc: 'Senior MBBS / MD physicians visit your home in Nizamabad for physical examination, diagnostics, and prescriptions.',
     image: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=600',
     badge: 'Home Visit',
-    tags: ['General Medicine', 'Specialist Visits', 'Post-Op Followup']
+    icon: Stethoscope,
+    tags: ['General Medicine', 'Specialist Visits', 'Bedside Care'],
+    badgeStyle: 'bg-teal-50 text-teal-800 border-teal-200'
   },
   {
     id: 'ambulance-services',
-    title: 'Ambulance Services',
-    desc: '24/7 Basic Life Support (BLS) and Advanced ICU Ventilator ambulances with emergency paramedics on standby.',
+    title: '24/7 Ambulance Dispatch',
+    teluguTitle: '24/7 అంబులెన్స్ సేవలు',
+    desc: 'Rapid Basic Life Support (BLS) and Advanced ICU Ventilator ambulances with emergency paramedics on standby.',
     image: 'https://images.unsplash.com/photo-1587745416684-47953f16f02f?auto=format&fit=crop&q=80&w=600',
-    badge: '15-Min Dispatch',
+    badge: '15-Min Response',
     emergency: true,
-    tags: ['Oxygen Support', 'ICU Ventilator', 'Inter-City Transfer']
+    icon: Truck,
+    tags: ['Oxygen Support', 'ICU Ventilator', 'Inter-City Transfer'],
+    badgeStyle: 'bg-rose-50 text-rose-700 border-rose-200'
   },
   {
     id: 'nursing-services',
     title: 'Professional Home Nursing',
-    desc: 'Certified ICU and general bedside nurses for 12h / 24h continuous clinical care, wound dressing, and vitals tracking.',
+    teluguTitle: 'ప్రొఫెషనల్ హోమ్ నర్సింగ్',
+    desc: 'Certified ICU and general bedside nurses for 12h / 24h continuous clinical care, wound dressing, and vitals monitoring.',
     image: 'https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&q=80&w=600',
-    badge: '12h / 24h Care',
-    tags: ['Bedside Care', 'Tracheostomy', 'Injections & IV']
+    badge: '12h / 24h Shifts',
+    icon: HeartPulse,
+    tags: ['Bedside Care', 'Tracheostomy', 'Injections & IV'],
+    badgeStyle: 'bg-emerald-50 text-emerald-800 border-emerald-200'
   },
   {
     id: 'icu-setup',
     title: 'ICU Setup at Home',
-    desc: 'Complete hospital-grade intensive care unit installed in your bedroom: motorized bed, ventilator, 5-para monitor, and oxygen.',
+    teluguTitle: 'ఇంటి వద్ద ICU సెటప్',
+    desc: 'Complete hospital-grade intensive care unit in your bedroom: motorized ICU bed, ventilator, 5-para monitor, and oxygen.',
     image: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=600',
     badge: 'Hospital-Grade',
-    tags: ['Motorized ICU Bed', 'BiPAP / CPAP', 'Multipara Monitor']
+    icon: Activity,
+    tags: ['Motorized ICU Bed', 'BiPAP / CPAP', 'Multipara Monitor'],
+    badgeStyle: 'bg-blue-50 text-blue-800 border-blue-200'
   },
   {
     id: 'lab-services',
     title: 'Doorstep Lab Diagnostics',
-    desc: 'Certified phlebotomists collect blood & urine samples at your home. NABL certified test reports delivered within 4-6 hours.',
+    teluguTitle: 'డోర్‌స్టెప్ ల్యాబ్ టెస్ట్‌లు',
+    desc: 'Certified phlebotomists collect blood & urine samples at your home. NABL certified test reports delivered in 4-6 hours.',
     image: 'https://images.unsplash.com/photo-1582719471384-894fbb16e074?auto=format&fit=crop&q=80&w=600',
     badge: 'Doorstep Sample',
-    tags: ['Complete Health Panel', 'Cardiac Profile', 'Fast Reports']
+    icon: Microscope,
+    tags: ['Complete Health Panel', 'Cardiac Profile', 'Fast Reports'],
+    badgeStyle: 'bg-amber-50 text-amber-800 border-amber-200'
   },
   {
     id: 'physiotherapy',
     title: 'Home Physiotherapy',
+    teluguTitle: 'హోమ్ ఫిజియోథెరపీ',
     desc: 'Licensed physiotherapists for post-surgery joint rehabilitation, neuro-recovery, stroke rehab, and geriatric mobility.',
     image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=600',
     badge: 'Mobility Rehab',
-    tags: ['Stroke Recovery', 'Joint Mobility', 'Pain Relief']
+    icon: UserCheck,
+    tags: ['Stroke Recovery', 'Joint Mobility', 'Pain Relief'],
+    badgeStyle: 'bg-indigo-50 text-indigo-800 border-indigo-200'
   }
 ];
 
-const CLINICAL_STANDARDS = [
+const LUXURY_PILLARS = [
+  {
+    title: 'Zero Advance Required',
+    desc: 'Pay transparently only after medical setup or bedside care is delivered.',
+    icon: CheckCircle2,
+    iconBg: 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+  },
   {
     title: '100% Certified Clinicians',
-    desc: 'Every doctor, nurse, and technician is background-verified with active state medical council registration.',
-    icon: ShieldCheck
+    desc: 'All doctors, nurses, and technicians hold active state medical council registrations.',
+    icon: ShieldCheck,
+    iconBg: 'bg-teal-50 text-teal-700 border border-teal-200'
   },
   {
     title: 'Hospital-Grade Bio-Equipment',
-    desc: 'Calibrated multipara monitors, Philips / ResMed ventilators, and motorized ICU beds sanitized before dispatch.',
-    icon: Activity
+    desc: 'Calibrated ventilators, multipara monitors, and sanitized ICU motorized beds.',
+    icon: Activity,
+    iconBg: 'bg-blue-50 text-blue-700 border border-blue-200'
   },
   {
     title: '15-Minute Response Protocol',
-    desc: 'Dedicated emergency coordinator hotline in Nizamabad ensures rapid triage and immediate dispatch.',
-    icon: Clock
-  },
-  {
-    title: 'Zero Advance Required',
-    desc: 'Pay transparently only after medical setup or clinical home consultation is completed.',
-    icon: CheckCircle2
+    desc: 'Dedicated emergency medical coordinator desk in Nizamabad for rapid triage.',
+    icon: Clock,
+    iconBg: 'bg-amber-50 text-amber-700 border border-amber-200'
   }
 ];
 
-const DEFAULT_HOME_FAQS = [
+const LUXURY_FAQS = [
   {
     q: 'How quickly can a doctor or ambulance arrive at our home in Nizamabad?',
-    a: 'For emergency ambulance calls and acute triage, dispatch occurs within 15-30 minutes across Nizamabad municipal limits. Scheduled doctor home visits and nursing deployments are arranged at your requested time slot.'
+    a: 'For emergency ambulance dispatch, our vehicles arrive within 15-30 minutes across Nizamabad municipal limits. Scheduled doctor home visits and nursing shifts are arranged for your preferred time slot.'
   },
   {
-    q: 'Do I need to pay any advance before service starts?',
-    a: 'No. Zero advance payment is required for initial coordinator consultations or triage scheduling. Payment is transparently collected only after clinicians or equipment are delivered.'
+    q: 'Do I need to pay any advance fee before service starts?',
+    a: 'No. Zero advance payment is required for initial coordinator triage or scheduling. Payment is collected transparently only after clinicians or medical equipment arrive at your home.'
   },
   {
-    q: 'What equipment is included in a complete Home ICU setup?',
+    q: 'What medical equipment is included in a complete Home ICU Setup?',
     a: 'A complete home ICU setup includes a motorized ICU bed with remote adjustments, critical care ventilator (BiPAP/CPAP/Invasive), 5-para vital signs monitor, suction machine, continuous oxygen concentrator, and a 24/7 ICU-trained bedside nurse.'
   },
   {
-    q: 'Are all nurses and technicians certified and background-verified?',
-    a: 'Yes. 100% of our clinical personnel possess verified state council registrations (TSMC / Nursing Council), have prior hospital ICU experience, and undergo thorough police background checks.'
+    q: 'Are all nurses and clinicians certified in Telangana?',
+    a: 'Yes. 100% of our doctors, nurses, and phlebotomists hold valid state registrations (TSMC / Telangana Nursing Council) and undergo thorough clinical verification.'
   }
 ];
 
@@ -114,29 +136,15 @@ const Home = ({
   const navigate = useNavigate();
   const phone = contactSettings?.phoneNumbers?.[0] || "+91 92488 49388";
   const whatsapp = contactSettings?.whatsappNumber || "+91 92488 49388";
+  const cleanPhone = phone.replace(/\s+/g, '');
+  const cleanWhatsapp = whatsapp.replace(/\D/g, '');
 
   const [openFaqIdx, setOpenFaqIdx] = useState(0);
 
-  // 1-Click Hero Quick Booking Widget State
-  const [quickService, setQuickService] = useState('Doctor Consultation');
-  const [quickMobile, setQuickMobile] = useState('');
-  const [quickArea, setQuickArea] = useState('Chandra Shekar Colony');
-
-  const handleQuickCareSubmit = (e) => {
-    e.preventDefault();
-    navigate('/book', {
-      state: {
-        selectService: quickService,
-        quickMobile: quickMobile.trim(),
-        quickArea: quickArea
-      }
-    });
-  };
-
-  const displayFaqs = (faqs && faqs.length > 0) ? faqs : DEFAULT_HOME_FAQS;
+  const displayFaqs = (faqs && faqs.length > 0) ? faqs : LUXURY_FAQS;
 
   const displayDoctors = (doctors && doctors.length > 0) 
-    ? doctors.filter(d => d.isActive !== false).slice(0, 3)
+    ? doctors.filter(d => d.isActive !== false && d.active !== false)
     : [
         {
           _id: 'doc_1',
@@ -145,7 +153,7 @@ const Home = ({
           qualifications: 'MBBS, MD (General Medicine)',
           experience: '14+ Years Exp',
           image: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400',
-          availability: 'Daily (9:00 AM - 1:00 PM & 4:00 PM - 8:00 PM)'
+          availability: 'Mon - Sat (9:00 AM - 7:00 PM)'
         },
         {
           _id: 'doc_2',
@@ -154,7 +162,7 @@ const Home = ({
           qualifications: 'MBBS, DA, DNB (Critical Care)',
           experience: '10+ Years Exp',
           image: 'https://images.unsplash.com/photo-1594824813689-53b9f4e2f9d6?auto=format&fit=crop&q=80&w=400',
-          availability: '24/7 On-Call Standby for Critical Cases'
+          availability: '24/7 Standby on Request'
         },
         {
           _id: 'doc_3',
@@ -167,336 +175,289 @@ const Home = ({
         }
       ];
 
+  const handleBookService = (serviceTitle) => {
+    navigate('/book', { state: { selectService: serviceTitle } });
+  };
+
   return (
-    <div className="bg-[#fafafb] min-h-screen text-slate-800 font-sans selection:bg-teal-100 selection:text-teal-900 relative">
+    <div className="min-h-screen text-slate-800 font-sans relative pb-28 pt-8">
       
       {/* ========================================================
-          1. HERO SECTION WITH 1-CLICK QUICK CARE FINDER
+          1. PROFESSIONAL HERO SECTION (CLEAN & CONFIDENT)
       ======================================================== */}
-      <section className="relative pt-6 sm:pt-10 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
+      <section className="relative pt-8 sm:pt-16 pb-12 sm:pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-left">
         
-        {/* Soft Ambient Glow */}
-        <div className="absolute top-10 left-1/4 w-96 h-96 bg-teal-500/10 blur-[130px] rounded-full pointer-events-none -z-10" />
-        <div className="absolute top-20 right-1/4 w-96 h-96 bg-emerald-500/10 blur-[130px] rounded-full pointer-events-none -z-10" />
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <div className="max-w-4xl space-y-6 sm:space-y-8">
           
-          {/* Left Hero Column: Headline & Trust signals */}
-          <div className="lg:col-span-7 text-left space-y-5 sm:space-y-6">
-            
-            {/* Pill Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-50 border border-teal-200 text-teal-900 text-xs font-bold shadow-2xs">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-              <span>Nizamabad's #1 Certified Home Healthcare</span>
-            </div>
-
-            {/* Headline */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-black text-slate-900 tracking-tight leading-[1.15]">
-              Hospital-Grade <span className="text-teal-800">Medical Care</span> Delivered in Your Home.
-            </h1>
-
-            {/* Subtitle */}
-            <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl font-normal">
-              Senior general physicians, 24/7 ICU bedside nurses, emergency ambulances, and complete bedroom ICU setups with zero advance payment.
-            </p>
-
-            {/* Key Trust Counters */}
-            <div className="grid grid-cols-3 gap-3 pt-2 max-w-lg">
-              <div className="p-3 bg-white rounded-2xl border border-slate-200/80 shadow-2xs">
-                <span className="text-lg sm:text-2xl font-black text-teal-800 block">15 Min</span>
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mt-0.5">Quick Dispatch</span>
-              </div>
-              <div className="p-3 bg-white rounded-2xl border border-slate-200/80 shadow-2xs">
-                <span className="text-lg sm:text-2xl font-black text-emerald-700 block">10,000+</span>
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mt-0.5">Patients Cared</span>
-              </div>
-              <div className="p-3 bg-white rounded-2xl border border-slate-200/80 shadow-2xs">
-                <span className="text-lg sm:text-2xl font-black text-amber-600 block">4.9 ★</span>
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mt-0.5">Verified Rating</span>
-              </div>
-            </div>
-
-            {/* Emergency Hotline Direct Bar */}
-            <div className="flex flex-wrap items-center gap-3 pt-2">
-              <a
-                href="tel:+919248849388"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-teal-900 hover:bg-teal-950 text-white font-bold text-xs uppercase tracking-wider shadow-md transition-all"
-              >
-                <PhoneCall className="w-4 h-4 text-teal-300" />
-                <span>Call Hotline: +91 92488 49388</span>
-              </a>
-
-              <a
-                href="https://wa.me/919248849388"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider shadow-sm transition-all"
-              >
-                <MessageSquare className="w-4 h-4 text-emerald-100" />
-                <span>WhatsApp Coordinator</span>
-              </a>
-            </div>
-
+          {/* Location & Live Dispatch Pill */}
+          <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-teal-50 border border-teal-200 text-teal-800 text-xs sm:text-sm font-bold shadow-xs">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
+            <span className="font-extrabold text-slate-900">Nizamabad</span>
+            <span className="text-slate-400">•</span>
+            <span>15-Minute Clinical Response Protocol Active</span>
           </div>
 
-          {/* Right Hero Column: 1-Click Interactive Quick Care Finder Widget */}
-          <div className="lg:col-span-5">
-            <div className="bg-white rounded-3xl border border-slate-200/90 shadow-xl p-6 sm:p-7 text-left space-y-5">
-              
-              <div className="space-y-1">
-                <div className="inline-flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-widest text-teal-800 bg-teal-50 px-2.5 py-0.5 rounded-full">
-                  <Sparkles className="w-3 h-3 text-teal-600" />
-                  Instant Care Finder
-                </div>
-                <h3 className="text-xl font-black text-slate-900 tracking-tight">
-                  Book Home Medical Care
-                </h3>
-                <p className="text-xs text-slate-500">
-                  Select requirement & get coordinator callback within 15 mins.
-                </p>
-              </div>
+          {/* Large Bold Headline with Trust Typography */}
+          <h1 className="text-3xl sm:text-5xl lg:text-7xl font-black text-slate-950 tracking-tight leading-[1.08]">
+            Hospital-Grade Intensive Care <br className="hidden sm:inline" />
+            <span className="text-teal-800">
+              In Your Home.
+            </span>
+          </h1>
 
-              <form onSubmit={handleQuickCareSubmit} className="space-y-4">
-                
-                {/* 1. Care Category Picker */}
-                <div>
-                  <label className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block mb-2">
-                    1. Select Service
-                  </label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {[
-                      { id: 'Doctor Consultation', label: 'Doctor Visit 🩺' },
-                      { id: 'Nursing Services', label: 'Home Nurse 💉' },
-                      { id: 'ICU Setup at Home', label: 'Home ICU 🛏️' },
-                      { id: 'Ambulance Services', label: 'Ambulance 🚑' }
-                    ].map((item) => (
-                      <button
-                        key={item.id}
-                        type="button"
-                        onClick={() => setQuickService(item.id)}
-                        className={`p-2.5 rounded-xl border text-left text-xs font-extrabold transition-all cursor-pointer ${
-                          quickService === item.id
-                            ? 'bg-teal-900 text-white border-teal-900 shadow-xs'
-                            : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200'
-                        }`}
-                      >
-                        {item.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* 2. Patient Mobile */}
-                <div>
-                  <label className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block mb-1.5">
-                    2. Patient Mobile Number *
-                  </label>
-                  <input
-                    type="tel"
-                    required
-                    maxLength="14"
-                    value={quickMobile}
-                    onChange={(e) => setQuickMobile(e.target.value)}
-                    placeholder="Enter 10-digit mobile number"
-                    className="w-full px-4 py-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-teal-700 font-semibold"
-                  />
-                </div>
-
-                {/* 3. Nizamabad Area */}
-                <div>
-                  <label className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block mb-1.5">
-                    3. Nizamabad Location
-                  </label>
-                  <select
-                    value={quickArea}
-                    onChange={(e) => setQuickArea(e.target.value)}
-                    className="w-full px-4 py-2.5 text-xs rounded-xl border border-slate-200 bg-white font-medium text-slate-700 focus:outline-none focus:border-teal-700"
-                  >
-                    <option value="Chandra Shekar Colony">Chandra Shekar Colony</option>
-                    <option value="Pragathi Nagar">Pragathi Nagar</option>
-                    <option value="Subhash Nagar">Subhash Nagar</option>
-                    <option value="Khaleelwadi">Khaleelwadi</option>
-                    <option value="Vinayak Nagar">Vinayak Nagar</option>
-                    <option value="Armoor Road">Armoor Road</option>
-                    <option value="Bodhan Road">Bodhan Road</option>
-                    <option value="Kanteshwar">Kanteshwar</option>
-                  </select>
-                </div>
-
-                {/* Submit CTA */}
-                <button
-                  type="submit"
-                  className="w-full py-3.5 bg-teal-900 hover:bg-teal-950 active:scale-95 text-white font-black text-xs uppercase tracking-widest rounded-xl transition-all shadow-md shadow-teal-950/20 flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <span>Proceed to Confirm Schedule</span>
-                  <ArrowRight className="w-4 h-4 text-teal-300" />
-                </button>
-
-                <div className="text-[10px] text-slate-500 text-center font-medium">
-                  ✓ Zero Advance • Pay after service is delivered
-                </div>
-
-              </form>
-
-            </div>
-          </div>
-
-        </div>
-
-      </section>
-
-      {/* ========================================================
-          2. SERVICES CATALOG (CLEAN MODERN 6-CARD GRID)
-      ======================================================== */}
-      <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-slate-100">
-        
-        <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-teal-100 bg-teal-50 text-teal-800 text-xs font-black uppercase tracking-widest">
-            <Stethoscope className="w-3.5 h-3.5 text-teal-600" />
-            Specialized Home Medical Services
-          </div>
-          <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
-            Our Healthcare Services
-          </h2>
-          <p className="text-slate-600 text-xs sm:text-sm">
-            Everything you need for recovery, diagnostics, and critical patient care at home in Nizamabad.
+          {/* Generous Subtitle */}
+          <p className="text-slate-600 text-sm sm:text-xl leading-relaxed max-w-2xl font-normal">
+            Certified doctors, 24/7 ICU bedside nurses, emergency ambulances, and complete hospital bedroom setups with zero advance payment.
           </p>
-        </div>
 
-        {/* 6 Visual Service Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
-          {HOME_SERVICES.map((serv) => (
-            <div 
-              key={serv.id}
-              className="bg-white rounded-3xl border border-slate-200/80 shadow-2xs hover:shadow-lg transition-all overflow-hidden flex flex-col justify-between group"
+          {/* High-Impact Action Buttons */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+            <Link
+              to="/book"
+              className="px-8 py-4 bg-teal-800 hover:bg-teal-900 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider rounded-2xl shadow-md transition-all hover:scale-102 flex items-center justify-center gap-2.5"
             >
-              <div>
-                {/* Photo Banner with Badge */}
-                <div className="relative h-48 w-full overflow-hidden bg-slate-100">
-                  <img 
-                    src={serv.image} 
-                    alt={serv.title}
-                    loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute top-3 left-3">
-                    <span className={`text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-lg backdrop-blur-md ${
-                      serv.emergency ? 'bg-rose-900/90 text-rose-100' : 'bg-teal-900/90 text-teal-100'
-                    }`}>
-                      {serv.badge}
-                    </span>
-                  </div>
-                </div>
+              <span>Book Appointment Online</span>
+              <ArrowRight className="w-5 h-5 text-teal-200" />
+            </Link>
 
-                {/* Card Content */}
-                <div className="p-5 sm:p-6 space-y-3">
-                  <h3 className="text-lg font-black text-slate-900 leading-tight">
-                    {serv.title}
-                  </h3>
-                  <p className="text-xs text-slate-600 leading-relaxed font-normal">
-                    {serv.desc}
-                  </p>
+            <a
+              href={`tel:${cleanPhone}`}
+              className="px-8 py-4 bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 font-bold text-xs sm:text-sm rounded-2xl shadow-xs transition-all flex items-center justify-center gap-2.5"
+            >
+              <PhoneCall className="w-5 h-5 text-teal-700" />
+              <span>Call Helpline: {phone}</span>
+            </a>
+          </div>
 
-                  <div className="flex flex-wrap gap-1.5 pt-1">
-                    {serv.tags.map(tag => (
-                      <span key={tag} className="text-[10px] font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Bottom Action */}
-              <div className="p-5 sm:p-6 pt-0">
-                <Link
-                  to="/book"
-                  state={{ selectService: serv.title }}
-                  className="w-full py-3 bg-slate-50 hover:bg-teal-900 hover:text-white text-slate-800 font-extrabold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-1.5 border border-slate-200/80"
-                >
-                  <span>Book This Service</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-              </div>
+          {/* 3 Elevated Frosted Glass Metric Pills */}
+          <div className="grid grid-cols-3 gap-3 sm:gap-4 pt-6 max-w-2xl">
+            <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200 shadow-xs text-left">
+              <span className="text-2xl sm:text-4xl font-black text-teal-800 block leading-none">15 Min</span>
+              <span className="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-wider block mt-2">Fast Dispatch</span>
             </div>
-          ))}
+            <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200 shadow-xs text-left">
+              <span className="text-2xl sm:text-4xl font-black text-emerald-700 block leading-none">10,000+</span>
+              <span className="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-wider block mt-2">Patients Cared</span>
+            </div>
+            <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200 shadow-xs text-left">
+              <span className="text-2xl sm:text-4xl font-black text-amber-600 block leading-none">4.9 ★</span>
+              <span className="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-wider block mt-2">Patient Rating</span>
+            </div>
+          </div>
+
         </div>
 
       </section>
 
       {/* ========================================================
-          3. VERIFIED DOCTORS SPOTLIGHT
+          2. SERVICES CATALOG (CLEAN, ELEVATED & INFORMATIVE)
       ======================================================== */}
-      <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-slate-100">
+      <section className="py-8 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-left">
         
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-          <div className="space-y-2 text-left">
-            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-teal-100 bg-teal-50 text-teal-800 text-xs font-black uppercase tracking-widest">
-              <UserCheck className="w-3.5 h-3.5 text-teal-600" />
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 sm:mb-12">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-teal-50 text-teal-800 border border-teal-200 text-xs font-bold uppercase tracking-widest">
+              <Sparkles className="w-3.5 h-3.5 text-teal-700" />
+              Specialized Medical Services
+            </div>
+            <h2 className="text-2xl sm:text-4xl font-black text-slate-950 tracking-tight">
+              Clinical Care Services in Nizamabad
+            </h2>
+            <p className="text-slate-600 text-xs sm:text-base max-w-xl">
+              Select your requirement. Our medical team will coordinate bedside arrival and hospital-grade setups.
+            </p>
+          </div>
+
+          <Link
+            to="/services"
+            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-extrabold text-teal-800 hover:text-teal-900 uppercase tracking-wider transition-colors shrink-0"
+          >
+            <span>Explore All Treatments</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+
+        {/* 3-Column Service Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {LUXURY_SERVICES.map((serv) => {
+            const Icon = serv.icon;
+            return (
+              <div 
+                key={serv.id}
+                className="bg-white rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-xl hover:border-teal-400 transition-all duration-300 overflow-hidden flex flex-col justify-between group cursor-pointer"
+                onClick={() => handleBookService(serv.title)}
+              >
+                <div>
+                  {/* Photo Banner with Clean Gradient Overlay */}
+                  <div className="relative h-56 sm:h-64 w-full overflow-hidden bg-slate-100">
+                    <img 
+                      src={serv.image} 
+                      alt={serv.title}
+                      loading="lazy"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                    
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/20 to-transparent" />
+
+                    {/* Top Floating Badges */}
+                    <div className="absolute top-4 left-4">
+                      <span className={`px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider shadow-sm border ${serv.badgeStyle}`}>
+                        {serv.badge}
+                      </span>
+                    </div>
+
+                    <div className="absolute top-4 right-4">
+                      <div className="w-10 h-10 rounded-2xl bg-white/90 backdrop-blur-md border border-slate-200 flex items-center justify-center text-teal-800 shadow-md group-hover:scale-110 transition-transform">
+                        <Icon className="w-5 h-5" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Card Body */}
+                  <div className="p-6 sm:p-7 space-y-3">
+                    <h3 className="text-xl font-black text-slate-950 group-hover:text-teal-800 transition-colors leading-tight">
+                      {serv.title}
+                    </h3>
+                    <p className="text-slate-600 text-xs sm:text-sm leading-relaxed font-normal">
+                      {serv.desc}
+                    </p>
+
+                    <div className="flex flex-wrap gap-2 pt-1">
+                      {serv.tags.map(tag => (
+                        <span key={tag} className="text-[11px] font-semibold bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg border border-slate-200/60">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Card Action Button */}
+                <div className="p-6 sm:p-7 pt-0">
+                  <button
+                    type="button"
+                    className="w-full py-3.5 bg-slate-100 group-hover:bg-teal-800 group-hover:text-white text-slate-800 font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 border border-slate-200"
+                  >
+                    <span>Book Appointment</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+
+              </div>
+            );
+          })}
+        </div>
+
+      </section>
+
+      {/* ========================================================
+          3. 24/7 EMERGENCY AMBULANCE BANNER (HIGH-CONTRAST RED)
+      ======================================================== */}
+      <section className="py-8 sm:py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="p-6 sm:p-10 rounded-3xl relative overflow-hidden bg-gradient-to-r from-red-600 via-rose-600 to-rose-700 text-white text-left flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-xl border border-rose-400/40">
+          
+          <div className="space-y-3 max-w-2xl relative z-10">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/20 text-white text-xs font-bold uppercase tracking-wider border border-white/30">
+              <Truck className="w-4 h-4 text-white" />
+              <span>24/7 Rapid Emergency Response</span>
+            </div>
+
+            <h3 className="text-2xl sm:text-4xl font-black text-white tracking-tight leading-tight">
+              Need an Emergency ICU Ambulance in Nizamabad?
+            </h3>
+            
+            <p className="text-rose-100 text-xs sm:text-base leading-relaxed">
+              Equipped with invasive ICU ventilators, multipara monitors, oxygen manifolds, and trained emergency clinical paramedics.
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0 relative z-10">
+            <a
+              href={`tel:${cleanPhone}`}
+              className="px-8 py-4 bg-white hover:bg-rose-50 active:scale-[0.98] text-rose-700 font-black text-sm uppercase tracking-wider rounded-2xl shadow-xl flex items-center justify-center gap-2.5 transition-all cursor-pointer"
+            >
+              <PhoneCall className="w-5 h-5 text-rose-600 animate-bounce" />
+              <span>Call Emergency: {phone}</span>
+            </a>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ========================================================
+          4. TOP VERIFIED DOCTORS (PROFESSIONAL SHOWCASE)
+      ======================================================== */}
+      <section className="py-8 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-left">
+        
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 sm:mb-12">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-teal-50 text-teal-800 border border-teal-200 text-xs font-bold uppercase tracking-widest">
+              <UserCheck className="w-3.5 h-3.5 text-teal-700" />
               Verified Board Specialists
             </div>
-            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
+            <h2 className="text-2xl sm:text-4xl font-black text-slate-950 tracking-tight">
               Experienced Home Physicians
             </h2>
-            <p className="text-slate-600 text-xs sm:text-sm max-w-xl">
-              Senior consultants and ICU clinicians available for bedside evaluation and treatment in Nizamabad.
+            <p className="text-slate-600 text-xs sm:text-base max-w-xl">
+              Senior consultants and ICU doctors available for bedside visits and clinical evaluation across Nizamabad.
             </p>
           </div>
 
           <Link
             to="/about"
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-teal-800 hover:text-teal-950 uppercase tracking-wider shrink-0 transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-extrabold text-teal-800 hover:text-teal-900 uppercase tracking-wider transition-colors shrink-0"
           >
             <span>View All Doctors</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
+        {/* Doctor Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {displayDoctors.map((doc) => (
             <div
               key={doc._id || doc.name}
-              className="bg-white rounded-3xl border border-slate-200/80 p-6 flex flex-col justify-between shadow-2xs hover:shadow-lg transition-all group"
+              className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-7 flex flex-col justify-between shadow-sm hover:shadow-lg transition-all"
             >
               <div className="space-y-4">
                 <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shadow-sm shrink-0">
                     <img
                       src={resolveImageUrl(doc.image || 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400')}
                       alt={doc.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>
                   <div>
-                    <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                    <span className="text-[10px] font-extrabold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full uppercase tracking-wider">
                       On-Duty
                     </span>
-                    <h4 className="text-sm font-black text-slate-900 mt-1 leading-tight">
+                    <h4 className="text-base sm:text-lg font-black text-slate-950 mt-1 leading-tight">
                       {doc.name}
                     </h4>
-                    <p className="text-[11px] text-teal-800 font-bold mt-0.5">
+                    <p className="text-xs font-bold text-teal-800 mt-0.5">
                       {doc.specialty}
                     </p>
                   </div>
                 </div>
 
-                <div className="text-[11px] text-slate-500 font-medium">
+                <div className="text-xs text-slate-600 font-semibold">
                   {doc.qualifications} • {doc.experience}
                 </div>
 
-                <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100 text-[10px] text-slate-600 flex items-center gap-1.5">
-                  <Clock className="w-3 h-3 text-teal-700 shrink-0" />
-                  <span className="truncate">{doc.availability}</span>
+                <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs text-slate-600 flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-teal-700 shrink-0" />
+                  <span className="truncate font-medium">{doc.availability}</span>
                 </div>
               </div>
 
               <Link
                 to="/book"
                 state={{ selectService: 'Doctor Consultation' }}
-                className="mt-5 w-full py-2.5 bg-slate-100 hover:bg-teal-900 hover:text-white text-slate-800 font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-1.5"
+                className="mt-6 w-full py-3 bg-teal-800 hover:bg-teal-900 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-xs"
               >
                 <span>Book Home Visit</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <ArrowRight className="w-4 h-4 text-teal-200" />
               </Link>
             </div>
           ))}
@@ -505,36 +466,36 @@ const Home = ({
       </section>
 
       {/* ========================================================
-          4. CLINICAL RIGOR & TRUST PILLARS
+          5. CLINICAL RIGOR (4 VALUE PILLARS)
       ======================================================== */}
-      <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-slate-100">
+      <section className="py-8 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-left">
         
-        <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-emerald-100 bg-emerald-50 text-emerald-800 text-xs font-black uppercase tracking-widest">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-            Safety & Quality Standards
+        <div className="max-w-2xl mb-8 sm:mb-12 space-y-2">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold uppercase tracking-widest">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
+            Safety & Quality Rigor
           </div>
-          <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
+          <h2 className="text-2xl sm:text-4xl font-black text-slate-950 tracking-tight">
             Why Nizamabad Families Trust Us
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 text-left">
-          {CLINICAL_STANDARDS.map((std) => {
-            const Icon = std.icon;
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {LUXURY_PILLARS.map((pillar) => {
+            const Icon = pillar.icon;
             return (
               <div 
-                key={std.title}
-                className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-2xs hover:shadow-md transition-all text-left"
+                key={pillar.title}
+                className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-7 space-y-3 text-left shadow-xs hover:shadow-md transition-shadow"
               >
-                <div className="w-12 h-12 rounded-2xl bg-teal-50 text-teal-800 flex items-center justify-center mb-4 border border-teal-100">
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${pillar.iconBg}`}>
                   <Icon className="w-6 h-6" />
                 </div>
-                <h4 className="text-sm font-black text-slate-900 mb-1.5">
-                  {std.title}
+                <h4 className="text-base font-black text-slate-950">
+                  {pillar.title}
                 </h4>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  {std.desc}
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                  {pillar.desc}
                 </p>
               </div>
             );
@@ -544,15 +505,16 @@ const Home = ({
       </section>
 
       {/* ========================================================
-          5. FAQ ACCORDION
+          6. FAQ ACCORDION (COLLAPSIBLES)
       ======================================================== */}
-      <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto border-t border-slate-100 text-left">
-        <div className="text-center max-w-xl mx-auto mb-10 space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-teal-100 bg-teal-50 text-teal-800 text-xs font-black uppercase tracking-widest">
-            <HelpCircle className="w-3.5 h-3.5 text-teal-600" />
+      <section className="py-8 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-left">
+        
+        <div className="mb-8 space-y-2">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-teal-50 text-teal-800 border border-teal-200 text-xs font-bold uppercase tracking-widest">
+            <HelpCircle className="w-3.5 h-3.5 text-teal-700" />
             Got Questions?
           </div>
-          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+          <h2 className="text-2xl sm:text-4xl font-black text-slate-950 tracking-tight">
             Frequently Asked Questions
           </h2>
         </div>
@@ -565,18 +527,18 @@ const Home = ({
             return (
               <div 
                 key={idx}
-                className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden transition-all shadow-2xs"
+                className="bg-white rounded-2xl border border-slate-200 overflow-hidden transition-all shadow-xs"
               >
                 <button
                   type="button"
                   onClick={() => setOpenFaqIdx(isOpen ? null : idx)}
-                  className="w-full p-5 text-left flex items-center justify-between gap-4 font-extrabold text-xs sm:text-sm text-slate-900 hover:text-teal-900 transition-colors"
+                  className="w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-slate-900 hover:text-teal-800 transition-colors"
                 >
                   <span>{questionText}</span>
-                  <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 shrink-0 ${isOpen ? 'rotate-180 text-teal-700' : ''}`} />
+                  <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform duration-300 shrink-0 ${isOpen ? 'rotate-180 text-teal-700' : ''}`} />
                 </button>
                 {isOpen && (
-                  <div className="px-5 pb-5 text-xs text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                  <div className="px-5 sm:px-6 pb-6 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
                     {answerText}
                   </div>
                 )}
@@ -584,38 +546,40 @@ const Home = ({
             );
           })}
         </div>
+
       </section>
 
       {/* ========================================================
-          6. CALL TO ACTION BANNER
+          7. CALL TO ACTION BANNER
       ======================================================== */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center">
-        <div className="bg-gradient-to-b from-teal-50/80 to-white border border-teal-100 rounded-3xl p-8 sm:p-12 shadow-[0_15px_40px_rgba(15,23,42,0.04)] space-y-6">
-          <span className="inline-flex items-center gap-1.5 px-3.5 py-1 bg-teal-100/80 text-teal-900 rounded-full text-xs font-black uppercase tracking-widest border border-teal-200">
-            24/7 Standby Support Across Nizamabad
+      <section className="py-8 sm:py-12 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+        <div className="bg-white rounded-3xl p-8 sm:p-14 text-center space-y-6 border border-slate-200 shadow-lg">
+          <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-teal-50 text-teal-800 text-xs font-bold uppercase tracking-widest border border-teal-200">
+            24/7 Clinical Standby Across Nizamabad
           </span>
-          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight">
-            Need Medical Care Right Now?
-          </h2>
-          <p className="text-slate-600 text-xs sm:text-base max-w-xl mx-auto font-medium leading-relaxed">
-            Submit your appointment request online or call our clinical coordination desk directly.
+          <h3 className="text-2xl sm:text-5xl font-black text-slate-950 tracking-tight leading-tight">
+            Need Medical Assistance Right Now?
+          </h3>
+          <p className="text-slate-600 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+            Submit your care request online or speak with our clinical coordinator directly on WhatsApp.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3.5 max-w-md mx-auto pt-2">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 pt-2 max-w-md mx-auto">
             <Link
               to="/book"
-              className="w-full py-4 px-8 bg-teal-900 hover:bg-teal-950 active:scale-[0.98] text-white font-black text-xs uppercase tracking-widest rounded-2xl shadow-xl shadow-teal-950/20 transition-all flex items-center justify-center gap-2"
+              className="px-8 py-4 bg-teal-800 hover:bg-teal-900 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider rounded-2xl shadow-md transition-all flex items-center justify-center gap-2"
             >
-              <HeartPulse className="w-4 h-4 text-teal-300" />
-              <span>Book Appointment</span>
+              <HeartPulse className="w-5 h-5 text-teal-200" />
+              <span>Book Care Now</span>
             </Link>
+
             <a
-              href={`https://wa.me/${whatsapp.replace(/\D/g, '')}`}
+              href={`https://wa.me/${cleanWhatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full py-4 px-8 bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-black text-xs uppercase tracking-widest rounded-2xl shadow-lg shadow-emerald-600/20 transition-all flex items-center justify-center gap-2"
+              className="px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider rounded-2xl shadow-md transition-all flex items-center justify-center gap-2"
             >
-              <MessageSquare className="w-4 h-4 text-emerald-100" />
+              <MessageSquare className="w-5 h-5 text-emerald-100" />
               <span>Chat on WhatsApp</span>
             </a>
           </div>

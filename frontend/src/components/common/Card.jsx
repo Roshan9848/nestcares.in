@@ -12,9 +12,9 @@ const Card = ({
   return (
     <div
       className={`
-        bg-white border border-slate-200/50 rounded-2xl p-5 md:p-6 shadow-sm text-left transition-all duration-300
-        ${hoverable ? 'hover:shadow-md hover:border-slate-300/40 hover:-translate-y-0.5' : ''}
-        ${isClickable ? 'cursor-pointer active:scale-99 select-none' : ''}
+        glass-card-premium rounded-2xl p-5 md:p-6 text-left transition-all duration-300
+        ${hoverable ? 'hover:border-teal-500/40 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(13,148,136,0.12)]' : ''}
+        ${isClickable ? 'cursor-pointer active:scale-[0.99] select-none' : ''}
         ${className}
       `}
       onClick={onClick}

@@ -1845,7 +1845,7 @@ const Dashboard = ({
                     type="button"
                     onClick={fetchDoctors}
                     disabled={doctorsLoading}
-                    className="px-4 py-2.5 bg-slate-800/80 hover:bg-slate-700/80 text-slate-200 text-xs font-bold rounded-xl border border-slate-700/60 flex items-center gap-2 transition-all shadow-xs"
+                    className="px-4 py-2.5 bg-slate-800/80 hover:bg-slate-700/80 text-slate-200 text-xs font-bold rounded-xl border border-slate-700/60 flex items-center gap-2 transition-all shadow-sm"
                     title="Refresh Doctors List"
                   >
                     <RefreshCw className={`w-3.5 h-3.5 ${doctorsLoading ? 'animate-spin text-teal-400' : ''}`} />
@@ -1869,7 +1869,7 @@ const Dashboard = ({
               {/* Filter & Search Bar + Quick Metrics */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
                 {/* Search & Specialty Filter */}
-                <div className="lg:col-span-8 bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-center gap-3">
+                <div className="lg:col-span-8 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center gap-3">
                   <div className="relative flex-1 w-full">
                     <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
@@ -1901,7 +1901,7 @@ const Dashboard = ({
 
                 {/* Mini Stats Badges */}
                 <div className="lg:col-span-4 grid grid-cols-2 gap-3">
-                  <div className="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-2xs flex items-center justify-between">
+                  <div className="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
                     <div>
                       <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Clinicians</div>
                       <div className="text-xl font-extrabold text-slate-900">{doctorsList?.length || 0}</div>
@@ -1911,7 +1911,7 @@ const Dashboard = ({
                     </div>
                   </div>
 
-                  <div className="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-2xs flex items-center justify-between">
+                  <div className="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
                     <div>
                       <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Active On-Duty</div>
                       <div className="text-xl font-extrabold text-emerald-600">
@@ -1948,7 +1948,7 @@ const Dashboard = ({
                     .map((doc) => (
                       <div 
                         key={doc._id || doc.name}
-                        className={`bg-white rounded-3xl border transition-all duration-300 p-5 flex flex-col justify-between shadow-2xs hover:shadow-lg relative group ${
+                        className={`bg-white rounded-3xl border transition-all duration-300 p-5 flex flex-col justify-between shadow-sm hover:shadow-lg relative group ${
                           doc.isActive === false ? 'border-slate-200/60 opacity-60 bg-slate-50/50' : 'border-slate-200 hover:border-teal-400/80'
                         }`}
                       >
@@ -2131,7 +2131,7 @@ const Dashboard = ({
                         
                         <div className="flex flex-col sm:flex-row items-center gap-4">
                           {/* Image Live Preview */}
-                          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden bg-white border-2 border-slate-200 shadow-xs shrink-0 flex items-center justify-center">
+                          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden bg-white border-2 border-slate-200 shadow-sm shrink-0 flex items-center justify-center">
                             {doctorForm.image ? (
                               <img
                                 src={resolveImageUrl(doctorForm.image)}

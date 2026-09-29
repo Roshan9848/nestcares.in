@@ -63,61 +63,61 @@ const Contact = ({ contactSettings }) => {
   const cleanWhatsappNumber = whatsapp.replace(/\D/g, '');
 
   return (
-    <div className="min-h-screen bg-[#fafafb] py-12 px-4 sm:px-6 lg:px-8 font-sans">
+    <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-7xl mx-auto space-y-10 text-left">
         
         {/* Header Title */}
         <div className="space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-teal-50 border border-teal-100 text-teal-800 rounded-full text-xs font-black uppercase tracking-widest">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-teal-50 text-teal-700 border border-teal-200">
             <Sparkles className="w-3.5 h-3.5 text-teal-600" />
             24/7 Clinical Coordination Desk
           </div>
           <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
             Contact Support & Triage Desk
           </h1>
-          <p className="text-slate-600 text-xs sm:text-base max-w-2xl leading-relaxed">
+          <p className="text-slate-600 text-sm sm:text-base max-w-2xl leading-relaxed font-normal">
             Reach out to our medical coordinators in Nizamabad to schedule home doctor visits, ICU installations, ambulance transport, or nurse deployments.
           </p>
         </div>
 
         {/* 3 Quick Help Pills */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="p-5 bg-white border border-slate-200/80 rounded-3xl shadow-2xs space-y-2">
-            <div className="w-10 h-10 rounded-2xl bg-teal-50 text-teal-800 flex items-center justify-center font-bold">
+          <div className="glass-card-premium p-6 rounded-3xl border border-slate-200/80 bg-white shadow-sm space-y-2">
+            <div className="w-10 h-10 rounded-2xl bg-teal-50 text-teal-700 border border-teal-100 flex items-center justify-center font-bold">
               <PhoneCall className="w-5 h-5" />
             </div>
-            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Emergency Hotline</div>
-            <a href={`tel:${emergency.replace(/\D/g, '')}`} className="text-base font-black text-slate-900 hover:text-teal-800 block">
+            <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Emergency Hotline</div>
+            <a href={`tel:${emergency.replace(/\D/g, '')}`} className="text-lg font-black text-slate-900 hover:text-teal-700 transition-colors block">
               {emergency}
             </a>
-            <p className="text-[11px] text-slate-500">24/7 Standby ambulance & ICU dispatch.</p>
+            <p className="text-xs text-slate-600">24/7 Standby ambulance & ICU dispatch.</p>
           </div>
 
-          <div className="p-5 bg-white border border-slate-200/80 rounded-3xl shadow-2xs space-y-2">
-            <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold">
+          <div className="glass-card-premium p-6 rounded-3xl border border-slate-200/80 bg-white shadow-sm space-y-2">
+            <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-100 flex items-center justify-center font-bold">
               <MessageSquare className="w-5 h-5" />
             </div>
-            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">WhatsApp Desk</div>
+            <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">WhatsApp Desk</div>
             <a 
               href={`https://wa.me/${cleanWhatsappNumber}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-base font-black text-emerald-700 hover:text-emerald-800 block"
+              className="text-lg font-black text-emerald-600 hover:text-emerald-700 transition-colors block"
             >
               {whatsapp}
             </a>
-            <p className="text-[11px] text-slate-500">Fast coordination & instant report sharing.</p>
+            <p className="text-xs text-slate-600">Fast coordination & instant report sharing.</p>
           </div>
 
-          <div className="p-5 bg-white border border-slate-200/80 rounded-3xl shadow-2xs space-y-2">
-            <div className="w-10 h-10 rounded-2xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold">
+          <div className="glass-card-premium p-6 rounded-3xl border border-slate-200/80 bg-white shadow-sm space-y-2">
+            <div className="w-10 h-10 rounded-2xl bg-sky-50 text-sky-700 border border-sky-100 flex items-center justify-center font-bold">
               <MapPin className="w-5 h-5" />
             </div>
-            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Central Office</div>
-            <span className="text-xs font-extrabold text-slate-900 block line-clamp-1">
+            <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Central Office</div>
+            <span className="text-sm font-black text-slate-900 block line-clamp-1">
               Chandra Shekar Colony
             </span>
-            <p className="text-[11px] text-slate-500">Nizamabad, Telangana - 503002</p>
+            <p className="text-xs text-slate-600">Nizamabad, Telangana - 503002</p>
           </div>
         </div>
 
@@ -125,12 +125,12 @@ const Contact = ({ contactSettings }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* Left Column: Inquiry Form */}
-          <div className="lg:col-span-7 bg-white rounded-3xl border border-slate-200/90 shadow-xl p-6 sm:p-8 space-y-6">
+          <div className="lg:col-span-7 glass-card-premium rounded-3xl border border-slate-200/80 bg-white shadow-sm p-6 sm:p-8 space-y-6">
             <div className="space-y-1">
               <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
                 Send a Medical Inquiry
               </h2>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-600">
                 Our care manager will review and respond within 15 minutes.
               </p>
             </div>
@@ -138,14 +138,14 @@ const Contact = ({ contactSettings }) => {
             {sent ? (
               <div className="p-6 bg-emerald-50 border border-emerald-200 rounded-2xl text-center space-y-3">
                 <CheckCircle2 className="w-8 h-8 text-emerald-600 mx-auto" />
-                <h4 className="text-base font-extrabold text-slate-900">Message Dispatched!</h4>
-                <p className="text-xs text-slate-600 leading-relaxed">
+                <h4 className="text-base font-black text-emerald-900">Message Dispatched!</h4>
+                <p className="text-xs text-emerald-700 leading-relaxed">
                   Thank you for reaching out. A Nest Cares coordinator in Nizamabad is reviewing your inquiry right now.
                 </p>
                 <button
                   type="button"
                   onClick={() => setSent(false)}
-                  className="px-4 py-2 bg-white text-emerald-800 border border-emerald-300 rounded-xl text-xs font-bold"
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl cursor-pointer"
                 >
                   Send Another Message
                 </button>
@@ -161,7 +161,7 @@ const Contact = ({ contactSettings }) => {
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
                       placeholder="e.g. Ramesh Reddy"
-                      className="px-4 py-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-teal-700 font-semibold"
+                      className="px-4 py-3 text-xs rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-teal-600 font-medium"
                     />
                   </div>
 
@@ -173,7 +173,7 @@ const Contact = ({ contactSettings }) => {
                       value={form.mobile}
                       onChange={(e) => setForm({ ...form, mobile: e.target.value })}
                       placeholder="e.g. 92488 49388"
-                      className="px-4 py-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-teal-700 font-semibold"
+                      className="px-4 py-3 text-xs rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-teal-600 font-medium"
                     />
                   </div>
                 </div>
@@ -186,7 +186,7 @@ const Contact = ({ contactSettings }) => {
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
                       placeholder="your.email@gmail.com"
-                      className="px-4 py-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-teal-700"
+                      className="px-4 py-3 text-xs rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-teal-600"
                     />
                   </div>
 
@@ -195,7 +195,7 @@ const Contact = ({ contactSettings }) => {
                     <select
                       value={form.subject}
                       onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                      className="px-4 py-2.5 text-xs rounded-xl border border-slate-200 bg-white font-medium text-slate-700 focus:outline-none focus:border-teal-700"
+                      className="px-4 py-3 text-xs rounded-xl bg-slate-50 border border-slate-200 font-medium text-slate-900 focus:outline-none focus:border-teal-600 cursor-pointer"
                     >
                       <option value="Home Doctor Visit">Home Doctor Visit</option>
                       <option value="ICU Setup at Home">ICU Setup at Home</option>
@@ -216,7 +216,7 @@ const Contact = ({ contactSettings }) => {
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}
                     placeholder="Briefly describe patient medical conditions or required equipment..."
-                    className="px-4 py-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-teal-700 resize-none"
+                    className="px-4 py-3 text-xs rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-teal-600 resize-none"
                   ></textarea>
                 </div>
 
@@ -224,9 +224,9 @@ const Contact = ({ contactSettings }) => {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full sm:w-auto px-8 py-3.5 bg-teal-900 hover:bg-teal-950 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer"
+                    className="w-full sm:w-auto px-8 py-3.5 bg-teal-600 hover:bg-teal-700 text-white font-black text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer"
                   >
-                    <Send className="w-4 h-4 text-teal-300" />
+                    <Send className="w-4 h-4 text-white" />
                     <span>{loading ? 'Submitting...' : 'Submit Inquiry'}</span>
                   </button>
 
@@ -234,9 +234,9 @@ const Contact = ({ contactSettings }) => {
                     href={`https://wa.me/${cleanWhatsappNumber}?text=${encodeURIComponent(`Hi Nest Cares, I have an inquiry regarding ${form.subject}. Patient name: ${form.name || 'Not specified'}. Message: ${form.message || 'Please connect me to a medical coordinator.'}`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full sm:w-auto px-6 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm"
+                    className="w-full sm:w-auto px-6 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer"
                   >
-                    <MessageSquare className="w-4 h-4 text-emerald-100" />
+                    <MessageSquare className="w-4 h-4 text-white" />
                     <span>Send on WhatsApp</span>
                   </a>
                 </div>
@@ -248,7 +248,7 @@ const Contact = ({ contactSettings }) => {
           <div className="lg:col-span-5 space-y-6">
             
             {/* Nizamabad Map Container */}
-            <div className="bg-white rounded-3xl border border-slate-200/90 shadow-lg overflow-hidden p-2">
+            <div className="glass-card-premium rounded-3xl border border-slate-200/80 bg-white shadow-sm overflow-hidden p-2">
               <div className="w-full h-72 rounded-2xl overflow-hidden bg-slate-100">
                 <iframe
                   title="Nest Cares Nizamabad Location"
@@ -262,8 +262,8 @@ const Contact = ({ contactSettings }) => {
                 ></iframe>
               </div>
               <div className="p-4 flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                  <MapPin className="w-4 h-4 text-teal-700" />
+                <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                  <MapPin className="w-4 h-4 text-teal-600" />
                   <span>Serving All Areas in Nizamabad</span>
                 </span>
                 <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
@@ -273,22 +273,22 @@ const Contact = ({ contactSettings }) => {
             </div>
 
             {/* Operating Hours Card */}
-            <div className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-2xs space-y-3">
-              <div className="flex items-center gap-2 text-xs font-extrabold text-slate-900 uppercase tracking-wider">
-                <Clock className="w-4 h-4 text-teal-700" />
+            <div className="glass-card-premium p-6 rounded-3xl border border-slate-200/80 bg-white shadow-sm space-y-3">
+              <div className="flex items-center gap-2 text-xs font-black text-slate-900 uppercase tracking-wider">
+                <Clock className="w-4 h-4 text-teal-600" />
                 <span>Operating Timings</span>
               </div>
               <div className="space-y-2 text-xs text-slate-600">
-                <div className="flex justify-between pb-1.5 border-b border-slate-100">
-                  <span className="font-semibold text-slate-700">Emergency & Ambulance:</span>
+                <div className="flex justify-between pb-2 border-b border-slate-100">
+                  <span className="font-semibold text-slate-500">Emergency & Ambulance:</span>
                   <span className="font-bold text-emerald-700">24/7 / 365 Days</span>
                 </div>
-                <div className="flex justify-between pb-1.5 border-b border-slate-100">
-                  <span className="font-semibold text-slate-700">Home Doctor Visits:</span>
+                <div className="flex justify-between pb-2 border-b border-slate-100">
+                  <span className="font-semibold text-slate-500">Home Doctor Visits:</span>
                   <span className="font-bold text-slate-900">08:00 AM - 09:00 PM</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="font-semibold text-slate-700">Nursing Shifts:</span>
+                  <span className="font-semibold text-slate-500">Nursing Shifts:</span>
                   <span className="font-bold text-slate-900">12-Hour / 24-Hour Shifts</span>
                 </div>
               </div>

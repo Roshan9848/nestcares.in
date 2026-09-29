@@ -1,0 +1,18 @@
+[
+  {
+    "_id": "admin_seed_id_1",
+    "name": "Super Admin Rohith",
+    "email": "rohith@nestcares.in",
+    "password": "$2a$10$NeDZUaR61fEKe/BGnSZO1u9LHArnAIluBAb7uFdeJeE3D1XKE3JYm",
+    "role": "admin",
+    "createdAt": "2026-07-20T09:31:40.057Z"
+  },
+  {
+    "_id": "admin_seed_id_2",
+    "name": "Nest Cares Admin",
+    "email": "nestcares.in@gmail.com",
+    "password": "$2a$10$NeDZUaR61fEKe/BGnSZO1u9LHArnAIluBAb7uFdeJeE3D1XKE3JYm",
+    "role": "admin",
+    "createdAt": "2026-07-20T09:31:40.069Z"
+  }
+]

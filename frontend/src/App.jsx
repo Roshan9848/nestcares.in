@@ -7,6 +7,7 @@ import { settingsAPI, servicesAPI, testimonialsAPI, faqsAPI, apiClient } from '.
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import FloatingButtons from './components/FloatingButtons';
+import MobileBottomNav from './components/MobileBottomNav';
 import ScrollToTop from './components/ScrollToTop';
 import ErrorBoundary from './components/common/ErrorBoundary';
 
@@ -155,7 +156,7 @@ const AppContent = () => {
       <ScrollToTop />
       {!hideLayout && <Navbar webSettings={settings?.web} />}
       
-      <main className={hideLayout ? '' : 'min-h-[80vh] pt-[72px] md:pt-[100px] pb-16 md:pb-0'}>
+      <main className={hideLayout ? '' : 'min-h-[80vh] pt-[60px] sm:pt-[76px] pb-24 md:pb-0'}>
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={
@@ -207,6 +208,7 @@ const AppContent = () => {
 
       {!hideLayout && <Footer webSettings={settings?.web} contactSettings={settings?.contact} />}
       {!hideLayout && <FloatingButtons contactSettings={settings?.contact} />}
+      {!hideLayout && <MobileBottomNav contactSettings={settings?.contact} />}
     </>
   );
 };

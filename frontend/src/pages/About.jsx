@@ -152,41 +152,44 @@ const About = ({ doctors, founders }) => {
       {/* 1. KEY STATISTICS GRID */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
         {stats.map((st, idx) => (
-          <Card key={idx} className="text-center flex flex-col justify-center items-center py-6 shadow-sm">
-            <span className="text-2xl font-black text-teal-900 tracking-tight">{st.value}</span>
-            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1 block">{st.label}</span>
-          </Card>
+          <div key={idx} className="glass-card-premium text-center flex flex-col justify-center items-center py-6 rounded-2xl border border-slate-200/80 bg-white shadow-sm">
+            <span className="text-3xl font-black text-teal-700 tracking-tight">{st.value}</span>
+            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1 block">{st.label}</span>
+          </div>
         ))}
       </div>
 
       {/* 2. INTRODUCTION & MISSION */}
-      <Card className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mb-12 !p-8">
+      <div className="glass-card-premium rounded-3xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mb-12 p-8 border border-slate-200/80 bg-white shadow-sm">
         <div className="lg:col-span-7 flex flex-col gap-4 text-left">
-          <Badge variant="teal">Supervised Home Recovery</Badge>
-          <h2 className="text-lg font-bold text-slate-950 font-serif-editorial leading-tight">Hospital-Grade Quality. Bedside Comfort.</h2>
-          <p className="text-slate-500 text-xs leading-relaxed font-semibold">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-teal-50 text-teal-700 border border-teal-200 w-fit">
+            <BadgeCheck className="w-3.5 h-3.5 text-teal-600" />
+            Supervised Home Recovery
+          </span>
+          <h2 className="text-2xl font-black text-slate-900 leading-tight">Hospital-Grade Quality. Bedside Comfort.</h2>
+          <p className="text-slate-600 text-sm leading-relaxed font-normal">
             Our agency coordinates professional ICU-level medical machinery, expert nursing assistance, and consulting physician home visits directly to your bedroom. We understand that patients heal faster and with less stress when surrounded by their family.
           </p>
-          <p className="text-slate-500 text-xs leading-relaxed font-semibold">
+          <p className="text-slate-600 text-sm leading-relaxed font-normal">
             By avoiding ambulance commutes, inpatient waiting queues, and heavy hospital room costs, we provide a premium, affordable alternative without compromising on medical standards.
           </p>
         </div>
         
-        <div className="lg:col-span-5 grid grid-cols-1 gap-4 bg-slate-50 border border-slate-100 p-5 rounded-2xl">
-          <div className="border-l-2 border-teal-800 pl-3">
-            <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wide">Our Mission</h3>
-            <p className="text-[10px] text-slate-500 mt-1 leading-relaxed font-semibold">
+        <div className="lg:col-span-5 grid grid-cols-1 gap-4 bg-slate-50 border border-slate-200 p-6 rounded-2xl">
+          <div className="border-l-2 border-teal-600 pl-4">
+            <h3 className="text-sm font-black text-slate-900 uppercase tracking-wide">Our Mission</h3>
+            <p className="text-xs text-slate-600 mt-1 leading-relaxed font-normal">
               To make premium, hospital-grade home recovery accessible, safe, and compassionate, helping seniors recover gracefully.
             </p>
           </div>
-          <div className="border-l-2 border-emerald-600 pl-3">
-            <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wide">Our Vision</h3>
-            <p className="text-[10px] text-slate-500 mt-1 leading-relaxed font-semibold">
+          <div className="border-l-2 border-emerald-600 pl-4">
+            <h3 className="text-sm font-black text-slate-900 uppercase tracking-wide">Our Vision</h3>
+            <p className="text-xs text-slate-600 mt-1 leading-relaxed font-normal">
               To emerge as the nation's most trusted, clinical-standard home healthcare partner, recognized for physician-led protocols.
             </p>
           </div>
         </div>
-      </Card>
+      </div>
 
       {/* 3. CERTIFICATIONS & ACCREDITATIONS */}
       <div className="mb-12">
@@ -198,15 +201,15 @@ const About = ({ doctors, founders }) => {
         />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {certifications.map((cert, idx) => (
-            <Card key={idx} className="flex gap-4">
-              <div className="p-3 bg-teal-50 rounded-xl text-teal-800 shadow-inner shrink-0 flex items-center justify-center h-fit">
+            <div key={idx} className="glass-card-premium p-6 rounded-3xl border border-slate-200/80 bg-white shadow-sm flex gap-4">
+              <div className="p-3 bg-teal-50 rounded-2xl text-teal-700 border border-teal-100 shrink-0 flex items-center justify-center h-fit">
                 {cert.icon}
               </div>
               <div className="text-left space-y-1">
-                <h4 className="text-sm font-bold text-slate-950 uppercase tracking-wide">{cert.name}</h4>
-                <p className="text-xs text-slate-500 font-semibold leading-relaxed">{cert.desc}</p>
+                <h4 className="text-sm font-black text-slate-900 uppercase tracking-wide">{cert.name}</h4>
+                <p className="text-xs text-slate-600 font-normal leading-relaxed">{cert.desc}</p>
               </div>
-            </Card>
+            </div>
           ))}
         </div>
       </div>
@@ -221,16 +224,16 @@ const About = ({ doctors, founders }) => {
         />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {processSteps.map((step, idx) => (
-            <Card key={idx} className="text-left relative space-y-3">
-              <div className="absolute top-4 right-4 text-teal-800/10 font-bold text-2xl select-none font-sans">
+            <div key={idx} className="glass-card-premium p-6 rounded-3xl border border-slate-200/80 bg-white shadow-sm text-left relative space-y-3">
+              <div className="absolute top-4 right-4 text-slate-100 font-black text-3xl select-none font-sans">
                 {step.number}
               </div>
-              <div className="w-8 h-8 rounded-full bg-teal-50 border border-teal-200/50 flex items-center justify-center font-bold text-teal-800 text-xs">
+              <div className="w-9 h-9 rounded-xl bg-teal-50 border border-teal-200 flex items-center justify-center font-black text-teal-700 text-xs">
                 {step.number}
               </div>
-              <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide pt-1">{step.title}</h4>
-              <p className="text-xs text-slate-500 leading-relaxed font-semibold">{step.desc}</p>
-            </Card>
+              <h4 className="text-sm font-black text-slate-900 uppercase tracking-wide pt-1">{step.title}</h4>
+              <p className="text-xs text-slate-600 leading-relaxed font-normal">{step.desc}</p>
+            </div>
           ))}
         </div>
       </div>
@@ -244,23 +247,23 @@ const About = ({ doctors, founders }) => {
         />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {coreValues.map((val, idx) => (
-            <Card key={idx} className="text-left space-y-3">
-              <div className="p-2.5 bg-slate-50 rounded-xl w-fit">
+            <div key={idx} className="glass-card-premium p-6 rounded-3xl border border-slate-200/80 bg-white shadow-sm text-left space-y-3">
+              <div className="p-2.5 bg-slate-50 border border-slate-200 rounded-2xl w-fit">
                 {val.icon}
               </div>
-              <h4 className="text-sm font-bold text-slate-950 uppercase tracking-wide">{val.title}</h4>
-              <p className="text-xs text-slate-500 leading-relaxed font-semibold">{val.desc}</p>
-            </Card>
+              <h4 className="text-sm font-black text-slate-900 uppercase tracking-wide">{val.title}</h4>
+              <p className="text-xs text-slate-600 leading-relaxed font-normal">{val.desc}</p>
+            </div>
           ))}
         </div>
       </div>
 
       {/* 6. PARTNER HOSPITALS */}
-      <div className="mb-12 bg-slate-50/50 border border-slate-100 rounded-3xl p-8 text-center">
-        <span className="text-[10px] sm:text-xs font-bold text-slate-450 uppercase tracking-widest block mb-6">Linked Referral Hospital Networks</span>
+      <div className="mb-12 glass-card-premium rounded-3xl p-8 text-center border border-slate-200/80 bg-white shadow-sm">
+        <span className="text-xs font-black text-teal-700 uppercase tracking-widest block mb-6">Linked Referral Hospital Networks</span>
         <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
           {partnerHospitals.map((hosp, idx) => (
-            <span key={idx} className="text-xs font-black text-slate-400 tracking-wider uppercase opacity-80 hover:opacity-100 hover:text-teal-800 transition-all cursor-default">
+            <span key={idx} className="text-xs font-bold text-slate-600 tracking-wider uppercase hover:text-teal-700 transition-all cursor-default">
               {hosp}
             </span>
           ))}
@@ -277,9 +280,8 @@ const About = ({ doctors, founders }) => {
         />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {displayFounders.map((f, idx) => (
-            <Card key={idx} className="flex flex-col sm:flex-row gap-6 bg-gradient-to-br from-[#0a0f1d] to-[#0f172a] text-white border border-teal-850/20 shadow-[0_8px_30px_rgba(0,0,0,0.12)] p-6 relative overflow-hidden group rounded-2xl">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-teal-500/5 rounded-full blur-3xl pointer-events-none"></div>
-              <div className="w-full sm:w-36 h-44 rounded-xl overflow-hidden shrink-0 bg-slate-800 border border-white/10 relative z-10">
+            <div key={idx} className="glass-card-premium flex flex-col sm:flex-row gap-6 p-6 relative overflow-hidden group rounded-3xl border border-slate-200/80 bg-white shadow-sm hover:shadow-md transition-all">
+              <div className="w-full sm:w-36 h-48 rounded-2xl overflow-hidden shrink-0 bg-slate-100 border border-slate-200 relative z-10">
                 <img 
                   src={f.img} 
                   alt={f.name} 
@@ -288,15 +290,15 @@ const About = ({ doctors, founders }) => {
               </div>
               <div className="flex flex-col text-left justify-between py-1 relative z-10 grow">
                 <div>
-                  <span className="text-[9px] font-black text-teal-400 uppercase tracking-widest">{f.role}</span>
-                  <h4 className="text-base font-bold text-white mt-1 leading-tight">{f.name}</h4>
-                  <p className="text-[9px] text-teal-300/80 font-bold uppercase tracking-wider mt-1">{f.experience}</p>
-                  <p className="text-[10px] text-slate-400 leading-relaxed font-semibold mt-3">
+                  <span className="text-[10px] font-black text-teal-700 uppercase tracking-widest">{f.role}</span>
+                  <h4 className="text-lg font-black text-slate-900 mt-1 leading-tight">{f.name}</h4>
+                  <p className="text-[10px] text-teal-600 font-bold uppercase tracking-wider mt-1">{f.experience}</p>
+                  <p className="text-xs text-slate-600 leading-relaxed font-normal mt-3">
                     "{f.bio}"
                   </p>
                 </div>
               </div>
-            </Card>
+            </div>
           ))}
         </div>
       </div>
@@ -311,7 +313,7 @@ const About = ({ doctors, founders }) => {
         />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {displayDoctors.map((doc, idx) => (
-            <Card key={doc._id || idx} className="!p-0 overflow-hidden flex flex-col h-full hover:shadow-lg transition-all duration-300 group rounded-3xl border border-slate-200/80 bg-white">
+            <div key={doc._id || idx} className="glass-card-premium !p-0 overflow-hidden flex flex-col h-full hover:border-teal-500/40 hover:shadow-xl transition-all duration-300 group rounded-3xl border border-slate-200/80 bg-white shadow-sm">
               <div className="h-64 overflow-hidden relative w-full bg-slate-100 border-b border-slate-100">
                 <img 
                   src={resolveImageUrl(doc.image || doc.img || 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400')} 
@@ -321,41 +323,41 @@ const About = ({ doctors, founders }) => {
                     e.target.src = 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400';
                   }}
                 />
-                <div className="absolute top-3 right-3 bg-teal-900/90 backdrop-blur-xs text-teal-200 text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-teal-700/50 shadow">
+                <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-md text-teal-700 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full border border-slate-200 shadow-sm">
                   {doc.experience || '5+ Years Exp'}
                 </div>
               </div>
               <div className="p-6 text-left grow flex flex-col justify-between space-y-4">
                 <div className="space-y-1">
-                  <span className="text-[10px] font-extrabold text-teal-800 uppercase tracking-widest block">
+                  <span className="text-[10px] font-black text-teal-700 uppercase tracking-widest block">
                     {doc.specialty || doc.speciality || 'General Medicine'}
                   </span>
-                  <h4 className="text-base font-extrabold text-slate-900 leading-tight">
+                  <h4 className="text-base font-black text-slate-900 leading-tight">
                     {doc.name}
                   </h4>
-                  <p className="text-xs text-slate-600 font-bold">
+                  <p className="text-xs text-slate-600 font-semibold">
                     {doc.qualifications || doc.designation || 'MBBS'}
                   </p>
                   {doc.regNumber && (
-                    <p className="text-[10px] text-slate-400 font-mono">
+                    <p className="text-[10px] text-teal-700 font-mono font-medium">
                       Reg: {doc.regNumber}
                     </p>
                   )}
                   {doc.bio && (
-                    <p className="text-xs text-slate-500 leading-relaxed pt-2 line-clamp-3">
+                    <p className="text-xs text-slate-600 leading-relaxed pt-2 line-clamp-3 font-normal">
                       "{doc.bio}"
                     </p>
                   )}
                 </div>
 
                 {doc.availability && (
-                  <div className="pt-2 border-t border-slate-100 flex items-center gap-1.5 text-[10px] font-semibold text-slate-500">
-                    <Clock className="w-3 h-3 text-teal-700 shrink-0" />
+                  <div className="pt-3 border-t border-slate-100 flex items-center gap-1.5 text-xs font-semibold text-slate-600">
+                    <Clock className="w-3.5 h-3.5 text-teal-600 shrink-0" />
                     <span className="truncate">{doc.availability}</span>
                   </div>
                 )}
               </div>
-            </Card>
+            </div>
           ))}
         </div>
       </div>
