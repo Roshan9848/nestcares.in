@@ -10,6 +10,8 @@ const BookService = ({ services }) => {
   const location = useLocation();
   const preSelectedService = location.state?.selectService || '';
   const preSelectedSubService = location.state?.selectSubService || '';
+  const preSelectedMobile = location.state?.quickMobile || '';
+  const preSelectedAddress = location.state?.quickArea ? `${location.state.quickArea}, Nizamabad` : '';
 
   useEffect(() => {
     document.title = "Book Home Healthcare Services in Nizamabad | Nest Cares";
@@ -63,6 +65,8 @@ const BookService = ({ services }) => {
           services={services} 
           preSelectedCategory={preSelectedService}
           preSelectedSubService={preSelectedSubService}
+          preSelectedMobile={preSelectedMobile}
+          preSelectedAddress={preSelectedAddress}
         />
       </div>
 

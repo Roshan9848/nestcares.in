@@ -98,6 +98,8 @@ const BookingForm = ({
   services = [], 
   preSelectedCategory = '', 
   preSelectedSubService = '',
+  preSelectedMobile = '',
+  preSelectedAddress = '',
   onSuccess = null 
 }) => {
   // Dynamically merge provided database services or fallback cleanly
@@ -115,9 +117,9 @@ const BookingForm = ({
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     name: '',
-    mobile: '',
+    mobile: preSelectedMobile || '',
     email: '',
-    address: '',
+    address: preSelectedAddress || '',
     serviceName: preSelectedCategory || activeServicesList[0]?.title || 'Doctor Consultation',
     subServiceName: preSelectedSubService || activeServicesList[0]?.sub?.[0]?.name || 'Home Doctor Visit',
     preferredDate: new Date().toISOString().split('T')[0],
@@ -130,6 +132,14 @@ const BookingForm = ({
   const [confirmedBooking, setConfirmedBooking] = useState(null);
 
   // Sync if preSelected props change
+  useEffect(() => {
+    setFormData(prev => ({
+      ...prev,
+      mobile: preSelectedMobile || prev.mobile,
+      address: preSelectedAddress || prev.address
+    }));
+  }, [preSelectedMobile, preSelectedAddress]);
+
   useEffect(() => {
     if (preSelectedCategory && activeServicesList.length > 0) {
       const matchCat = activeServicesList.find(s => s.title.toLowerCase() === preSelectedCategory.toLowerCase());

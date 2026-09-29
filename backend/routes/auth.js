@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const User = require('../models/User');
 const dbHelper = require('../utils/dbHelper');
 const { protect } = require('../middleware/auth');
+const { sendEmail } = require('../utils/email');
 
 // @desc    Auth admin & get token
 // @route   POST /api/auth/login
@@ -108,6 +109,44 @@ router.get('/me', protect, async (req, res) => {
   } catch (error) {
     console.error('Get me error:', error);
     res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// @desc    Dispatch OTP for Doctor password change
+// @route   POST /api/auth/doctor-otp
+// @access  Public
+router.post('/doctor-otp', async (req, res) => {
+  const { doctorId, doctorName, otpCode } = req.body;
+
+  try {
+    if (!doctorId || !otpCode) {
+      return res.status(400).json({ success: false, message: 'Doctor ID and OTP code are required' });
+    }
+
+    console.log(`🔑 [Doctor OTP Request] Doctor: ${doctorName || doctorId}, OTP: ${otpCode}`);
+
+    // Dispatch email to administrator
+    await sendEmail({
+      to: 'nestcares.in@gmail.com',
+      subject: `Doctor Password Verification OTP - ${doctorName || doctorId}`,
+      templateName: 'doctorOtp',
+      replacements: {
+        doctorName: doctorName || 'Doctor',
+        doctorId: doctorId,
+        otpCode: otpCode,
+        time: new Date().toLocaleString()
+      }
+    }).catch(err => {
+      console.warn('Doctor OTP email dispatch notice:', err.message);
+    });
+
+    res.json({
+      success: true,
+      message: 'Verification OTP generated and sent to administrator email'
+    });
+  } catch (error) {
+    console.error('Doctor OTP error:', error);
+    res.status(500).json({ success: false, message: 'Failed to process OTP verification' });
   }
 });
 

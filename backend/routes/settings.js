@@ -117,4 +117,40 @@ router.put('/:key', protect, async (req, res) => {
   }
 });
 
+// @desc    Test SMTP email dispatch from Admin Dashboard
+// @route   POST /api/settings/admin/test-email
+// @access  Private/Admin
+router.post('/admin/test-email', protect, async (req, res) => {
+  const { targetEmail } = req.body;
+  const recipient = targetEmail || 'nestcares.in@gmail.com';
+
+  try {
+    const { sendEmail } = require('../utils/email');
+    const result = await sendEmail({
+      to: recipient,
+      subject: 'Nest Cares SMTP Email System Test',
+      templateName: 'patientConfirmation',
+      replacements: {
+        patientName: 'Test Administrator',
+        serviceName: 'Diagnostic SMTP Test Probe',
+        date: new Date().toISOString().split('T')[0],
+        time: new Date().toLocaleTimeString(),
+        mobile: '+91 92488 49388',
+        email: recipient,
+        address: 'Central Admin Verification Hub',
+        notes: 'Verification test email sent from Nest Cares administrator dashboard.'
+      }
+    });
+
+    res.json({
+      success: true,
+      message: `Test email dispatched to ${recipient}`,
+      smtpResult: result
+    });
+  } catch (error) {
+    console.error('SMTP test email error:', error);
+    res.status(500).json({ success: false, message: 'Failed to dispatch test email', error: error.message });
+  }
+});
+
 module.exports = router;

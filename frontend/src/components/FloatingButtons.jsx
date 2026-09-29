@@ -771,7 +771,7 @@ const FloatingButtons = ({ contactSettings }) => {
   };
 
   return (
-    <div className="fixed bottom-[80px] md:bottom-6 right-4 md:right-6 z-50 flex flex-col gap-3.5 no-print items-end select-none pointer-events-none">
+    <div className="fixed bottom-5 right-4 sm:right-6 z-50 flex flex-col gap-3 no-print items-end select-none pointer-events-none">
       
       {/* Interactive Voice-Enabled Chatbot Window */}
       {isChatOpen && (

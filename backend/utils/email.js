@@ -38,8 +38,11 @@ const sendEmail = async ({ to, subject, templateName, replacements }) => {
       smtpPort = 465;
     }
     
-    const smtpUser = (emailConfig?.smtpUser && emailConfig.smtpUser.trim() !== '') ? emailConfig.smtpUser : (process.env.SMTP_USER || '');
-    const smtpPass = (emailConfig?.smtpPass && emailConfig.smtpPass.trim() !== '') ? emailConfig.smtpPass : (process.env.SMTP_PASS || '');
+    const rawUser = (emailConfig?.smtpUser && emailConfig.smtpUser.trim() !== '') ? emailConfig.smtpUser : (process.env.SMTP_USER || '');
+    const smtpUser = rawUser.trim();
+    
+    const rawPass = (emailConfig?.smtpPass && emailConfig.smtpPass.trim() !== '') ? emailConfig.smtpPass : (process.env.SMTP_PASS || '');
+    const smtpPass = rawPass.trim().replace(/\s+/g, '');
     
     const rawBusEmail = emailConfig?.businessEmail;
     const businessEmail = (rawBusEmail && rawBusEmail !== 'bookings@carehome.com') ? rawBusEmail : (process.env.BUSINESS_EMAIL || 'nestcares.in@gmail.com');
@@ -277,6 +280,49 @@ const sendEmail = async ({ to, subject, templateName, replacements }) => {
       <div class="btn-container">
         <a href="https://nestcares.in/login" target="_blank" class="btn">Open Admin Dashboard</a>
       </div>
+    </div>
+    <div class="footer">
+      <p>&copy; 2026 ${companyName} Home Healthcare Services. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+</html>
+    } else if (templateName === 'doctorOtp') {
+      htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Password Verification OTP</title>
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; color: #334155; margin: 0; padding: 0; }
+    .container { max-width: 550px; margin: 20px auto; background: #ffffff; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03); }
+    .header { background-color: #0f766e; padding: 30px 20px; text-align: center; color: #ffffff; }
+    .logo { height: 42px; width: auto; display: block; margin: 0 auto 10px; }
+    .title { font-size: 20px; font-weight: 700; margin: 0; color: #ffffff; }
+    .content { padding: 30px 24px; line-height: 1.6; text-align: center; }
+    .otp-box { margin: 24px auto; background: #f0fdfa; border: 2px dashed #0f766e; border-radius: 12px; padding: 18px 24px; display: inline-block; }
+    .otp-code { font-family: 'Courier New', monospace; font-size: 32px; font-weight: 800; letter-spacing: 6px; color: #0f766e; margin: 0; }
+    .footer { background-color: #f8fafc; padding: 20px; text-align: center; font-size: 12px; color: #64748b; border-top: 1px solid #e2e8f0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="${logoUrl}" alt="${companyName} Logo" class="logo" />
+      <h1 class="title">Doctor Portal Security Verification</h1>
+    </div>
+    <div class="content">
+      <p style="font-size: 15px; font-weight: 600; color: #1e293b; margin-bottom: 8px;">Doctor Password Change Request</p>
+      <p style="font-size: 13px; color: #475569;">A request was made to update the password for doctor profile: <strong>${replacements.doctorName}</strong> (ID: ${replacements.doctorId}).</p>
+      
+      <div class="otp-box">
+        <p style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #0f766e; margin: 0 0 6px;">One-Time Security Code (OTP)</p>
+        <p class="otp-code">${replacements.otpCode}</p>
+      </div>
+
+      <p style="font-size: 12px; color: #64748b;">This verification code was generated at ${replacements.time}. If you did not initiate this request, please review the doctor accounts in your admin dashboard immediately.</p>
     </div>
     <div class="footer">
       <p>&copy; 2026 ${companyName} Home Healthcare Services. All rights reserved.</p>
