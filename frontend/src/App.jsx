@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import axios from 'axios';
 import { motion } from 'framer-motion';
 import { mockDb } from './utils/mockDb';
 import { settingsAPI, servicesAPI, testimonialsAPI, faqsAPI, apiClient } from './services/api';
@@ -9,6 +8,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import FloatingButtons from './components/FloatingButtons';
 import ScrollToTop from './components/ScrollToTop';
+import ErrorBoundary from './components/common/ErrorBoundary';
 
 import Home from './pages/Home';
 import About from './pages/About';
@@ -20,6 +20,7 @@ import Contact from './pages/Contact';
 import Login from './pages/Login';
 import Dashboard from './admin/Dashboard';
 import DoctorDashboard from './pages/DoctorDashboard';
+import NotFound from './pages/NotFound';
 
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ToastProvider } from './components/common/ToastContext';
@@ -40,15 +41,15 @@ const AppContent = () => {
     try {
       // Parallelize all initial fetches to resolve concurrently
       const [resSettings, resServices, resTestimonials, resFaqs, resDocs] = await Promise.allSettled([
-        settingsAPI.getSettings(),
-        servicesAPI.getServices(!!token),
-        testimonialsAPI.getTestimonials(),
-        faqsAPI.getFaqs(),
+        settingsAPI.getWebSettings().catch(() => null),
+        servicesAPI.getAll().catch(() => null),
+        testimonialsAPI.getAll().catch(() => null),
+        faqsAPI.getAll().catch(() => null),
         apiClient.get('/doctors').catch(() => null)
       ]);
 
       if (resSettings.status === 'fulfilled' && resSettings.value?.success) {
-        setSettings(resSettings.value.data);
+        setSettings(prev => ({ ...prev, web: resSettings.value.data }));
       }
 
       if (resServices.status === 'fulfilled' && resServices.value?.success) {
@@ -87,7 +88,7 @@ const AppContent = () => {
 
   // Update Favicon & Title from brand settings dynamically
   useEffect(() => {
-    document.title = settings?.web?.seoTitle || (settings?.web?.companyName ? `${settings.web.companyName} - Home Healthcare` : "Premium Home Healthcare Services");
+    document.title = settings?.web?.seoTitle || (settings?.web?.companyName ? `${settings.web.companyName} - Home Healthcare` : "Nest Cares - Best Home Healthcare Services in Nizamabad");
     
     if (settings?.web?.faviconUrl) {
       const link = document.querySelector("link[rel*='icon']") || document.createElement('link');
@@ -107,19 +108,19 @@ const AppContent = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-[#fdfcfb] text-slate-800 font-sans select-none relative overflow-hidden">
-        {/* Soft glowing background element */}
-        <div className="absolute inset-0 bg-radial-gradient(circle at center, rgba(13, 148, 136, 0.04) 0%, transparent 70%) pointer-events-none"></div>
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-[#fafafb] text-slate-800 font-sans select-none relative overflow-hidden">
+        {/* Ambient background glow */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-teal-500/10 blur-[120px] rounded-full pointer-events-none" />
         
-        {/* Pulsing Transparent Logo */}
+        {/* Pulsing Logo and Loader */}
         <div className="relative flex flex-col items-center justify-center gap-4 z-10">
           <motion.img
             src="/logo.png"
-            alt="Nest Cares.in Logo"
+            alt="Nest Cares Logo"
             className="h-16 md:h-20 w-auto object-contain"
             animate={{
               scale: [0.97, 1.03, 0.97],
-              opacity: [0.7, 1, 0.7]
+              opacity: [0.8, 1, 0.8]
             }}
             transition={{
               duration: 2.2,
@@ -127,8 +128,9 @@ const AppContent = () => {
               ease: "easeInOut"
             }}
           />
-          <div className="text-[10px] font-bold text-teal-800 uppercase tracking-widest animate-pulse mt-2">
-            Loading Nest Cares...
+          <div className="text-[10px] font-bold text-teal-800 uppercase tracking-widest animate-pulse mt-2 flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+            <span>Loading Nest Cares Healthcare...</span>
           </div>
         </div>
       </div>
@@ -145,9 +147,9 @@ const AppContent = () => {
     <>
       <style>{`
         :root {
-          --brand-primary: ${settings?.web?.primaryColor || '#0d9488'};
-          --brand-secondary: ${settings?.web?.secondaryColor || '#0f766e'};
-          --brand-accent: ${settings?.web?.accentColor || '#3b82f6'};
+          --brand-primary: ${settings?.web?.primaryColor || '#0f766e'};
+          --brand-secondary: ${settings?.web?.secondaryColor || '#134e4a'};
+          --brand-accent: ${settings?.web?.accentColor || '#059669'};
         }
       `}</style>
       <ScrollToTop />
@@ -163,6 +165,7 @@ const AppContent = () => {
               services={services} 
               testimonials={testimonials} 
               faqs={faqs} 
+              doctors={doctors}
             />
           } />
           <Route path="/about" element={<About doctors={doctors} founders={settings?.homepage?.founders} />} />
@@ -196,6 +199,9 @@ const AppContent = () => {
               refreshContactSettings={fetchData}
             />
           } />
+
+          {/* 404 Catch-All Route */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
 
@@ -207,13 +213,15 @@ const AppContent = () => {
 
 const App = () => {
   return (
-    <AuthProvider>
-      <ToastProvider>
-        <Router>
-          <AppContent />
-        </Router>
-      </ToastProvider>
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <ToastProvider>
+          <Router>
+            <AppContent />
+          </Router>
+        </ToastProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 };
 

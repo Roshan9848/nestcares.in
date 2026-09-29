@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { mockDb } from '../utils/mockDb';
+import { apiClient, bookingsAPI } from '../services/api';
 import { 
   Heart, User, Calendar, MapPin, Phone, FileText, Activity, 
   LogOut, Shield, ChevronRight, CheckCircle2, AlertCircle, Save 
@@ -69,7 +69,7 @@ const DoctorDashboard = () => {
 
       // Trigger backend mail dispatch to nestcares.in@gmail.com
       try {
-        await axios.post('/auth/doctor-otp', {
+        await apiClient.post('/auth/doctor-otp', {
           doctorId: doctor.doctorId,
           doctorName: doctor.name,
           otpCode: otp
@@ -152,7 +152,7 @@ const DoctorDashboard = () => {
       // Fetch bookings, filter where assignedDoctor matches this doctorId
       let list = [];
       try {
-        const res = await axios.get('/bookings');
+        const res = await apiClient.get('/bookings');
         list = res.data.success ? res.data.data : mockDb.getBookings();
       } catch (err) {
         list = mockDb.getBookings();
@@ -185,7 +185,7 @@ const DoctorDashboard = () => {
 
       try {
         // Try backend put
-        await axios.put(`/bookings/${selectedPatient._id}/status`, { 
+        await apiClient.put(`/bookings/${selectedPatient._id}/status`, { 
           status: selectedPatient.status,
           doctorNotes: updatedNotes 
         });

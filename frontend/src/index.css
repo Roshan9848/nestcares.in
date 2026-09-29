@@ -7,35 +7,78 @@
     @apply bg-[#fafafb] text-slate-700 antialiased selection:bg-teal-100 selection:text-teal-900;
     font-family: 'Outfit', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Outfit', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     @apply text-slate-900 font-extrabold tracking-tight;
   }
+
+  /* Custom Modern Slim Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f5f9;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
 }
 
 @layer utilities {
-  .bg-brand-primary { background-color: var(--brand-primary); }
-  .text-brand-primary { color: var(--brand-primary); }
-  .border-brand-primary { border-color: var(--brand-primary); }
+  .bg-brand-primary { background-color: var(--brand-primary, #0f766e); }
+  .text-brand-primary { color: var(--brand-primary, #0f766e); }
+  .border-brand-primary { border-color: var(--brand-primary, #0f766e); }
   
-  .bg-brand-secondary { background-color: var(--brand-secondary); }
-  .text-brand-secondary { color: var(--brand-secondary); }
-  .border-brand-secondary { border-color: var(--brand-secondary); }
+  .bg-brand-secondary { background-color: var(--brand-secondary, #134e4a); }
+  .text-brand-secondary { color: var(--brand-secondary, #134e4a); }
+  .border-brand-secondary { border-color: var(--brand-secondary, #134e4a); }
   
-  .bg-brand-accent { background-color: var(--brand-accent); }
-  .text-brand-accent { color: var(--brand-accent); }
-  .border-brand-accent { border-color: var(--brand-accent); }
+  .bg-brand-accent { background-color: var(--brand-accent, #059669); }
+  .text-brand-accent { color: var(--brand-accent, #059669); }
+  .border-brand-accent { border-color: var(--brand-accent, #059669); }
+
+  /* Glassmorphic Surfaces */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+  }
+
+  .glass-card-dark {
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
 }
 
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.04); }
 }
 
 .anim-float {
   animation: float 5s ease-in-out infinite;
+}
+
+.anim-pulse-glow {
+  animation: pulseGlow 3s ease-in-out infinite;
 }
 
 @layer components {
@@ -50,24 +93,24 @@
 
   /* Human-designed organic buttons mapped to dynamic CSS variables */
   .btn-primary {
-    background-color: var(--brand-primary);
-    @apply relative overflow-hidden px-5 py-2.5 text-white text-xs font-semibold rounded-xl transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2;
+    background-color: var(--brand-primary, #0f766e);
+    @apply relative overflow-hidden px-5 py-2.5 text-white text-xs font-bold rounded-xl transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2;
   }
   .btn-primary:hover {
-    background-color: var(--brand-secondary);
+    background-color: var(--brand-secondary, #134e4a);
   }
   
   .btn-secondary {
-    @apply px-5 py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-800 text-xs font-semibold rounded-xl border border-slate-200/60 transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 shadow-sm;
+    @apply px-5 py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-800 text-xs font-bold rounded-xl border border-slate-200/80 transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 shadow-sm;
   }
 
   .btn-success {
-    background-color: var(--brand-accent);
-    @apply relative overflow-hidden px-5 py-2.5 text-white text-xs font-semibold rounded-xl transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2;
+    background-color: var(--brand-accent, #059669);
+    @apply relative overflow-hidden px-5 py-2.5 text-white text-xs font-bold rounded-xl transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2;
   }
 
   /* Editorial Translucent Card */
   .editorial-card {
-    @apply bg-white border border-slate-200/60 rounded-3xl p-6 transition-all duration-300;
+    @apply bg-white border border-slate-200/80 rounded-3xl p-6 transition-all duration-300 shadow-sm hover:shadow-md;
   }
 }

@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   ShieldCheck, HeartPulse, Clock, Phone, Award, 
   ArrowRight, CheckCircle2, Sparkles, Star, Users, 
   Activity, Stethoscope, ChevronRight, HelpCircle,
   Truck, Microscope, UserCheck, Check, MessageSquare, ChevronDown,
-  MapPin
+  MapPin, PhoneCall
 } from 'lucide-react';
+import { resolveImageUrl } from '../utils/url';
 
 const HOME_SERVICES = [
   {
@@ -106,15 +107,71 @@ const PROCESS_STEPS = [
   }
 ];
 
+const DEFAULT_HOME_FAQS = [
+  {
+    q: 'How quickly can a doctor or ambulance arrive at our home in Nizamabad?',
+    a: 'For emergency ambulance calls and acute triage, dispatch occurs within 15-30 minutes across Nizamabad municipal limits. Scheduled doctor home visits and nursing deployments are arranged at your requested time slot.'
+  },
+  {
+    q: 'Do I need to pay any advance before service starts?',
+    a: 'No. Zero advance payment is required for initial coordinator consultations or triage scheduling. Payment is transparently collected only after clinicians or equipment are delivered.'
+  },
+  {
+    q: 'What equipment is included in a complete Home ICU setup?',
+    a: 'A complete home ICU setup includes a motorized ICU bed with remote adjustments, critical care ventilator (BiPAP/CPAP/Invasive), 5-para vital signs monitor, suction machine, continuous oxygen concentrator, and a 24/7 ICU-trained bedside nurse.'
+  },
+  {
+    q: 'Are all nurses and technicians certified and background-verified?',
+    a: 'Yes. 100% of our clinical personnel possess verified state council registrations (TSMC / Nursing Council), have prior hospital ICU experience, and undergo thorough police background checks.'
+  }
+];
+
 const Home = ({ 
   services = [], 
   testimonials = [], 
   faqs = [], 
+  doctors = [],
   webSettings, 
   contactSettings 
 }) => {
   const phone = contactSettings?.phoneNumbers?.[0] || "+91 92488 49388";
   const whatsapp = contactSettings?.whatsappNumber || "+91 92488 49388";
+
+  const [openFaqIdx, setOpenFaqIdx] = useState(0);
+
+  const displayFaqs = (faqs && faqs.length > 0) ? faqs : DEFAULT_HOME_FAQS;
+
+  const displayDoctors = (doctors && doctors.length > 0) 
+    ? doctors.filter(d => d.isActive !== false).slice(0, 3)
+    : [
+        {
+          _id: 'doc_1',
+          name: 'Dr. K. Srinivas Reddy',
+          specialty: 'Senior General Physician & Geriatrician',
+          qualifications: 'MBBS, MD (General Medicine)',
+          experience: '14+ Years Exp',
+          image: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400',
+          availability: 'Daily (9:00 AM - 1:00 PM & 4:00 PM - 8:00 PM)'
+        },
+        {
+          _id: 'doc_2',
+          name: 'Dr. Ananya Sharma',
+          specialty: 'Critical Care & ICU Consultant',
+          qualifications: 'MBBS, DA, DNB (Critical Care)',
+          experience: '10+ Years Exp',
+          image: 'https://images.unsplash.com/photo-1594824813689-53b9f4e2f9d6?auto=format&fit=crop&q=80&w=400',
+          availability: '24/7 On-Call Standby for Critical Cases'
+        },
+        {
+          _id: 'doc_3',
+          name: 'Dr. M. Venkat Rao',
+          specialty: 'Consultant Cardiologist & Physician',
+          qualifications: 'MBBS, MD, DM (Cardiology)',
+          experience: '16+ Years Exp',
+          image: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=400',
+          availability: 'Mon, Wed, Fri (2:00 PM - 6:00 PM)'
+        }
+      ];
 
   const scrollToServices = () => {
     const el = document.getElementById('services-section');
@@ -125,7 +182,34 @@ const Home = ({
     <div className="bg-[#fafafb] min-h-screen text-slate-800 font-sans selection:bg-teal-100 selection:text-teal-900 relative">
       
       {/* ========================================================
-          1. HERO SECTION (CLEAN 3-ROW HEADLINE + SUBTLE GRID)
+          0. LIVE EMERGENCY DISPATCH TICKER (TOP)
+      ======================================================== */}
+      <div className="bg-slate-900 text-white py-2 px-4 text-xs font-mono border-b border-slate-800 flex items-center justify-between overflow-x-auto whitespace-nowrap">
+        <div className="flex items-center gap-2 max-w-7xl mx-auto w-full justify-center sm:justify-between">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+            <span className="font-bold text-[11px] text-teal-300 uppercase tracking-widest">
+              Live Nizamabad Standby
+            </span>
+            <span className="hidden sm:inline text-slate-400">•</span>
+            <span className="hidden sm:inline text-slate-300 text-[11px]">
+              BLS & ICU Ventilator Ambulances • Bedside Doctors Active
+            </span>
+          </div>
+          <div className="hidden md:flex items-center gap-4 text-[11px] text-slate-300">
+            <span className="flex items-center gap-1 font-bold text-amber-300">
+              ⚡ 15-Min Response Protocol
+            </span>
+            <a href={`tel:${phone.replace(/\s+/g, '')}`} className="font-bold text-white hover:text-teal-300 flex items-center gap-1">
+              <PhoneCall className="w-3 h-3" />
+              <span>{phone}</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* ========================================================
+          1. HERO SECTION (POLISHED CLEAN 3-ROW HEADLINE)
       ======================================================== */}
       <section className="relative min-h-[82vh] flex flex-col justify-between pt-8 pb-10 lg:pt-12 lg:pb-14 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center overflow-hidden">
         
@@ -144,7 +228,7 @@ const Home = ({
         {/* Centered Content Container */}
         <div className="relative z-10 space-y-4 sm:space-y-5 my-auto">
           
-          {/* 1. Top Pill Badge */}
+          {/* Top Pill Badge */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-slate-200/90 bg-white/90 backdrop-blur-sm shadow-2xs">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-700">
@@ -152,7 +236,7 @@ const Home = ({
             </span>
           </div>
 
-          {/* 2. Balanced 3-Row Centered Headline */}
+          {/* Balanced 3-Row Centered Headline */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-extrabold tracking-tight leading-[1.12] text-slate-900 uppercase max-w-3xl mx-auto flex flex-col items-center gap-0.5 sm:gap-1">
             <span className="block text-slate-900">Hospital-Grade</span>
             <span className="block text-slate-900">Intensive Care</span>
@@ -161,12 +245,12 @@ const Home = ({
             </span>
           </h1>
 
-          {/* 3. Refined Descriptive Subtitle */}
+          {/* Descriptive Subtitle */}
           <p className="text-slate-600 text-xs sm:text-sm md:text-base max-w-xl mx-auto leading-relaxed font-normal px-2">
             Emergency ICU ambulances, 24/7 bedside nursing, home doctor visits, and complete hospital ICU setups delivered across Nizamabad.
           </p>
 
-          {/* 4. Sleek Action Buttons */}
+          {/* Sleek Action Buttons */}
           <div className="pt-1.5 flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
             <Link
               to="/book"
@@ -185,7 +269,7 @@ const Home = ({
             </button>
           </div>
 
-          {/* 5. Compact 3-Column Stats Container */}
+          {/* Compact 3-Column Stats Container */}
           <div className="pt-2 max-w-lg mx-auto">
             <div className="grid grid-cols-3 divide-x divide-slate-200/90 bg-white/90 backdrop-blur-sm border border-slate-200/90 rounded-2xl p-3 sm:p-4 shadow-2xs">
               <div className="px-2 sm:px-4 text-center">
@@ -205,7 +289,7 @@ const Home = ({
 
         </div>
 
-        {/* 6. Scroll Down Indicator */}
+        {/* Scroll Down Indicator */}
         <div 
           onClick={scrollToServices}
           className="relative z-10 pt-4 flex flex-col items-center justify-center gap-1 opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
@@ -236,7 +320,7 @@ const Home = ({
           </p>
         </div>
 
-        {/* Visual Touch Cards Grid (1 col on mobile, 2 on tablet, 3 on desktop) */}
+        {/* Visual Touch Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           {HOME_SERVICES.map((serv) => (
             <div 
@@ -303,7 +387,87 @@ const Home = ({
       </section>
 
       {/* ========================================================
-          3. CLINICAL RIGOR & QUALITY STANDARDS
+          3. TOP DOCTORS SPOTLIGHT (VERSION 2.0 SHOWCASE)
+      ======================================================== */}
+      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-slate-100">
+        
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div className="space-y-2 text-left">
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-teal-100 bg-teal-50 text-teal-800 text-xs font-black uppercase tracking-widest">
+              <UserCheck className="w-3.5 h-3.5 text-teal-600" />
+              Verified Board Specialists
+            </div>
+            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
+              Experienced Home Physicians
+            </h2>
+            <p className="text-slate-600 text-xs sm:text-sm max-w-xl">
+              Senior consultants and ICU doctors available for home visits, diagnostic evaluations, and bedside recovery oversight.
+            </p>
+          </div>
+
+          <Link
+            to="/about"
+            className="inline-flex items-center gap-2 text-xs font-bold text-teal-800 hover:text-teal-950 uppercase tracking-wider shrink-0 transition-colors"
+          >
+            <span>View All Clinicians</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
+          {displayDoctors.map((doc) => (
+            <div
+              key={doc._id || doc.name}
+              className="bg-white rounded-3xl border border-slate-200/80 p-6 flex flex-col justify-between shadow-2xs hover:shadow-lg transition-all group"
+            >
+              <div className="space-y-4">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
+                    <img
+                      src={resolveImageUrl(doc.image || 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400')}
+                      alt={doc.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <div>
+                    <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                      On-Duty
+                    </span>
+                    <h4 className="text-sm font-black text-slate-900 mt-1 leading-tight">
+                      {doc.name}
+                    </h4>
+                    <p className="text-[11px] text-teal-800 font-bold mt-0.5">
+                      {doc.specialty}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="text-[11px] text-slate-500 font-medium">
+                  {doc.qualifications} • {doc.experience}
+                </div>
+
+                <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100 text-[10px] text-slate-600 flex items-center gap-1.5">
+                  <Clock className="w-3 h-3 text-teal-700 shrink-0" />
+                  <span className="truncate">{doc.availability}</span>
+                </div>
+              </div>
+
+              <Link
+                to="/book"
+                state={{ selectService: 'Doctor Consultation' }}
+                className="mt-5 w-full py-2.5 bg-slate-100 hover:bg-teal-900 hover:text-white text-slate-800 font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-1.5"
+              >
+                <span>Book Home Visit</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          ))}
+        </div>
+
+      </section>
+
+      {/* ========================================================
+          4. CLINICAL RIGOR & QUALITY STANDARDS
       ======================================================== */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-slate-100">
         
@@ -345,7 +509,7 @@ const Home = ({
       </section>
 
       {/* ========================================================
-          4. HOW IT WORKS (4 SIMPLE STEPS)
+          5. HOW IT WORKS (4 SIMPLE STEPS)
       ======================================================== */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-slate-100">
         
@@ -381,7 +545,50 @@ const Home = ({
       </section>
 
       {/* ========================================================
-          5. CALL TO ACTION BANNER (CLEAN LIGHT MEDICAL THEME)
+          6. FAQ ACCORDION (VERSION 2.0 COLLAPSIBLES)
+      ======================================================== */}
+      <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto border-t border-slate-100 text-left">
+        <div className="text-center max-w-xl mx-auto mb-10 space-y-2">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-teal-100 bg-teal-50 text-teal-800 text-xs font-black uppercase tracking-widest">
+            <HelpCircle className="w-3.5 h-3.5 text-teal-600" />
+            Got Questions?
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+            Frequently Asked Questions
+          </h2>
+        </div>
+
+        <div className="space-y-3">
+          {displayFaqs.map((faq, idx) => {
+            const isOpen = openFaqIdx === idx;
+            const questionText = faq.q || faq.question;
+            const answerText = faq.a || faq.answer;
+            return (
+              <div 
+                key={idx}
+                className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden transition-all shadow-2xs"
+              >
+                <button
+                  type="button"
+                  onClick={() => setOpenFaqIdx(isOpen ? null : idx)}
+                  className="w-full p-5 text-left flex items-center justify-between gap-4 font-extrabold text-xs sm:text-sm text-slate-900 hover:text-teal-900 transition-colors"
+                >
+                  <span>{questionText}</span>
+                  <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 shrink-0 ${isOpen ? 'rotate-180 text-teal-700' : ''}`} />
+                </button>
+                {isOpen && (
+                  <div className="px-5 pb-5 text-xs text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                    {answerText}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ========================================================
+          7. CALL TO ACTION BANNER (CLEAN LIGHT MEDICAL THEME)
       ======================================================== */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center">
         <div className="bg-gradient-to-b from-teal-50/70 to-white border border-teal-100 rounded-3xl p-8 sm:p-12 shadow-[0_15px_40px_rgba(15,23,42,0.04)] space-y-6">
