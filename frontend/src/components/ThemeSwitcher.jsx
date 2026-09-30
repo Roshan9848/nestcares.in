@@ -11,14 +11,6 @@ export const PALETTES = [
     previewBadge: 'bg-zinc-900 text-white border-zinc-700'
   },
   {
-    id: 'medical-teal',
-    name: 'Medical Teal',
-    subtitle: 'Mayo Clinic / Apollo 24/7 Standard',
-    primaryColor: '#0f766e',
-    secondaryColor: '#0d9488',
-    previewBadge: 'bg-teal-50 text-teal-800 border-teal-200'
-  },
-  {
     id: 'clinical-sapphire',
     name: 'Clinical Sapphire',
     subtitle: 'Prestige Hospital & Diagnostic',
@@ -46,7 +38,7 @@ export const PALETTES = [
 
 const ThemeSwitcher = () => {
   const [activeTheme, setActiveTheme] = useState(() => {
-    return localStorage.getItem('nestcares_theme') || 'medical-teal';
+    return localStorage.getItem('nestcares_theme') || 'snitch-luxury';
   });
   const [isOpen, setIsOpen] = useState(false);
 

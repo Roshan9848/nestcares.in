@@ -2,9 +2,13 @@
  * Resolves the backend base URL dynamically from environment variables
  */
 export const getBackendUrl = () => {
-  const apiUrl = import.meta.env.VITE_API_URL || 'https://nestcares-in.onrender.com/api';
-  // Strip trailing '/api' or '/api/' to get the base backend server URL
-  return apiUrl.replace(/\/api\/?$/, '');
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL.replace(/\/api\/?$/, '');
+  }
+  if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+    return 'http://localhost:5000';
+  }
+  return 'https://nestcares-in.onrender.com';
 };
 
 /**

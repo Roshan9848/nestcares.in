@@ -1,6 +1,14 @@
 import axios from 'axios';
 
-const BASE_URL = import.meta.env.VITE_API_URL || 'https://nestcares-in.onrender.com/api';
+const getBaseApiUrl = () => {
+  if (import.meta.env.VITE_API_URL) return import.meta.env.VITE_API_URL;
+  if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+    return 'http://localhost:5000/api';
+  }
+  return 'https://nestcares-in.onrender.com/api';
+};
+
+const BASE_URL = getBaseApiUrl();
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,

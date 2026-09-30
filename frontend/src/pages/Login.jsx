@@ -154,9 +154,9 @@ const Login = () => {
               setLoginType('admin');
               setError('');
             }}
-            className={`flex-1 py-3 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
+            className={`flex-1 py-3 text-xs font-bold rounded-xl transition-all cursor-pointer ${
               loginType === 'admin' 
-                ? 'bg-[#14B8A6] text-white shadow-md' 
+                ? 'bg-white text-slate-950 shadow-md font-black' 
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
@@ -168,9 +168,9 @@ const Login = () => {
               setLoginType('doctor');
               setError('');
             }}
-            className={`flex-1 py-3 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
+            className={`flex-1 py-3 text-xs font-bold rounded-xl transition-all cursor-pointer ${
               loginType === 'doctor' 
-                ? 'bg-[#14B8A6] text-white shadow-md' 
+                ? 'bg-white text-slate-950 shadow-md font-black' 
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
@@ -196,7 +196,7 @@ const Login = () => {
                 Admin Email Address
               </label>
               <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-[#14B8A6] transition-colors">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-white transition-colors">
                   <Mail className="w-4.5 h-4.5" />
                 </span>
                 <input
@@ -205,7 +205,7 @@ const Login = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@nestcares.in"
-                  className="w-full h-14 pl-12 pr-4 bg-[#08111F]/60 border border-white/[0.06] rounded-2xl focus:outline-none focus:ring-1 focus:ring-[#14B8A6]/40 focus:border-[#14B8A6] focus:bg-[#08111F] transition-all text-white placeholder-slate-700 text-xs font-medium shadow-inner"
+                  className="w-full h-14 pl-12 pr-4 bg-[#08111F]/60 border border-white/[0.06] rounded-2xl focus:outline-none focus:ring-1 focus:ring-white/40 focus:border-white focus:bg-[#08111F] transition-all text-white placeholder-slate-700 text-xs font-medium shadow-inner"
                 />
               </div>
             </div>
@@ -216,7 +216,7 @@ const Login = () => {
                 Clinician Badge ID
               </label>
               <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-[#14B8A6] transition-colors">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-white transition-colors">
                   <ShieldCheck className="w-4.5 h-4.5" />
                 </span>
                 <input
@@ -225,7 +225,7 @@ const Login = () => {
                   value={doctorId}
                   onChange={(e) => setDoctorId(e.target.value)}
                   placeholder="e.g. DOC-101"
-                  className="w-full h-14 pl-12 pr-4 bg-[#08111F]/60 border border-white/[0.06] rounded-2xl focus:outline-none focus:ring-1 focus:ring-[#14B8A6]/40 focus:border-[#14B8A6] focus:bg-[#08111F] transition-all text-white placeholder-slate-700 text-xs font-medium shadow-inner"
+                  className="w-full h-14 pl-12 pr-4 bg-[#08111F]/60 border border-white/[0.06] rounded-2xl focus:outline-none focus:ring-1 focus:ring-white/40 focus:border-white focus:bg-[#08111F] transition-all text-white placeholder-slate-700 text-xs font-medium shadow-inner"
                 />
               </div>
             </div>
@@ -237,7 +237,7 @@ const Login = () => {
               Security Password
             </label>
             <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-[#14B8A6] transition-colors">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-white transition-colors">
                 <Lock className="w-4.5 h-4.5" />
               </span>
               <input
@@ -246,7 +246,7 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full h-14 pl-12 pr-12 bg-[#08111F]/60 border border-white/[0.06] rounded-2xl focus:outline-none focus:ring-1 focus:ring-[#14B8A6]/40 focus:border-[#14B8A6] focus:bg-[#08111F] transition-all text-white placeholder-slate-700 text-xs font-medium shadow-inner"
+                className="w-full h-14 pl-12 pr-12 bg-[#08111F]/60 border border-white/[0.06] rounded-2xl focus:outline-none focus:ring-1 focus:ring-white/40 focus:border-white focus:bg-[#08111F] transition-all text-white placeholder-slate-700 text-xs font-medium shadow-inner"
               />
               <button
                 type="button"
@@ -265,24 +265,24 @@ const Login = () => {
                 type="checkbox"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
-                className="rounded border-white/[0.06] bg-[#08111F]/80 text-[#14B8A6] focus:ring-0 focus:ring-offset-0 w-4 h-4 cursor-pointer"
+                className="rounded border-white/[0.06] bg-[#08111F]/80 text-white focus:ring-0 focus:ring-offset-0 w-4 h-4 cursor-pointer"
               />
               <span>Remember session</span>
             </label>
             <button 
               type="button"
               onClick={() => alert('Please contact administrative coordinator to reset login password.')}
-              className="hover:text-[#14B8A6] transition-colors"
+              className="hover:text-white transition-colors"
             >
               Reset access?
             </button>
           </div>
 
-          {/* Solid Teal Login button */}
+          {/* Solid Obsidian/White Login button */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full h-14 bg-[#14B8A6] hover:bg-[#0F766E] disabled:bg-[#08111F] text-white font-bold rounded-2xl flex items-center justify-center gap-2 transition-all active:scale-[0.98] text-sm shadow-md hover:shadow-lg hover:-translate-y-0.5 cursor-pointer mt-6"
+            className="w-full h-14 bg-white hover:bg-slate-100 disabled:bg-slate-800 text-slate-950 font-black uppercase tracking-wider rounded-2xl flex items-center justify-center gap-2 transition-all active:scale-[0.98] text-xs shadow-md hover:shadow-lg hover:-translate-y-0.5 cursor-pointer mt-6"
           >
             {loading ? (
               <>
@@ -302,15 +302,15 @@ const Login = () => {
         {/* Small Inline Security badges */}
         <div className="flex items-center justify-center gap-6 border-t border-white/[0.06] pt-6 select-none text-[10px] font-bold text-slate-500 uppercase tracking-wider">
           <div className="flex items-center gap-1.5">
-            <CheckCircle className="w-3.5 h-3.5 text-teal-400" />
+            <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
             <span>HIPAA Compliant</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <Shield className="w-3.5 h-3.5 text-teal-400" />
+            <Shield className="w-3.5 h-3.5 text-emerald-400" />
             <span>SSL Encrypted</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <ShieldCheck className="w-3.5 h-3.5 text-teal-400" />
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
             <span>Secure Access</span>
           </div>
         </div>

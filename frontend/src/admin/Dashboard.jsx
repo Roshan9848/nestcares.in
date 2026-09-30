@@ -803,31 +803,31 @@ const Dashboard = ({
       )}
 
       {/* CMS SIDEBAR */}
-      <aside className={`w-64 bg-gradient-to-b from-[#0a0f1d] via-[#0f172a] to-[#0a0f1d] text-slate-350 flex flex-col shrink-0 no-print border-r border-slate-800/60 shadow-2xl fixed inset-y-0 left-0 z-50 transform lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out ${
+      <aside className={`w-64 bg-[#09090b] text-slate-400 flex flex-col shrink-0 no-print border-r border-white/10 shadow-2xl fixed inset-y-0 left-0 z-50 transform lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out ${
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
       }`}>
-        <div className="p-6 border-b border-slate-800/80 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-teal-500/10 text-teal-400 border border-teal-500/20 rounded-2xl flex items-center justify-center">
-              <Sparkles className="w-4 h-4 animate-pulse" />
+        <div className="p-5 border-b border-white/10 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5">
+            <div className="h-8 w-8 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-white">
+              <Sparkles className="w-4 h-4" />
             </div>
             <div>
               <h2 className="text-xs font-black text-white uppercase tracking-wider leading-none">Nest Cares</h2>
-              <p className="text-[8px] text-slate-500 font-extrabold uppercase mt-1 leading-none">Portal CMS Panel</p>
+              <p className="text-[8px] text-slate-400 font-extrabold uppercase mt-1 leading-none">Portal CMS Panel</p>
             </div>
           </div>
           {/* Close button on mobile sidebar header */}
           <button 
             type="button"
             onClick={() => setIsSidebarOpen(false)}
-            className="p-1 text-slate-500 hover:text-white rounded lg:hidden"
+            className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-white/10 lg:hidden cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Sidebar Nav Links */}
-        <nav className="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
+        <nav className="flex-1 px-3 py-5 space-y-1 overflow-y-auto">
           {[
             { id: 'overview', name: 'Stats Overview', icon: <LayoutDashboard className="w-4 h-4" /> },
             { id: 'bookings', name: 'Booking Manager', icon: <CalendarCheck className="w-4 h-4" /> },
@@ -849,10 +849,10 @@ const Dashboard = ({
                 setEditingFaq(null);
                 setIsSidebarOpen(false); // Close menu on tab click (mobile)
               }}
-              className={`w-full flex items-center gap-3 px-4 py-3 text-xs font-semibold rounded-xl transition-all duration-200 border-l-4 ${
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 text-xs font-bold rounded-xl transition-all duration-200 cursor-pointer ${
                 activeTab === tab.id
-                  ? 'bg-teal-950/40 text-teal-400 border-teal-500 shadow-lg shadow-teal-500/5 font-bold'
-                  : 'border-transparent text-slate-400 hover:bg-slate-800/40 hover:text-slate-100 hover:translate-x-1'
+                  ? 'bg-white text-slate-950 font-black shadow-sm'
+                  : 'text-slate-400 hover:bg-white/10 hover:text-white'
               }`}
             >
               {tab.icon}
@@ -862,7 +862,7 @@ const Dashboard = ({
         </nav>
 
         {/* Sidebar Profile footer */}
-        <div className="p-4 border-t border-slate-800/80 flex items-center justify-between gap-3 bg-slate-950/20 text-xs shrink-0">
+        <div className="p-4 border-t border-white/10 flex items-center justify-between gap-3 bg-black/40 text-xs shrink-0">
           <div className="overflow-hidden flex items-center gap-2">
             <span className="relative flex h-2 w-2 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -870,12 +870,12 @@ const Dashboard = ({
             </span>
             <div className="overflow-hidden text-left">
               <div className="font-black text-slate-200 truncate leading-tight">{user?.name || 'Administrator'}</div>
-              <div className="text-[9px] text-slate-500 truncate mt-0.5 leading-none">{user?.email || 'admin@carehome.com'}</div>
+              <div className="text-[9px] text-slate-400 truncate mt-0.5 leading-none">{user?.email || 'admin@nestcares.in'}</div>
             </div>
           </div>
           <button 
             onClick={logout}
-            className="p-2 hover:bg-slate-800 hover:text-white rounded-lg transition-colors shrink-0 text-slate-400"
+            className="p-2 hover:bg-white/10 hover:text-white rounded-lg transition-colors shrink-0 text-slate-400 cursor-pointer"
             title="Log Out"
           >
             <LogOut className="w-4 h-4" />
@@ -884,98 +884,94 @@ const Dashboard = ({
       </aside>
 
       {/* MAIN CONTENT AREA */}
-      <main className="flex-1 flex flex-col min-w-0">
+      <main className="flex-1 flex flex-col min-w-0 bg-[#fafafb]">
         
         {/* Header - No print */}
-        <header className="h-16 bg-white border-b border-slate-100 flex items-center justify-between px-4 sm:px-8 shrink-0 no-print">
+        <header className="h-14 sm:h-16 bg-white/95 backdrop-blur-md border-b border-slate-200/80 flex items-center justify-between px-4 sm:px-8 shrink-0 no-print sticky top-0 z-30">
           <div className="flex items-center gap-3">
             {/* Hamburger Trigger button */}
             <button
               type="button"
               onClick={() => setIsSidebarOpen(true)}
-              className="p-2 -ml-2 text-slate-500 hover:text-slate-900 rounded-lg lg:hidden"
+              className="p-2 -ml-2 text-slate-700 hover:text-slate-950 hover:bg-slate-100 rounded-xl lg:hidden cursor-pointer"
               title="Open Menu"
             >
               <Menu className="w-5 h-5" />
             </button>
-            <h1 className="text-sm sm:text-lg font-bold text-slate-800 uppercase tracking-tight truncate max-w-[150px] sm:max-w-none">
+            <h1 className="text-xs sm:text-base font-black text-slate-900 uppercase tracking-tight truncate max-w-[170px] sm:max-w-none">
               {activeTab === 'overview' && 'Dashboard Overview'}
               {activeTab === 'bookings' && 'Booking Manager'}
-              {activeTab === 'doctors' && 'Doctors & Clinicians Management'}
-              {activeTab === 'services' && 'Service catalog'}
-              {activeTab === 'homepage' && 'Homepage content CMS'}
-              {activeTab === 'testimonials' && 'Patient reviews'}
+              {activeTab === 'doctors' && 'Doctors & Clinicians'}
+              {activeTab === 'services' && 'Service Catalog'}
+              {activeTab === 'homepage' && 'Homepage CMS'}
+              {activeTab === 'testimonials' && 'Patient Reviews'}
               {activeTab === 'faqs' && 'FAQ Management'}
-              {activeTab === 'contact' && 'Office contact channels'}
-              {activeTab === 'settings' && 'Global Configurations & SMTP'}
+              {activeTab === 'contact' && 'Contact Channels'}
+              {activeTab === 'settings' && 'Global Configurations'}
             </h1>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <Link 
               to="/"
               target="_blank"
-              className="text-[10px] sm:text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg flex items-center gap-1.5 transition-all"
+              className="text-[11px] sm:text-xs bg-slate-950 hover:bg-black text-white font-bold px-3 py-1.5 sm:px-4 sm:py-2 rounded-full flex items-center gap-1.5 transition-all shadow-xs"
             >
-              <span>Preview Live Site</span>
+              <span>View Site</span>
               <ExternalLink className="w-3.5 h-3.5" />
             </Link>
           </div>
         </header>
 
         {/* Scrollable Work Pane */}
-        <div className="flex-1 p-4 sm:p-8 overflow-y-auto">
+        <div className="flex-1 p-3.5 sm:p-6 lg:p-8 overflow-y-auto">
           
           {/* TAB 1: OVERVIEW */}
           {activeTab === 'overview' && (
-            <div className="space-y-8 text-left">
+            <div className="space-y-6 text-left">
               {statsLoading ? (
-                <div className="text-slate-500">Calculating statistics...</div>
+                <div className="text-slate-500 font-medium">Calculating statistics...</div>
               ) : (
                 <>
-                  {/* Grid Cards Stats */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {/* Grid Cards Stats - Snitch Obsidian Style */}
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
                     
-                    <div className="bg-gradient-to-br from-slate-900 via-teal-950 to-slate-900 p-6 rounded-2xl border border-teal-800/30 shadow-[0_8px_30px_rgba(0,0,0,0.12)] flex items-center justify-between text-white relative overflow-hidden group hover:scale-[1.02] transition-all duration-300">
-                      <div className="absolute top-0 right-0 w-24 h-24 bg-teal-500/5 rounded-full blur-2xl group-hover:bg-teal-500/10 transition-all"></div>
-                      <div className="relative z-10">
-                        <div className="text-[10px] font-black text-teal-400 uppercase tracking-widest">Total Bookings</div>
-                        <div className="text-3xl font-black text-white mt-1">{stats.total}</div>
+                    <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 shadow-sm flex items-center justify-between text-white relative overflow-hidden group hover:scale-[1.01] transition-all">
+                      <div>
+                        <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Bookings</div>
+                        <div className="text-2xl sm:text-3xl font-black text-white mt-1">{stats.total}</div>
                       </div>
-                      <div className="p-3 bg-white/10 text-teal-400 rounded-xl relative z-10 border border-white/10">
-                        <CalendarCheck className="w-6 h-6" />
-                      </div>
-                    </div>
-
-                    <div className="bg-gradient-to-br from-slate-900 via-amber-950 to-slate-900 p-6 rounded-2xl border border-amber-900/30 shadow-[0_8px_30px_rgba(0,0,0,0.12)] flex items-center justify-between text-white relative overflow-hidden group hover:scale-[1.02] transition-all duration-300">
-                      <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full blur-2xl group-hover:bg-amber-500/10 transition-all"></div>
-                      <div className="relative z-10">
-                        <div className="text-[10px] font-black text-amber-400 uppercase tracking-widest">Pending Bookings</div>
-                        <div className="text-3xl font-black text-white mt-1">{stats.pending}</div>
-                      </div>
-                      <div className="p-3 bg-white/10 text-amber-400 rounded-xl relative z-10 border border-white/10">
-                        <Clock className="w-6 h-6" />
+                      <div className="p-2.5 bg-white/10 text-white rounded-xl">
+                        <CalendarCheck className="w-5 h-5" />
                       </div>
                     </div>
 
-                    <div className="bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-900 p-6 rounded-2xl border border-emerald-900/30 shadow-[0_8px_30px_rgba(0,0,0,0.12)] flex items-center justify-between text-white relative overflow-hidden group hover:scale-[1.02] transition-all duration-300">
-                      <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl group-hover:bg-emerald-500/10 transition-all"></div>
-                      <div className="relative z-10">
-                        <div className="text-[10px] font-black text-emerald-400 uppercase tracking-widest">Completed Bookings</div>
-                        <div className="text-3xl font-black text-white mt-1">{stats.completed}</div>
+                    <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between text-slate-900 group hover:scale-[1.01] transition-all">
+                      <div>
+                        <div className="text-[10px] font-bold text-amber-700 uppercase tracking-wider">Pending Action</div>
+                        <div className="text-2xl sm:text-3xl font-black text-slate-900 mt-1">{stats.pending}</div>
                       </div>
-                      <div className="p-3 bg-white/10 text-emerald-400 rounded-xl relative z-10 border border-white/10">
-                        <Check className="w-6 h-6" />
+                      <div className="p-2.5 bg-amber-50 text-amber-700 border border-amber-200/80 rounded-xl">
+                        <Clock className="w-5 h-5" />
                       </div>
                     </div>
 
-                    <div className="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 p-6 rounded-2xl border border-indigo-900/30 shadow-[0_8px_30px_rgba(0,0,0,0.12)] flex items-center justify-between text-white relative overflow-hidden group hover:scale-[1.02] transition-all duration-300">
-                      <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-full blur-2xl group-hover:bg-indigo-500/10 transition-all"></div>
-                      <div className="relative z-10">
-                        <div className="text-[10px] font-black text-indigo-400 uppercase tracking-widest">Active Specialities</div>
-                        <div className="text-3xl font-black text-white mt-1">{stats.totalServices}</div>
+                    <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between text-slate-900 group hover:scale-[1.01] transition-all">
+                      <div>
+                        <div className="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">Completed</div>
+                        <div className="text-2xl sm:text-3xl font-black text-slate-900 mt-1">{stats.completed}</div>
                       </div>
-                      <div className="p-3 bg-white/10 text-indigo-400 rounded-xl relative z-10 border border-white/10">
-                        <Activity className="w-6 h-6" />
+                      <div className="p-2.5 bg-emerald-50 text-emerald-700 border border-emerald-200/80 rounded-xl">
+                        <Check className="w-5 h-5" />
+                      </div>
+                    </div>
+
+                    <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between text-slate-900 group hover:scale-[1.01] transition-all">
+                      <div>
+                        <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Services Active</div>
+                        <div className="text-2xl sm:text-3xl font-black text-slate-900 mt-1">{stats.totalServices}</div>
+                      </div>
+                      <div className="p-2.5 bg-slate-100 text-slate-800 border border-slate-200 rounded-xl">
+                        <Activity className="w-5 h-5" />
                       </div>
                     </div>
 
@@ -1381,7 +1377,7 @@ const Dashboard = ({
                           <button
                             type="button"
                             onClick={() => handleOpenSubForm()}
-                            className="px-3 py-1.5 bg-teal-850 hover:bg-teal-900 text-white rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1 transition-all"
+                            className="px-3 py-1.5 bg-slate-950 hover:bg-black text-white rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1 transition-all"
                           >
                             <Plus className="w-3.5 h-3.5" />
                             <span>Add Treatment / Sub-Service</span>
@@ -1454,7 +1450,7 @@ const Dashboard = ({
                               <button
                                 type="button"
                                 onClick={handleSaveSubForm}
-                                className="px-3.5 py-1.5 bg-teal-850 hover:bg-teal-900 text-white text-xs font-bold rounded-lg shadow-sm"
+                                className="px-3.5 py-1.5 bg-slate-950 hover:bg-black text-white text-xs font-bold rounded-lg shadow-sm"
                               >
                                 Save to Draft
                               </button>
