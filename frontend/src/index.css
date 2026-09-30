@@ -162,6 +162,16 @@
     border: 1px solid var(--accent-pill-border);
   }
 
+  .glass-navbar-glossy {
+    background: rgba(255, 255, 255, 0.84);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    box-shadow: 0 12px 35px -5px rgba(15, 23, 42, 0.07), 
+                0 0 0 1px rgba(0, 0, 0, 0.05),
+                0 1px 0 0 rgba(255, 255, 255, 0.9) inset;
+  }
+
   .glass-dock-luxury {
     background: rgba(255, 255, 255, 0.88);
     backdrop-filter: blur(24px);
