@@ -6,7 +6,6 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { resolveImageUrl } from '../utils/url';
-import ThemeSwitcher from './ThemeSwitcher';
 
 const POPULAR_SEARCH_TAGS = [
   "Doctor Visit", "ICU Setup", "Nursing Care", "Injection Service", 
@@ -168,11 +167,6 @@ const Navbar = ({ webSettings }) => {
             >
               <Search className="w-4 h-4 stroke-[2.2]" />
             </button>
-
-            {/* Theme Switcher */}
-            <div className="hidden sm:block">
-              <ThemeSwitcher />
-            </div>
 
             {/* Language Toggle */}
             <button
