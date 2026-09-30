@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { resolveImageUrl } from '../utils/url';
 import { 
   ShieldCheck, Mail, Lock, ArrowLeft, ArrowRight, Eye, EyeOff, 
-  ShieldAlert, RefreshCw, CheckCircle, Shield
+  ShieldAlert, RefreshCw, CheckCircle, Sparkles, UserCheck
 } from 'lucide-react';
 
 const Login = () => {
@@ -62,7 +62,7 @@ const Login = () => {
 
     if (loginType === 'admin') {
       if (!email || !password) {
-        setError('Please fill in all fields.');
+        setError('Please fill in both email and password.');
         setLoading(false);
         return;
       }
@@ -73,11 +73,11 @@ const Login = () => {
       if (res.success) {
         navigate('/admin');
       } else {
-        setError(res.message || 'Invalid credentials.');
+        setError(res.message || 'Invalid credentials. Please verify your email and password.');
       }
     } else {
       if (!doctorId || !password) {
-        setError('Please fill in all fields.');
+        setError('Please fill in both Doctor ID and password.');
         setLoading(false);
         return;
       }
@@ -99,68 +99,63 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#08111F] to-[#111827] flex items-center justify-center p-6 relative overflow-hidden font-sans select-none">
+    <div className="min-h-screen bg-[#fafafb] flex items-center justify-center p-4 sm:p-6 relative overflow-hidden font-sans select-none text-slate-900">
       
-      {/* Subtle radial backdrop glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-teal-500/5 rounded-full blur-[140px] pointer-events-none"></div>
+      {/* Ambient background soft glow */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-slate-200/40 rounded-full blur-[140px] pointer-events-none" />
 
-      {/* Top Left Return Link - Clean ghost pill button */}
-      <div className="absolute top-8 left-8 sm:left-12">
+      {/* Top Floating Return Pill */}
+      <div className="absolute top-4 sm:top-6 left-4 sm:left-8 z-20">
         <Link 
           to="/"
-          className="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white transition-all bg-white/[0.02] border border-white/5 hover:border-white/10 px-4 py-2 rounded-full shadow-sm"
+          className="inline-flex items-center gap-2 text-xs font-bold text-slate-700 hover:text-slate-950 transition-all bg-white/90 backdrop-blur-md border border-slate-200/90 hover:border-slate-300 px-4 py-2 rounded-full shadow-xs hover:shadow-sm"
         >
-          <ArrowLeft className="w-4 h-4 text-teal-400" />
+          <ArrowLeft className="w-4 h-4 text-slate-600" />
           <span>Return to website</span>
         </Link>
       </div>
 
-      {/* Centered Login Card Container (Width: 500-560px) */}
-      <div className="w-full max-w-[520px] bg-[#111827]/70 backdrop-blur-2xl border border-white/[0.06] rounded-[24px] p-8 sm:p-12 shadow-2xl flex flex-col gap-8 relative z-10">
+      {/* Glossy White Luxury Login Card */}
+      <div className="w-full max-w-[460px] bg-white/95 backdrop-blur-2xl border border-black/[0.08] rounded-3xl p-6 sm:p-10 shadow-[0_20px_50px_rgba(15,23,42,0.06)] flex flex-col gap-6 relative z-10 my-8">
         
-        {/* Transparent Logo Block */}
-        <div className="flex justify-center">
-          {logoSrc ? (
+        {/* Brand Emblem */}
+        <div className="flex flex-col items-center gap-3 text-center">
+          <div className="h-12 w-12 rounded-2xl bg-slate-50 border border-slate-200 p-1.5 flex items-center justify-center shadow-xs">
             <img 
               src={logoSrc} 
-              alt="Logo" 
-              className="h-10 w-auto object-contain brightness-110" 
-              onError={(e) => {
-                e.target.style.display = 'none';
-              }}
+              alt="Nest Cares" 
+              className="h-full w-full object-contain" 
+              onError={() => setLogoSrc('/logo.png')}
             />
-          ) : (
-            <div className="p-3 bg-teal-500/10 text-teal-400 rounded-2xl">
-              <Shield className="w-8 h-8" />
-            </div>
-          )}
+          </div>
+          <div>
+            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+              Nest Cares • Nizamabad
+            </span>
+            <h1 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight leading-tight mt-0.5">
+              Portal Authorization
+            </h1>
+            <p className="text-slate-500 text-xs mt-1">
+              Sign in to manage patient bookings & healthcare services
+            </p>
+          </div>
         </div>
 
-        {/* Welcome titles */}
-        <div className="text-center flex flex-col gap-2">
-          <h1 className="text-3xl sm:text-[38px] font-bold text-white tracking-tight leading-tight">
-            Welcome Back
-          </h1>
-          <p className="text-slate-400 text-sm">
-            Access your secure healthcare administration portal.
-          </p>
-        </div>
-
-        {/* Modern Segmented Tab controls */}
-        <div className="flex bg-[#08111F]/80 p-1.5 rounded-2xl border border-white/[0.06] shadow-inner">
+        {/* Segmented Control Tabs */}
+        <div className="flex bg-slate-100 p-1 rounded-2xl border border-slate-200/80">
           <button
             type="button"
             onClick={() => {
               setLoginType('admin');
               setError('');
             }}
-            className={`flex-1 py-3 text-xs font-bold rounded-xl transition-all cursor-pointer ${
+            className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${
               loginType === 'admin' 
-                ? 'bg-white text-slate-950 shadow-md font-black' 
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-slate-950 text-white shadow-sm font-black' 
+                : 'text-slate-600 hover:text-slate-950'
             }`}
           >
-            Admin Console
+            Admin Portal
           </button>
           <button
             type="button"
@@ -168,56 +163,56 @@ const Login = () => {
               setLoginType('doctor');
               setError('');
             }}
-            className={`flex-1 py-3 text-xs font-bold rounded-xl transition-all cursor-pointer ${
+            className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${
               loginType === 'doctor' 
-                ? 'bg-white text-slate-950 shadow-md font-black' 
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-slate-950 text-white shadow-sm font-black' 
+                : 'text-slate-600 hover:text-slate-950'
             }`}
           >
-            Clinician Portal
+            Doctor Portal
           </button>
         </div>
 
-        {/* Error Notification */}
+        {/* Error Alert */}
         {error && (
-          <div className="bg-rose-500/10 border border-rose-500/20 text-rose-350 text-xs p-4 rounded-2xl text-left leading-relaxed font-semibold flex items-start gap-2.5">
-            <ShieldAlert className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+          <div className="bg-rose-50 border border-rose-200 text-rose-800 text-xs p-3.5 rounded-2xl text-left leading-relaxed font-semibold flex items-start gap-2.5 animate-in fade-in">
+            <ShieldAlert className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
             <span>{error}</span>
           </div>
         )}
 
-        {/* Login Inputs form */}
-        <form onSubmit={handleSubmit} className="space-y-5 text-left">
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-4 text-left">
           
           {loginType === 'admin' ? (
             /* Email Input */
-            <div className="flex flex-col gap-1.5 group">
-              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-1">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider ml-1">
                 Admin Email Address
               </label>
               <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-white transition-colors">
-                  <Mail className="w-4.5 h-4.5" />
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                  <Mail className="w-4 h-4" />
                 </span>
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@nestcares.in"
-                  className="w-full h-14 pl-12 pr-4 bg-[#08111F]/60 border border-white/[0.06] rounded-2xl focus:outline-none focus:ring-1 focus:ring-white/40 focus:border-white focus:bg-[#08111F] transition-all text-white placeholder-slate-700 text-xs font-medium shadow-inner"
+                  placeholder="admin@nestcares.in"
+                  className="w-full h-12 pl-10 pr-4 bg-slate-50 hover:bg-slate-100 focus:bg-white border border-slate-200 focus:border-slate-900 rounded-2xl focus:outline-none transition-all text-slate-900 placeholder:text-slate-400 text-xs font-semibold"
                 />
               </div>
             </div>
           ) : (
             /* Doctor ID Input */
-            <div className="flex flex-col gap-1.5 group">
-              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-1">
-                Clinician Badge ID
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider ml-1">
+                Doctor Badge ID
               </label>
               <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-white transition-colors">
-                  <ShieldCheck className="w-4.5 h-4.5" />
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                  <UserCheck className="w-4 h-4" />
                 </span>
                 <input
                   type="text"
@@ -225,20 +220,20 @@ const Login = () => {
                   value={doctorId}
                   onChange={(e) => setDoctorId(e.target.value)}
                   placeholder="e.g. DOC-101"
-                  className="w-full h-14 pl-12 pr-4 bg-[#08111F]/60 border border-white/[0.06] rounded-2xl focus:outline-none focus:ring-1 focus:ring-white/40 focus:border-white focus:bg-[#08111F] transition-all text-white placeholder-slate-700 text-xs font-medium shadow-inner"
+                  className="w-full h-12 pl-10 pr-4 bg-slate-50 hover:bg-slate-100 focus:bg-white border border-slate-200 focus:border-slate-900 rounded-2xl focus:outline-none transition-all text-slate-900 placeholder:text-slate-400 text-xs font-semibold"
                 />
               </div>
             </div>
           )}
 
           {/* Password Input */}
-          <div className="flex flex-col gap-1.5 group">
-            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-1">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider ml-1">
               Security Password
             </label>
             <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-white transition-colors">
-                <Lock className="w-4.5 h-4.5" />
+              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                <Lock className="w-4 h-4" />
               </span>
               <input
                 type={showPassword ? 'text' : 'password'}
@@ -246,43 +241,44 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full h-14 pl-12 pr-12 bg-[#08111F]/60 border border-white/[0.06] rounded-2xl focus:outline-none focus:ring-1 focus:ring-white/40 focus:border-white focus:bg-[#08111F] transition-all text-white placeholder-slate-700 text-xs font-medium shadow-inner"
+                className="w-full h-12 pl-10 pr-10 bg-slate-50 hover:bg-slate-100 focus:bg-white border border-slate-200 focus:border-slate-900 rounded-2xl focus:outline-none transition-all text-slate-900 placeholder:text-slate-400 text-xs font-semibold"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 cursor-pointer"
+                tabIndex="-1"
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
           </div>
 
-          {/* Remember & Reset Session Options */}
-          <div className="flex items-center justify-between text-xs font-medium text-slate-400 select-none pt-1">
+          {/* Remember Session */}
+          <div className="flex items-center justify-between text-xs font-medium text-slate-500 select-none pt-0.5">
             <label className="flex items-center gap-2 cursor-pointer">
               <input 
                 type="checkbox"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
-                className="rounded border-white/[0.06] bg-[#08111F]/80 text-white focus:ring-0 focus:ring-offset-0 w-4 h-4 cursor-pointer"
+                className="rounded border-slate-300 text-slate-900 focus:ring-0 w-3.5 h-3.5 cursor-pointer"
               />
               <span>Remember session</span>
             </label>
             <button 
               type="button"
-              onClick={() => alert('Please contact administrative coordinator to reset login password.')}
-              className="hover:text-white transition-colors"
+              onClick={() => alert('Please contact administrator at support@nestcares.in or +91 92488 49388 to reset credentials.')}
+              className="text-slate-600 hover:text-slate-950 transition-colors font-semibold"
             >
               Reset access?
             </button>
           </div>
 
-          {/* Solid Obsidian/White Login button */}
+          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full h-14 bg-white hover:bg-slate-100 disabled:bg-slate-800 text-slate-950 font-black uppercase tracking-wider rounded-2xl flex items-center justify-center gap-2 transition-all active:scale-[0.98] text-xs shadow-md hover:shadow-lg hover:-translate-y-0.5 cursor-pointer mt-6"
+            className="w-full h-12 bg-slate-950 hover:bg-black disabled:bg-slate-400 text-white font-bold rounded-full flex items-center justify-center gap-2 transition-all active:scale-[0.98] text-xs uppercase tracking-wider shadow-sm hover:shadow-md cursor-pointer mt-2"
           >
             {loading ? (
               <>
@@ -299,31 +295,19 @@ const Login = () => {
 
         </form>
 
-        {/* Small Inline Security badges */}
-        <div className="flex items-center justify-center gap-6 border-t border-white/[0.06] pt-6 select-none text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-          <div className="flex items-center gap-1.5">
-            <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
+        {/* Security badges */}
+        <div className="flex items-center justify-center gap-4 border-t border-slate-100 pt-4 select-none text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+          <div className="flex items-center gap-1">
+            <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
             <span>HIPAA Compliant</span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <Shield className="w-3.5 h-3.5 text-emerald-400" />
-            <span>SSL Encrypted</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Secure Access</span>
+          <span className="text-slate-300">•</span>
+          <div className="flex items-center gap-1">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+            <span>256-Bit SSL Encrypted</span>
           </div>
         </div>
 
-      </div>
-
-      {/* Live system state text indicator */}
-      <div className="absolute bottom-6 right-6 flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-slate-600 select-none">
-        <span className="flex h-2.5 w-2.5 relative">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-        </span>
-        <span>Nest Cares Node-04 Online</span>
       </div>
 
     </div>

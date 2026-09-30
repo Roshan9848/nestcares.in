@@ -1262,10 +1262,10 @@ const Dashboard = ({
                         key={tab.id}
                         type="button"
                         onClick={() => setServiceFormTab(tab.id)}
-                        className={`flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold border-b-2 transition-all duration-200 shrink-0 ${
+                        className={`flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold border-b-2 transition-all duration-200 shrink-0 cursor-pointer ${
                           serviceFormTab === tab.id
-                            ? 'border-teal-500 text-teal-600 font-bold'
-                            : 'border-transparent text-slate-400 hover:text-slate-600'
+                            ? 'border-slate-950 text-slate-950 font-black'
+                            : 'border-transparent text-slate-400 hover:text-slate-700'
                         }`}
                       >
                         {tab.icon}
@@ -1293,7 +1293,7 @@ const Dashboard = ({
                         </div>
 
                         {/* Pricing Notice */}
-                        <div className="flex flex-col gap-1.5 justify-center bg-teal-50/50 border border-teal-100/50 rounded-xl p-3 text-[10px] text-teal-800 leading-relaxed font-semibold">
+                        <div className="flex flex-col gap-1.5 justify-center bg-slate-50 border border-slate-200 rounded-xl p-3 text-[10px] text-slate-700 leading-relaxed font-semibold">
                           ℹ️ Base Pricing has been removed across the entire client site to align with Nizamabad local coordinate quotes.
                         </div>
 
@@ -1326,7 +1326,7 @@ const Dashboard = ({
                               type="checkbox"
                               checked={serviceForm.bookable}
                               onChange={(e) => setServiceForm({ ...serviceForm, bookable: e.target.checked })}
-                              className="w-4 h-4 text-teal-705 rounded border-slate-300 focus:ring-teal-700"
+                              className="w-4 h-4 text-slate-900 rounded border-slate-300 focus:ring-slate-900"
                             />
                             <span>Online Bookable</span>
                           </label>
@@ -1336,7 +1336,7 @@ const Dashboard = ({
                               type="checkbox"
                               checked={serviceForm.active}
                               onChange={(e) => setServiceForm({ ...serviceForm, active: e.target.checked })}
-                              className="w-4 h-4 text-teal-705 rounded border-slate-300 focus:ring-teal-700"
+                              className="w-4 h-4 text-slate-900 rounded border-slate-300 focus:ring-slate-900"
                             />
                             <span>Active (Catalog Visible)</span>
                           </label>
@@ -1821,17 +1821,17 @@ const Dashboard = ({
           {activeTab === 'doctors' && (
             <div className="space-y-6 text-left">
               
-              {/* Header & Stats Banner */}
-              <div className="bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 rounded-3xl p-6 sm:p-8 text-white border border-teal-800/30 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
+              {/* Header & Stats Banner - Snitch Obsidian Style */}
+              <div className="bg-slate-950 rounded-3xl p-6 sm:p-8 text-white border border-slate-800 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
                 <div className="relative z-10 space-y-2">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 border border-teal-500/30 text-[10px] font-mono font-bold uppercase tracking-widest">
-                    <Stethoscope className="w-3.5 h-3.5 text-teal-400" />
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white border border-white/15 text-[10px] font-bold uppercase tracking-widest">
+                    <Stethoscope className="w-3.5 h-3.5 text-white" />
                     Verified Medical Staff Registry
                   </div>
-                  <h2 className="text-xl sm:text-3xl font-extrabold tracking-tight text-white">
+                  <h2 className="text-xl sm:text-2xl font-black tracking-tight text-white uppercase">
                     Doctors & Clinicians Directory
                   </h2>
-                  <p className="text-slate-300 text-xs sm:text-sm max-w-xl">
+                  <p className="text-slate-400 text-xs max-w-xl">
                     Add new doctors, edit medical qualifications, change profile images, and configure home visit availability across Nizamabad.
                   </p>
                 </div>
@@ -1841,39 +1841,36 @@ const Dashboard = ({
                     type="button"
                     onClick={fetchDoctors}
                     disabled={doctorsLoading}
-                    className="px-4 py-2.5 bg-slate-800/80 hover:bg-slate-700/80 text-slate-200 text-xs font-bold rounded-xl border border-slate-700/60 flex items-center gap-2 transition-all shadow-sm"
+                    className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-full border border-white/10 flex items-center gap-2 transition-all cursor-pointer"
                     title="Refresh Doctors List"
                   >
-                    <RefreshCw className={`w-3.5 h-3.5 ${doctorsLoading ? 'animate-spin text-teal-400' : ''}`} />
+                    <RefreshCw className={`w-3.5 h-3.5 ${doctorsLoading ? 'animate-spin' : ''}`} />
                     <span>Refresh</span>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => openDoctorForm(null)}
-                    className="px-5 py-2.5 bg-teal-500 hover:bg-teal-400 text-slate-950 text-xs font-extrabold rounded-xl flex items-center gap-2 transition-all hover:scale-105 shadow-lg shadow-teal-500/20 uppercase tracking-wider"
+                    className="px-5 py-2 bg-white hover:bg-slate-100 text-slate-950 text-xs font-black rounded-full flex items-center gap-2 transition-all hover:scale-105 shadow-sm uppercase tracking-wider cursor-pointer"
                   >
                     <Plus className="w-4 h-4 text-slate-950 stroke-[3]" />
                     <span>Add New Doctor</span>
                   </button>
                 </div>
-
-                {/* Subtle Background Lighting */}
-                <div className="absolute top-0 right-0 w-80 h-80 bg-teal-500/10 rounded-full blur-3xl pointer-events-none -z-0" />
               </div>
 
               {/* Filter & Search Bar + Quick Metrics */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
                 {/* Search & Specialty Filter */}
-                <div className="lg:col-span-8 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center gap-3">
+                <div className="lg:col-span-8 bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col sm:flex-row items-center gap-3">
                   <div className="relative flex-1 w-full">
                     <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
                       type="text"
                       value={doctorSearch}
                       onChange={(e) => setDoctorSearch(e.target.value)}
-                      placeholder="Search doctor by name, qualification, or council reg..."
-                      className="w-full pl-10 pr-4 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-100 transition-all"
+                      placeholder="Search doctor by name, qualification, or reg number..."
+                      className="w-full pl-10 pr-4 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-slate-900 transition-all font-semibold"
                     />
                   </div>
 
@@ -1882,7 +1879,7 @@ const Dashboard = ({
                     <select
                       value={doctorSpecialtyFilter}
                       onChange={(e) => setDoctorSpecialtyFilter(e.target.value)}
-                      className="w-full sm:w-auto px-3 py-2 text-xs rounded-xl border border-slate-200 bg-white font-medium text-slate-700 focus:outline-none focus:border-teal-500"
+                      className="w-full sm:w-auto px-3 py-2 text-xs rounded-xl border border-slate-200 bg-white font-semibold text-slate-700 focus:outline-none focus:border-slate-900"
                     >
                       <option value="all">All Specialities</option>
                       <option value="physician">General Physician</option>
@@ -1897,20 +1894,20 @@ const Dashboard = ({
 
                 {/* Mini Stats Badges */}
                 <div className="lg:col-span-4 grid grid-cols-2 gap-3">
-                  <div className="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+                  <div className="bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
                     <div>
-                      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Clinicians</div>
-                      <div className="text-xl font-extrabold text-slate-900">{doctorsList?.length || 0}</div>
+                      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Staff</div>
+                      <div className="text-xl font-black text-slate-900">{doctorsList?.length || 0}</div>
                     </div>
-                    <div className="w-9 h-9 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center font-bold">
+                    <div className="w-9 h-9 rounded-xl bg-slate-100 text-slate-900 flex items-center justify-center font-bold">
                       <UserCheck className="w-5 h-5" />
                     </div>
                   </div>
 
-                  <div className="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+                  <div className="bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
                     <div>
                       <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Active On-Duty</div>
-                      <div className="text-xl font-extrabold text-emerald-600">
+                      <div className="text-xl font-black text-emerald-600">
                         {doctorsList?.filter(d => d.isActive !== false).length || 0}
                       </div>
                     </div>
@@ -1924,7 +1921,7 @@ const Dashboard = ({
               {/* Doctors Directory Cards Grid */}
               {doctorsLoading && doctorsList.length === 0 ? (
                 <div className="bg-white p-12 rounded-3xl border border-slate-200 text-center space-y-3">
-                  <Loader2 className="w-8 h-8 text-teal-600 animate-spin mx-auto" />
+                  <Loader2 className="w-8 h-8 text-slate-900 animate-spin mx-auto" />
                   <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Loading Doctors & Clinicians...</p>
                 </div>
               ) : (
@@ -1944,8 +1941,8 @@ const Dashboard = ({
                     .map((doc) => (
                       <div 
                         key={doc._id || doc.name}
-                        className={`bg-white rounded-3xl border transition-all duration-300 p-5 flex flex-col justify-between shadow-sm hover:shadow-lg relative group ${
-                          doc.isActive === false ? 'border-slate-200/60 opacity-60 bg-slate-50/50' : 'border-slate-200 hover:border-teal-400/80'
+                        className={`bg-white rounded-3xl border transition-all duration-300 p-5 flex flex-col justify-between shadow-xs hover:shadow-md relative group ${
+                          doc.isActive === false ? 'border-slate-200/60 opacity-60 bg-slate-50/50' : 'border-slate-200/80 hover:border-slate-400'
                         }`}
                       >
                         {/* Card Top: Photo + Key Info */}
