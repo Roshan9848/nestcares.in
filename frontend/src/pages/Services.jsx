@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import * as Icons from 'lucide-react';
 import { ArrowRight, ChevronRight, Activity, Award, Search, SlidersHorizontal, Phone, Clock, ShieldCheck, Heart } from 'lucide-react';
@@ -24,11 +24,20 @@ import { translations } from '../utils/translations';
 
 const Services = ({ services }) => {
   const { addToast } = useToast();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchParams] = useSearchParams();
+  const initialQuery = searchParams.get('search') || '';
+  const [searchTerm, setSearchTerm] = useState(initialQuery);
   const [activeCategory, setActiveCategory] = useState('All');
   const [sortBy, setSortBy] = useState('popular');
   const [quickBookOpen, setQuickBookOpen] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
+  
+  useEffect(() => {
+    const q = searchParams.get('search');
+    if (q !== null) {
+      setSearchTerm(q);
+    }
+  }, [searchParams]);
   
   // Quick Callback Form State
   const [quickPhone, setQuickPhone] = useState('');

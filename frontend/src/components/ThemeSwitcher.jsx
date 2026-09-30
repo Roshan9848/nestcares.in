@@ -3,6 +3,14 @@ import { Palette, Check, Sparkles } from 'lucide-react';
 
 export const PALETTES = [
   {
+    id: 'snitch-luxury',
+    name: 'Snitch Obsidian',
+    subtitle: 'Ultra-Modern Minimalist Monochrome',
+    primaryColor: '#09090b',
+    secondaryColor: '#27272a',
+    previewBadge: 'bg-zinc-900 text-white border-zinc-700'
+  },
+  {
     id: 'medical-teal',
     name: 'Medical Teal',
     subtitle: 'Mayo Clinic / Apollo 24/7 Standard',

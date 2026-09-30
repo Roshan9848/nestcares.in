@@ -156,7 +156,7 @@ const AppContent = () => {
       <ScrollToTop />
       {!hideLayout && <Navbar webSettings={settings?.web} />}
       
-      <main className={hideLayout ? '' : 'min-h-[80vh] pt-[60px] sm:pt-[76px] pb-24 md:pb-0'}>
+      <main className={hideLayout ? '' : 'min-h-[80vh] pt-[98px] sm:pt-[106px] pb-24 md:pb-0'}>
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={
