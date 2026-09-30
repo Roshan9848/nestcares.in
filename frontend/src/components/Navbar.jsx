@@ -9,13 +9,6 @@ import { useAuth } from '../context/AuthContext';
 import { resolveImageUrl } from '../utils/url';
 import ThemeSwitcher from './ThemeSwitcher';
 
-const TICKER_MESSAGES = [
-  "⚡ 24/7 CLINICAL EMERGENCY DISPATCH • AVERAGE ARRIVAL: 15 MINS IN NIZAMABAD",
-  "🏥 ICU SETUP AT HOME • HOSPITAL-GRADE VENTILATORS & MULTIPARA MONITORS",
-  "👨‍⚕️ VERIFIED SPECIALIST DOCTORS & CERTIFIED CRITICAL CARE NURSES",
-  "📞 EMERGENCY HELPLINE: +91 92488 49388 • ZERO ADVANCE REQUIRED"
-];
-
 const POPULAR_SEARCH_TAGS = [
   "Doctor Visit", "ICU Setup", "Nursing Care", "Injection Service", 
   "Physiotherapy", "ECG at Home", "Wound Dressing", "Oxygen Cylinder"
@@ -29,17 +22,8 @@ const Navbar = ({ webSettings }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [tickerIndex, setTickerIndex] = useState(0);
   const [currentLang, setCurrentLang] = useState(localStorage.getItem('preferred_language') || 'english');
   const searchInputRef = useRef(null);
-
-  // Auto-rotate announcement ticker
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTickerIndex((prev) => (prev + 1) % TICKER_MESSAGES.length);
-    }, 4500);
-    return () => clearInterval(interval);
-  }, []);
 
   const toggleLang = () => {
     const nextLang = currentLang === 'english' ? 'telugu' : 'english';
@@ -120,36 +104,8 @@ const Navbar = ({ webSettings }) => {
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-black/[0.08] transition-all duration-200">
-        
-        {/* Top Ticker / Snitch-Style Announcement Bar - Ultra sleek on mobile */}
-        <div className="bg-[#09090b] text-white py-1 sm:py-1.5 px-3 sm:px-8 text-[9px] sm:text-[11px] font-semibold tracking-wider uppercase flex items-center justify-between border-b border-white/10 select-none">
-          <div className="flex items-center gap-1.5 sm:gap-2 overflow-hidden whitespace-nowrap">
-            <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-            <span className="font-bold text-slate-200 tracking-wide truncate max-w-[280px] xs:max-w-xs sm:max-w-none">
-              {TICKER_MESSAGES[tickerIndex]}
-            </span>
-          </div>
-
-          <div className="hidden md:flex items-center gap-4 shrink-0 text-slate-300 text-[10px]">
-            <a 
-              href="tel:+919248849388" 
-              className="hover:text-white transition-colors flex items-center gap-1 font-bold text-emerald-400"
-            >
-              <PhoneCall className="w-3 h-3" />
-              <span>24/7 HELPLINE: +91 92488 49388</span>
-            </a>
-            <span className="text-slate-600">|</span>
-            <button 
-              onClick={toggleLang}
-              className="hover:text-white transition-colors font-bold uppercase cursor-pointer"
-            >
-              🌐 {isTe ? 'TELUGU (తెలుగు)' : 'ENGLISH (EN)'}
-            </button>
-          </div>
-        </div>
-
-        {/* Main Snitch-Style Luxury Navbar - Compact 52px on mobile, 64px on desktop */}
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-13 sm:h-16 flex items-center justify-between gap-2 sm:gap-4">
+        {/* Main Snitch-Style Luxury Navbar - Compact 54px on mobile, 64px on desktop */}
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2 sm:gap-4">
           
           {/* Left: Mobile Menu Trigger + Brand Identity */}
           <div className="flex items-center gap-2 sm:gap-3">
