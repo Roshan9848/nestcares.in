@@ -119,13 +119,13 @@ const Navbar = ({ webSettings }) => {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-black/[0.08] transition-all duration-300">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-black/[0.08] transition-all duration-200">
         
-        {/* Top Ticker / Snitch-Style Announcement Bar */}
-        <div className="bg-[#09090b] text-white py-1.5 px-4 sm:px-8 text-[10px] sm:text-[11px] font-semibold tracking-wider uppercase flex items-center justify-between border-b border-white/10 select-none">
-          <div className="flex items-center gap-2 overflow-hidden whitespace-nowrap">
+        {/* Top Ticker / Snitch-Style Announcement Bar - Ultra sleek on mobile */}
+        <div className="bg-[#09090b] text-white py-1 sm:py-1.5 px-3 sm:px-8 text-[9px] sm:text-[11px] font-semibold tracking-wider uppercase flex items-center justify-between border-b border-white/10 select-none">
+          <div className="flex items-center gap-1.5 sm:gap-2 overflow-hidden whitespace-nowrap">
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-            <span className="font-bold text-slate-200 tracking-wide transition-all duration-500">
+            <span className="font-bold text-slate-200 tracking-wide truncate max-w-[280px] xs:max-w-xs sm:max-w-none">
               {TICKER_MESSAGES[tickerIndex]}
             </span>
           </div>
@@ -148,21 +148,21 @@ const Navbar = ({ webSettings }) => {
           </div>
         </div>
 
-        {/* Main Snitch-Style Luxury Navbar */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-[70px] flex items-center justify-between gap-4">
+        {/* Main Snitch-Style Luxury Navbar - Compact 52px on mobile, 64px on desktop */}
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-13 sm:h-16 flex items-center justify-between gap-2 sm:gap-4">
           
           {/* Left: Mobile Menu Trigger + Brand Identity */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="lg:hidden p-2 -ml-2 rounded-xl text-slate-900 hover:bg-slate-100 transition-colors"
+              className="lg:hidden p-1.5 -ml-1 rounded-lg text-slate-900 hover:bg-slate-100 transition-colors"
               aria-label="Open Mobile Menu"
             >
-              <Menu className="w-6 h-6 stroke-[2]" />
+              <Menu className="w-5 h-5 stroke-[2.2]" />
             </button>
 
-            <Link to="/" className="flex items-center gap-3 shrink-0 group">
-              <div className="h-10 w-10 sm:h-11 sm:w-11 rounded-xl bg-slate-50 p-1 flex items-center justify-center border border-slate-200 group-hover:border-slate-400 transition-all">
+            <Link to="/" className="flex items-center gap-2 sm:gap-2.5 shrink-0 group">
+              <div className="h-8 w-8 sm:h-9 sm:w-9 rounded-lg bg-slate-50 p-1 flex items-center justify-center border border-slate-200 group-hover:border-slate-400 transition-all">
                 <img
                   src={logoSrc}
                   onError={() => setLogoSrc('/logo.png')}
@@ -171,25 +171,25 @@ const Navbar = ({ webSettings }) => {
                 />
               </div>
               <div className="flex flex-col text-left">
-                <span className="text-base sm:text-lg font-black text-slate-950 tracking-tight leading-none uppercase">
+                <span className="text-sm sm:text-base font-black text-slate-950 tracking-tight leading-none uppercase">
                   {webSettings?.companyName || "NEST CARES"}
                 </span>
-                <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest leading-none mt-1">
-                  Home Healthcare • Nizamabad
+                <span className="text-[8px] sm:text-[9px] font-bold text-slate-500 uppercase tracking-widest leading-none mt-0.5">
+                  Healthcare • Nizamabad
                 </span>
               </div>
             </Link>
           </div>
 
           {/* Center: Desktop Navigation Links (Snitch Clean Typography) */}
-          <nav className="hidden lg:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-7">
             {navLinks.map((link) => {
               const isActive = location.pathname === link.path;
               return (
                 <NavLink
                   key={link.name}
                   to={link.path}
-                  className={`text-xs font-bold tracking-wider uppercase transition-all relative py-1.5 ${
+                  className={`text-xs font-bold tracking-wider uppercase transition-all relative py-1 ${
                     isActive
                       ? 'text-slate-950 font-black'
                       : 'text-slate-600 hover:text-slate-950'
@@ -212,12 +212,12 @@ const Navbar = ({ webSettings }) => {
           </nav>
 
           {/* Right: Actions, Search, Language, Helpline & Snitch CTA Button */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-3">
             
             {/* Instant Search Trigger */}
             <button
               onClick={() => setSearchOpen(!searchOpen)}
-              className="p-2 sm:px-3 sm:py-2 rounded-full hover:bg-slate-100 text-slate-700 hover:text-slate-950 transition-all flex items-center gap-2 text-xs font-semibold cursor-pointer border border-transparent hover:border-slate-200"
+              className="p-1.5 sm:px-3 sm:py-2 rounded-full hover:bg-slate-100 text-slate-700 hover:text-slate-950 transition-all flex items-center gap-1.5 text-xs font-semibold cursor-pointer border border-transparent hover:border-slate-200"
               title="Search Services, Doctors, ICU"
             >
               <Search className="w-4 h-4 stroke-[2.2]" />
@@ -225,32 +225,34 @@ const Navbar = ({ webSettings }) => {
             </button>
 
             {/* Theme Switcher */}
-            <ThemeSwitcher />
+            <div className="hidden sm:block">
+              <ThemeSwitcher />
+            </div>
 
             {/* Language Toggle (Desktop) */}
             <button
               onClick={toggleLang}
-              className="hidden sm:flex px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 text-[11px] font-bold uppercase transition-all cursor-pointer"
+              className="hidden sm:flex px-2.5 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 text-[11px] font-bold uppercase transition-all cursor-pointer"
             >
-              {isTe ? 'తెలుగు' : 'English'}
+              {isTe ? 'తెలుగు' : 'EN'}
             </button>
 
             {/* Emergency Phone Dialer */}
             <a
               href="tel:+919248849388"
-              className="hidden md:flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-200 text-xs font-bold transition-all"
+              className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-200 text-xs font-bold transition-all"
             >
               <PhoneCall className="w-3.5 h-3.5 text-emerald-600" />
               <span>92488 49388</span>
             </a>
 
-            {/* Snitch-Style Bold Obsidian CTA Button */}
+            {/* Snitch-Style Bold Obsidian CTA Button - Compact on Mobile */}
             <Link
               to="/book"
-              className="px-5 py-2.5 bg-slate-950 hover:bg-neutral-800 active:scale-95 text-white text-xs font-black uppercase tracking-wider rounded-full shadow-sm hover:shadow-md transition-all flex items-center gap-1.5 shrink-0"
+              className="px-3.5 py-1.5 sm:px-5 sm:py-2 bg-slate-950 hover:bg-neutral-800 active:scale-95 text-white text-[11px] sm:text-xs font-black uppercase tracking-wider rounded-full shadow-xs hover:shadow-md transition-all flex items-center gap-1 shrink-0"
             >
-              <span>{isTe ? 'బుకింగ్' : 'BOOK NOW'}</span>
-              <ArrowRight className="w-3.5 h-3.5 text-slate-300" />
+              <span>{isTe ? 'బుకింగ్' : 'BOOK'}</span>
+              <ArrowRight className="w-3 h-3 text-slate-300 hidden sm:inline" />
             </Link>
 
           </div>
