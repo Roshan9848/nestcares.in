@@ -505,13 +505,74 @@ const Home = ({
       </section>
 
       {/* ========================================================
-          6. FAQ ACCORDION (COLLAPSIBLES)
+          6. NIZAMABAD DISTRICT COVERAGE & LOCAL SEO SECTION
+      ======================================================== */}
+      <section className="py-8 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-left">
+        <div className="bg-gradient-to-br from-slate-950 via-slate-900 to-black text-white rounded-3xl p-8 sm:p-12 border border-slate-800 shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+          
+          <div className="relative z-10 space-y-8">
+            <div className="space-y-3 max-w-3xl">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 text-emerald-300 border border-white/10 text-xs font-bold uppercase tracking-widest backdrop-blur-md">
+                <MapPin className="w-3.5 h-3.5 text-emerald-400" />
+                Nizamabad & Northern Telangana Coverage
+              </div>
+              <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
+                24/7 Home Healthcare Delivered Across Nizamabad District
+              </h2>
+              <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                Whether you need an emergency home ICU setup in Kanteshwar, a 24-hour bedside nurse in Subhash Nagar, or doctor visits in Armoor and Bodhan, our clinical network reaches your doorstep within 15 to 30 minutes.
+              </p>
+            </div>
+
+            {/* Localities Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 pt-2">
+              {[
+                { name: 'Kanteshwar', tag: 'Fast Dispatch' },
+                { name: 'Subhash Nagar', tag: '24/7 Nursing' },
+                { name: 'Pragathi Nagar', tag: 'Home Visits' },
+                { name: 'Vinayak Nagar', tag: 'ICU Care' },
+                { name: 'Khaleelwadi', tag: 'Lab Tests' },
+                { name: 'Mubaraknagar', tag: 'Care Takers' },
+                { name: 'Madhavnagar', tag: 'Physiotherapy' },
+                { name: 'Shivaji Nagar', tag: 'Elder Care' },
+                { name: 'Armoor Hub', tag: 'Doctor Visits' },
+                { name: 'Bodhan City', tag: 'ICU Setup' },
+                { name: 'Kamareddy', tag: 'Ambulance' },
+                { name: 'Banswada', tag: 'Medical Eqpt' }
+              ].map((loc, i) => (
+                <div key={i} className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl p-3.5 transition-all">
+                  <div className="text-white font-bold text-xs sm:text-sm">{loc.name}</div>
+                  <div className="text-emerald-400 text-[10px] font-semibold mt-1 flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                    <span>{loc.tag}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* SEO Keywords Highlight Bar */}
+            <div className="border-t border-white/10 pt-6 flex flex-wrap items-center gap-2 text-slate-300 text-xs font-medium">
+              <span className="text-white font-bold text-xs uppercase tracking-wider">Top Services in Nizamabad:</span>
+              <span className="bg-white/10 px-3 py-1 rounded-full text-slate-200">#1 Home Nursing Care</span>
+              <span className="bg-white/10 px-3 py-1 rounded-full text-slate-200">Home ICU Setup</span>
+              <span className="bg-white/10 px-3 py-1 rounded-full text-slate-200">Doctor Consultation at Home</span>
+              <span className="bg-white/10 px-3 py-1 rounded-full text-slate-200">Elderly & Bedridden Care</span>
+              <span className="bg-white/10 px-3 py-1 rounded-full text-slate-200">Physiotherapy</span>
+              <span className="bg-white/10 px-3 py-1 rounded-full text-slate-200">Oxygen Concentrator Rental</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================
+          7. FAQ ACCORDION (COLLAPSIBLES)
       ======================================================== */}
       <section className="py-8 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-left">
         
         <div className="mb-8 space-y-2">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-teal-50 text-teal-800 border border-teal-200 text-xs font-bold uppercase tracking-widest">
-            <HelpCircle className="w-3.5 h-3.5 text-teal-700" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-100 text-slate-800 border border-slate-200 text-xs font-bold uppercase tracking-widest">
+            <HelpCircle className="w-3.5 h-3.5 text-slate-700" />
             Got Questions?
           </div>
           <h2 className="text-2xl sm:text-4xl font-black text-slate-950 tracking-tight">
@@ -532,13 +593,13 @@ const Home = ({
                 <button
                   type="button"
                   onClick={() => setOpenFaqIdx(isOpen ? null : idx)}
-                  className="w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-slate-900 hover:text-teal-800 transition-colors"
+                  className="w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-slate-900 hover:text-black transition-colors cursor-pointer"
                 >
                   <span>{questionText}</span>
-                  <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform duration-300 shrink-0 ${isOpen ? 'rotate-180 text-teal-700' : ''}`} />
+                  <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform duration-300 shrink-0 ${isOpen ? 'rotate-180 text-slate-900' : ''}`} />
                 </button>
                 {isOpen && (
-                  <div className="px-5 sm:px-6 pb-6 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                  <div className="px-5 sm:px-6 pb-6 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3 font-medium">
                     {answerText}
                   </div>
                 )}
@@ -550,11 +611,11 @@ const Home = ({
       </section>
 
       {/* ========================================================
-          7. CALL TO ACTION BANNER
+          8. CALL TO ACTION BANNER (OBSIDIAN LUXURY)
       ======================================================== */}
       <section className="py-8 sm:py-12 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
         <div className="bg-white rounded-3xl p-8 sm:p-14 text-center space-y-6 border border-slate-200 shadow-lg">
-          <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-teal-50 text-teal-800 text-xs font-bold uppercase tracking-widest border border-teal-200">
+          <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-slate-100 text-slate-900 text-xs font-bold uppercase tracking-widest border border-slate-200">
             24/7 Clinical Standby Across Nizamabad
           </span>
           <h3 className="text-2xl sm:text-5xl font-black text-slate-950 tracking-tight leading-tight">
@@ -567,9 +628,9 @@ const Home = ({
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 pt-2 max-w-md mx-auto">
             <Link
               to="/book"
-              className="px-8 py-4 bg-teal-800 hover:bg-teal-900 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider rounded-2xl shadow-md transition-all flex items-center justify-center gap-2"
+              className="px-8 py-4 bg-slate-950 hover:bg-black text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider rounded-full shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98"
             >
-              <HeartPulse className="w-5 h-5 text-teal-200" />
+              <HeartPulse className="w-5 h-5 text-rose-400" />
               <span>Book Care Now</span>
             </Link>
 
@@ -577,9 +638,9 @@ const Home = ({
               href={`https://wa.me/${cleanWhatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider rounded-2xl shadow-md transition-all flex items-center justify-center gap-2"
+              className="px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider rounded-full shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98"
             >
-              <MessageSquare className="w-5 h-5 text-emerald-100" />
+              <MessageSquare className="w-5 h-5 text-white" />
               <span>Chat on WhatsApp</span>
             </a>
           </div>

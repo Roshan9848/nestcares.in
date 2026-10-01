@@ -23,7 +23,7 @@ const About = ({ doctors, founders }) => {
   const isTe = currentLang === 'telugu';
   const t = (key, fallback) => translations[isTe ? 'TE' : 'EN'][key] || fallback;
   useEffect(() => {
-    document.title = "About Us - Premium Home Healthcare Services";
+    document.title = "About Nest Cares | #1 Trusted Home Healthcare in Nizamabad";
   }, []);
 
   const displayFounders = founders && founders.length > 0 ? founders : [

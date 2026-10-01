@@ -60,7 +60,7 @@ const Services = ({ services }) => {
   const t = (key, fallback) => translations[isTe ? 'TE' : 'EN'][key] || fallback;
 
   useEffect(() => {
-    document.title = isTe ? "వైద్య సేవలు - Nest Cares" : "Medical Catalog - Premium Home Healthcare Services";
+    document.title = isTe ? "హోమ్ హెల్త్‌కేర్ సేవలు నిజామాబాద్ - Nest Cares" : "Home Healthcare & Nursing Services in Nizamabad | Nest Cares";
   }, [isTe]);
 
   const servicesList = Array.isArray(services) ? services : [];

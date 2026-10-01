@@ -40,14 +40,14 @@ const Footer = ({ webSettings, contactSettings }) => {
           {/* Company Brief */}
           <div className="flex flex-col gap-4 text-left">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-teal-600 flex items-center justify-center text-white font-black text-sm shadow-sm">
+              <div className="w-8 h-8 rounded-xl bg-slate-950 flex items-center justify-center text-white font-black text-sm shadow-sm">
                 N
               </div>
               <h4 className="text-lg font-black text-slate-900 tracking-wide">{companyName}</h4>
             </div>
             <p className="text-sm text-slate-600 leading-relaxed font-normal">{footerContent}</p>
-            <div className="flex items-center gap-2 text-xs text-teal-700 font-bold mt-2 bg-teal-50 border border-teal-200 px-3 py-1.5 rounded-full w-fit">
-              <Sparkles className="w-3.5 h-3.5 text-teal-600" />
+            <div className="flex items-center gap-2 text-xs text-slate-800 font-bold mt-2 bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-full w-fit">
+              <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
               <span>Certified Nizamabad Healthcare Partner</span>
             </div>
           </div>
@@ -57,19 +57,19 @@ const Footer = ({ webSettings, contactSettings }) => {
             <h4 className="text-xs font-black text-slate-900 tracking-widest uppercase mb-6">Quick Links</h4>
             <ul className="space-y-3 text-sm font-medium">
               <li>
-                <Link to="/" className="text-slate-600 hover:text-teal-700 transition-colors">Home</Link>
+                <Link to="/" className="text-slate-600 hover:text-black transition-colors">Home</Link>
               </li>
               <li>
-                <Link to="/about" className="text-slate-600 hover:text-teal-700 transition-colors">About Us</Link>
+                <Link to="/about" className="text-slate-600 hover:text-black transition-colors">About Us</Link>
               </li>
               <li>
-                <Link to="/services" className="text-slate-600 hover:text-teal-700 transition-colors">Healthcare Services</Link>
+                <Link to="/services" className="text-slate-600 hover:text-black transition-colors">Healthcare Services</Link>
               </li>
               <li>
-                <Link to="/contact" className="text-slate-600 hover:text-teal-700 transition-colors">Contact Support</Link>
+                <Link to="/contact" className="text-slate-600 hover:text-black transition-colors">Contact Support</Link>
               </li>
               <li>
-                <Link to="/book" className="text-teal-700 font-bold hover:text-teal-800 transition-colors">Book an Appointment</Link>
+                <Link to="/book" className="text-slate-950 font-bold hover:text-black transition-colors">Book an Appointment</Link>
               </li>
             </ul>
           </div>
@@ -78,32 +78,32 @@ const Footer = ({ webSettings, contactSettings }) => {
           <div className="text-left">
             <h4 className="text-xs font-black text-slate-900 tracking-widest uppercase mb-6">Our Services</h4>
             <ul className="space-y-3 text-sm text-slate-600 font-medium">
-              <li className="hover:text-teal-700 transition-colors">Doctor Consultation</li>
-              <li className="hover:text-teal-700 transition-colors">Nursing Care at Home</li>
-              <li className="hover:text-teal-700 transition-colors">ICU Setup at Home</li>
-              <li className="hover:text-teal-700 transition-colors">Laboratory Testing</li>
-              <li className="hover:text-teal-700 transition-colors">Physiotherapy</li>
-              <li className="hover:text-teal-700 transition-colors">Dietician Advisory</li>
+              <li><Link to="/services" className="hover:text-black transition-colors">Doctor Home Visit</Link></li>
+              <li><Link to="/services" className="hover:text-black transition-colors">24/7 Bedside Nursing Care</Link></li>
+              <li><Link to="/services" className="hover:text-black transition-colors">Home ICU & Ventilator Setup</Link></li>
+              <li><Link to="/services" className="hover:text-black transition-colors">Physiotherapy & Rehab</Link></li>
+              <li><Link to="/services" className="hover:text-black transition-colors">Elderly & Bedridden Care</Link></li>
+              <li><Link to="/services" className="hover:text-black transition-colors">Medical Equipment Rental</Link></li>
             </ul>
           </div>
 
           {/* Contact Details */}
           <div className="flex flex-col gap-4 text-sm text-slate-600 text-left">
-            <h4 className="text-xs font-black text-slate-900 tracking-widest uppercase mb-2">Get in Touch</h4>
+            <h4 className="text-xs font-black text-slate-900 tracking-widest uppercase mb-2">Nizamabad Head Office</h4>
             <div className="flex gap-3">
-              <MapPin className="w-4 h-4 text-teal-600 shrink-0 mt-1" />
+              <MapPin className="w-4 h-4 text-slate-700 shrink-0 mt-1" />
               <span className="text-xs sm:text-sm text-slate-700 leading-snug">{address}</span>
             </div>
             <div className="flex gap-3 items-start">
-              <Phone className="w-4 h-4 text-teal-600 shrink-0 mt-1" />
+              <Phone className="w-4 h-4 text-slate-700 shrink-0 mt-1" />
               <div className="flex flex-col gap-1 text-xs sm:text-sm text-slate-700">
-                <a href="tel:+919248849388" className="hover:text-teal-700 transition-colors block font-semibold">+91 92488 49388 (Main)</a>
-                <a href="tel:+916303591409" className="hover:text-teal-700 transition-colors block font-semibold">+91 63035 91409</a>
+                <a href="tel:+919248849388" className="hover:text-black transition-colors block font-semibold">+91 92488 49388 (24/7 Helpline)</a>
+                <a href="tel:+916303591409" className="hover:text-black transition-colors block font-semibold">+91 63035 91409 (Support)</a>
               </div>
             </div>
             <div className="flex gap-3 items-center">
-              <Mail className="w-4 h-4 text-teal-600 shrink-0" />
-              <a href={`mailto:${email}`} className="text-xs sm:text-sm text-slate-700 hover:text-teal-700 transition-colors font-medium">{email}</a>
+              <Mail className="w-4 h-4 text-slate-700 shrink-0" />
+              <a href={`mailto:${email}`} className="text-xs sm:text-sm text-slate-700 hover:text-black transition-colors font-medium">{email}</a>
             </div>
           </div>
         </div>
@@ -113,12 +113,12 @@ const Footer = ({ webSettings, contactSettings }) => {
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <div>{copyright}</div>
             <span className="hidden sm:inline text-slate-300">|</span>
-            <Link to="/login" className="hover:text-teal-700 transition-colors flex items-center gap-1 font-semibold text-slate-600">
+            <Link to="/login" className="hover:text-black transition-colors flex items-center gap-1 font-semibold text-slate-600">
               Admin Portal
             </Link>
           </div>
           <div className="flex items-center gap-1 text-xs text-slate-500 font-medium">
-            Hospital-grade home clinical excellence
+            #1 Home Healthcare & Nursing in Nizamabad, Telangana
           </div>
         </div>
 

@@ -11,7 +11,7 @@ const Contact = ({ contactSettings }) => {
   const { addToast } = useToast();
 
   useEffect(() => {
-    document.title = "Contact Support Desk | Nest Cares Home Healthcare";
+    document.title = "Contact Nest Cares Nizamabad | 24/7 Home Healthcare & Nursing Helpline";
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
